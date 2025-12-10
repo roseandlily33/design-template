@@ -1,0 +1,31 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 16px 24px;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #222;
+}
+.navLinks {
+  display: flex;
+  gap: 24px;
+}
+.link {
+  color: #6883a1; /* Use your primary button color */
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+}
+.cta {
+  margin-left: 0;
+  /* Optionally, add background: #e5c2c2; for secondary, or #a4a4a4ff for tertiary */
+}
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}

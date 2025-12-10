@@ -1,0 +1,41 @@
+.testimonialSection {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  background: #6883a1; /* Use your primary button color */
+  color: #fff; /* White text for contrast */
+  padding: 38px 32px 28px 32px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quote {
+  font-size: 1.25rem;
+  color: #fff;
+  font-style: italic;
+  margin-bottom: 22px;
+  line-height: 1.6;
+  text-align: center;
+  position: relative;
+}
+
+.quote::before {
+  content: "\201C";
+  font-size: 2.5rem;
+  color: #e0e0e0;
+  position: absolute;
+  left: -28px;
+  top: -18px;
+}
+
+.author {
+  font-size: 1rem;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+}

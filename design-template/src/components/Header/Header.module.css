@@ -1,0 +1,30 @@
+/* Header styles */
+.headerRoot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 18px 32px;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 2px 8px #0001;
+}
+.title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #222;
+}
+.loginBtn {
+  background: #6883a1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 22px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 4px #0070f322;
+  transition: background 0.2s;
+}
+.loginBtn:hover {
+  background: #005bb5;
+}

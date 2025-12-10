@@ -1,0 +1,24 @@
+/* Company Overview Section Styles */
+
+.descriptionSection {
+  background: #fff;
+  padding: 40px 28px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #48525e;
+}
+
+.text {
+  font-size: 1.15rem;
+  color: #6883a1;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+.buttonRow {
+  display: flex;
+}

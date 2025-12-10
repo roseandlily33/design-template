@@ -1,0 +1,70 @@
+.iconsSection {
+  width: 100%;
+  margin: 40px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.cardsRow {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+}
+
+.card {
+  background: #fff;
+  box-shadow: 0 2px 12px #0001;
+  padding: 36px 28px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 220px;
+  max-width: 300px;
+  flex: 1 1 0;
+  transition: box-shadow 0.2s;
+}
+
+.card:hover {
+  box-shadow: 0 6px 24px #0002;
+}
+
+.iconCircle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px #0001;
+}
+
+.cardTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.cardDesc {
+  font-size: 1rem;
+  color: #444;
+  text-align: center;
+  line-height: 1.5;
+}
+
+@media (max-width: 900px) {
+  .cardsRow {
+    flex-direction: column;
+    gap: 24px;
+    align-items: center;
+  }
+  .card {
+    min-width: 0;
+    width: 100%;
+    max-width: 400px;
+  }
+}

@@ -1,0 +1,47 @@
+.pickerRoot {
+  padding: 32px 10px;
+}
+.pickerTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #222;
+  letter-spacing: 0.01em;
+}
+.fontCardRow {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 0;
+}
+.fontCard {
+  background: #fafbfc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #eee;
+  padding: 20px;
+  min-width: 260px;
+  position: relative;
+  margin-bottom: 0;
+}
+.fontCardSelected {
+  background: #e6f7ff;
+  border: 2px solid #6883a1; 
+  box-shadow: 0 2px 8px #6883a1;
+}
+.fontCardLabel {
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #444;
+  letter-spacing: 0.01em;
+}
+.fontCardControls {
+  margin-bottom: 12px;
+}
+.fontCardPreview {
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  min-height: 120px;
+}

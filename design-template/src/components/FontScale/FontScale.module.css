@@ -1,0 +1,79 @@
+.scaleRoot {
+  padding: 32px 10px;
+}
+.scaleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.scaleTitle {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.01em;
+}
+.scaleExportBtn {
+  margin-left: 18px;
+  padding: 8px 18px;
+  font-size: 16px;
+  border-radius: 6px;
+  background: #6883a1;;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.scaleTypeScales {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.scaleTypeBtn {
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  background: #fff;
+  color: #222;
+  font-weight: 400;
+  cursor: pointer;
+  transition: border 0.2s, background 0.2s, color 0.2s;
+}
+.scaleTypeBtn.selected {
+  border: 2px solid #6883a1;
+  background: #e6f0ff;
+  color: #6883a1;
+  font-weight: 600;
+}
+.breakpointCards {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.breakpointCard {
+  /* background: #f7faff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  padding: 20px;
+  min-width: 320px;
+  flex: 0 0 320px;
+  margin-bottom: 0; */
+  background: #fafbfc;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border: 1px solid #eee;
+  padding: 20px;
+  min-width: 360px;
+  max-width: 500px;
+  flex: 0 0 320px;
+  position: relative;
+  margin-bottom: 0;
+}
+.breakpointTitle {
+  margin-bottom: 16px;
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #222;
+}
