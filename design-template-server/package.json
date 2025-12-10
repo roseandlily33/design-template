@@ -1,0 +1,21 @@
+{
+  "name": "design-template-server",
+  "version": "1.0.0",
+  "description": "Backend for design template",
+  "repository": {
+    "type": "git",
+    "url": "roseandlily33"
+  },
+  "license": "ISC",
+  "author": "Victoria Benoit",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mongoose": "^9.0.1"
+  }
+}
