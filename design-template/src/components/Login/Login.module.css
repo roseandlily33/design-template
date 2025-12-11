@@ -1,0 +1,150 @@
+.modalTitle {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #6883a1;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.formRowLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.inputRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 2px;
+}
+.inputLabel {
+  min-width: 80px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  color: #444;
+}
+.inputField {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 1.08rem;
+  border-radius: 6px;
+  border: 1px solid #c3c3c3;
+  background: #f7f8fa;
+  color: #222;
+  font-weight: 500;
+  transition: border 0.18s;
+}
+.inputField:focus {
+  border: 1.5px solid #6883a1;
+  outline: none;
+}
+.passwordWrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex: 1;
+}
+.eyeBtn {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.25rem;
+  color: #6883a1;
+  cursor: pointer;
+  padding: 0;
+}
+.buttonRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.32);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalBox {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.18);
+  padding: 32px 28px 24px 28px;
+  min-width: 320px;
+  max-width: 90vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #888;
+  cursor: pointer;
+}
+
+.submitBtn {
+  margin-top: 18px;
+  padding: 10px 22px;
+  font-size: 1.1rem;
+  border-radius: 7px;
+  background: #6883a1;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.18s;
+}
+.submitBtn:disabled {
+  background: #bfcad6;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #d00;
+  font-size: 1rem;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.success {
+  color: #0a7a2a;
+  background: #ecf8f0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 0.98rem;
+  margin-top: 8px;
+  margin-bottom: 4px;
+}
+
+.switchMode {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #444;
+}
+.linkBtn {
+  background: none;
+  border: none;
+  color: #6883a1;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 1rem;
+  margin-left: 2px;
+}

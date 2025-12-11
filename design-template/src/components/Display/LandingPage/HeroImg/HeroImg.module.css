@@ -46,6 +46,24 @@
   margin-bottom: 18px;
   letter-spacing: -1px;
   line-height: 1.1;
+  position: relative;
+}
+
+.heroImage h1:hover::after {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  background: rgba(40, 40, 40, 0.97);
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 7px;
+  box-shadow: 0 2px 12px #0002;
+  white-space: pre;
+  margin-top: 8px;
+  z-index: 10;
+  pointer-events: none;
 }
 
 .heroImage p {
@@ -53,6 +71,24 @@
   font-weight: 400;
   margin-bottom: 28px;
   color: #f3f3f3;
+  position: relative;
+}
+
+.heroImage p:hover::after {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  background: rgba(40, 40, 40, 0.97);
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 8px 14px;
+  border-radius: 7px;
+  box-shadow: 0 2px 12px #0002;
+  white-space: pre;
+  margin-top: 8px;
+  z-index: 10;
+  pointer-events: none;
 }
 
 .heroImage div > div {

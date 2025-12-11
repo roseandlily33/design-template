@@ -28,3 +28,51 @@
 .loginBtn:hover {
   background: #005bb5;
 }
+
+/* Profile/avatar and dropdown */
+.profileWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#6b89a8,#3e6b9a);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+.dropdown {
+  position: absolute;
+  right: 0;
+  top: 48px;
+  min-width: 180px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity 160ms ease, transform 160ms ease;
+  z-index: 1200;
+}
+.profileWrap:hover .dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.dropdownItem {
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  color: #222;
+  border-bottom: 1px solid #f1f1f1;
+  cursor: pointer;
+}
+.dropdownItem:last-child { border-bottom: none; }
+.dropdownItem:hover { background: #f6f9fc; }
