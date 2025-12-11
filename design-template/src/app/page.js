@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import styles from "./page.module.css";
 import {
   Inter,
@@ -106,7 +107,6 @@ const fontMap = {
   Prata: prata.className,
 };
 
-import React from "react";
 export default function Home() {
   // Color rows state for ColourPicker
   const [selectedFontSetIdx, setSelectedFontSetIdx] = useState(0);
@@ -301,10 +301,143 @@ export default function Home() {
   const [selected, setSelected] = useState(palette1);
   const [logoUrl, setLogoUrl] = useState(null);
   const [radius, setRadius] = useState(0);
+  const [projectTitle, setProjectTitle] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState("");
+  const backendUrl = process.env.NEXT_PUBLIC_BE_URL;
 
   return (
     <div>
       <Header />
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          alignItems: "center",
+          justifyContent: "flex-end",
+          padding: "12px 32px",
+        }}
+      >
+        <input
+          aria-label="Project title"
+          placeholder="Project title"
+          value={projectTitle}
+          onChange={(e) => setProjectTitle(e.target.value)}
+          style={{
+            padding: "8px 12px",
+            borderRadius: 8,
+            border: "1px solid #ddd",
+            minWidth: 220,
+          }}
+        />
+        <button
+          onClick={async () => {
+            setSaveMessage("");
+            setSaving(true);
+            try {
+              const project = {
+                title: projectTitle || `Untitled ${new Date().toISOString()}`,
+                borderRadius: radius,
+                logo: logoUrl || null,
+                primaryButton: {
+                  color: primaryColor,
+                  textColor: primaryTextColor,
+                  radius: primaryRadius,
+                  border: primaryBorder,
+                  padding: primaryPadding,
+                  fontSize: primaryFontSize,
+                  fontWeight: primaryFontWeight,
+                  letterSpacing: primaryLetterSpacing,
+                  boxShadow: primaryBoxShadow,
+                  lineHeight: primaryLineHeight,
+                  hoverBg: primaryHoverBg,
+                  hoverText: primaryHoverText,
+                  hoverBorder: primaryHoverBorder,
+                },
+                secondaryButton: {
+                  color: secondaryColor,
+                  textColor: secondaryTextColor,
+                  radius: secondaryRadius,
+                  border: secondaryBorder,
+                  padding: secondaryPadding,
+                  fontSize: secondaryFontSize,
+                  fontWeight: secondaryFontWeight,
+                  letterSpacing: secondaryLetterSpacing,
+                  boxShadow: secondaryBoxShadow,
+                  lineHeight: secondaryLineHeight,
+                  hoverBg: secondaryHoverBg,
+                  hoverText: secondaryHoverText,
+                  hoverBorder: secondaryHoverBorder,
+                },
+                tertiaryButton: {
+                  color: tertiaryColor,
+                  textColor: tertiaryTextColor,
+                  radius: tertiaryRadius,
+                  border: tertiaryBorder,
+                  padding: tertiaryPadding,
+                  fontSize: tertiaryFontSize,
+                  fontWeight: tertiaryFontWeight,
+                  letterSpacing: tertiaryLetterSpacing,
+                  boxShadow: tertiaryBoxShadow,
+                  lineHeight: tertiaryLineHeight,
+                  hoverBg: tertiaryHoverBg,
+                  hoverText: tertiaryHoverText,
+                  hoverBorder: tertiaryHoverBorder,
+                },
+                fontPicker1: {
+                  head: fontSets[0]?.head,
+                  main: fontSets[0]?.main,
+                  extra: fontSets[0]?.extra,
+                },
+                fontPicker2: {
+                  head: fontSets[1]?.head,
+                  main: fontSets[1]?.main,
+                  extra: fontSets[1]?.extra,
+                },
+                fontPicker3: {
+                  head: fontSets[2]?.head,
+                  main: fontSets[2]?.main,
+                  extra: fontSets[2]?.extra,
+                },
+                colourPicker1: { rows: palette1 },
+                colourPicker2: { rows: palette2 },
+                colourPicker3: { rows: palette3 },
+                spacingScale: { base: spacingBase, unit: spacingUnit },
+                fontScale: {},
+              };
+
+              const res = await fetch(`${backendUrl}/api/project`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({ project }),
+              });
+              const data = await res.json();
+              if (!res.ok) throw new Error(data.error || "Save failed");
+              setSaveMessage("Project saved");
+            } catch (err) {
+              console.error("Save error", err);
+              setSaveMessage(err.message || "Save failed");
+            } finally {
+              setSaving(false);
+            }
+          }}
+          disabled={saving}
+          style={{
+            padding: "8px 14px",
+            borderRadius: 8,
+            background: "#6883a1",
+            color: "#fff",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          {saving ? "Saving..." : "Save Project"}
+        </button>
+        {saveMessage && (
+          <div style={{ marginLeft: 12, color: "#222" }}>{saveMessage}</div>
+        )}
+      </div>
       <main className={styles.displayRoot}>
         {/* Drawer overlay for leftPane */}
         {/* Floating drawer toggle button always visible */}

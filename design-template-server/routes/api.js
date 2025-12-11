@@ -27,7 +27,8 @@ router.post("/create-account", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      // in production we require SameSite=None and Secure; for local dev use Lax
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     console.log("Account created for userId:", user._id);
@@ -96,7 +97,7 @@ router.post("/login", async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
     console.log("User logged in:", user._id);
@@ -130,6 +131,27 @@ router.get("/project/:id", authMiddleware, async (req, res) => {
     return res.json(project);
   } catch (err) {
     console.error("Error in /project/:id:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+
+// --- LIST PROJECTS FOR USER ---
+router.get("/projects", authMiddleware, async (req, res) => {
+  try {
+    console.log("/projects called for userId:", req.userId);
+    const user = await User.findById(req.userId).select("projects");
+    if (!user) {
+      console.log("User not found for userId:", req.userId);
+      return res.status(404).json({ error: "User not found" });
+    }
+    // populate project basic info
+    const projects = await Project.find({ _id: { $in: user.projects } }).select(
+      "title createdAt updatedAt"
+    );
+    console.log("Returning projects for user:", projects.length);
+    return res.json({ projects });
+  } catch (err) {
+    console.error("Error in /projects:", err);
     return res.status(500).json({ error: "Server error" });
   }
 });

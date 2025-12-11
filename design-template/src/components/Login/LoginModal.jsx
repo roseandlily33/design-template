@@ -124,8 +124,8 @@ const LoginModal = ({ show, onClose, onAuth }) => {
               {loading
                 ? "Please wait..."
                 : mode === "login"
-                ? "Login"
-                : "Create Account"}
+                  ? "Login"
+                  : "Create Account"}
             </button>
           </div>
         </form>

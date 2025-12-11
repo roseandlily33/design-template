@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const apiRoutes = require("./routes/api");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 const app = express();
@@ -9,13 +10,16 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.FE_ROUTE,
     credentials: true,
     optionsSuccessStatus: 200,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// parse cookies so req.cookies is available in routes
+app.use(cookieParser());
 
 // app.get("/test-cors", (req, res) => {
 //   console.log("Hitting the test");
