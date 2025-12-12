@@ -1,8 +1,15 @@
 import Image from "next/image";
 import styles from "./HeroImg.module.css";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import Modal, { EditButton } from "../../Modal/Modal.component";
 
-const HeroImage = ({ primaryButton, headerFontClass, mainFontClass }) => {
+const HeroImage = ({
+  primaryButton,
+  headerFontClass,
+  mainFontClass,
+  colours = [],
+  onColorChange, // optional callback, pass from parent if you want persistence
+}) => {
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingSubtitle, setEditingSubtitle] = useState(false);
   const [title, setTitle] = useState("ABC Company");
@@ -11,6 +18,59 @@ const HeroImage = ({ primaryButton, headerFontClass, mainFontClass }) => {
   const [showSubtitleTooltip, setShowSubtitleTooltip] = useState(false);
   const titleRef = useRef(null);
   const subtitleRef = useRef(null);
+
+  // hover + modal + color state for title / subtitle
+  const [hoverTitle, setHoverTitle] = useState(false);
+  const [hoverSubtitle, setHoverSubtitle] = useState(false);
+  const [modalOpenTitle, setModalOpenTitle] = useState(false);
+  const [modalOpenSubtitle, setModalOpenSubtitle] = useState(false);
+  const [titleColor, setTitleColor] = useState("#222");
+  const [subtitleColor, setSubtitleColor] = useState("#444");
+
+  // pick sensible fallback color from palettes
+  const pickFirstAvailable = (palettesArr = []) => {
+    const order = ["main", "accent", "grey", "extra"];
+    for (const name of order) {
+      const p = palettesArr.find(
+        (x) => x && x.label && x.label.toLowerCase() === name
+      );
+      if (p && Array.isArray(p.colors)) {
+        const c = p.colors.find(Boolean);
+        if (c) return c;
+      }
+    }
+    if (palettesArr && palettesArr.length) {
+      for (const p of palettesArr) {
+        if (p && Array.isArray(p.colors)) {
+          const c = p.colors.find(Boolean);
+          if (c) return c;
+        }
+      }
+    }
+    return "#222";
+  };
+
+  // sync colors when palettes change (only set defaults if still using defaults)
+  useEffect(() => {
+    setTitleColor((prev) =>
+      prev === "#222" ? pickFirstAvailable(colours) : prev
+    );
+    setSubtitleColor((prev) =>
+      prev === "#444" ? pickFirstAvailable(colours) : prev
+    );
+  }, [colours]);
+
+  // safe handlers that call parent callback only if present
+  const handleTitleColorPick = (c) => {
+    setTitleColor(c);
+    setModalOpenTitle(false);
+    if (typeof onColorChange === "function") onColorChange("heroTitle", c);
+  };
+  const handleSubtitleColorPick = (c) => {
+    setSubtitleColor(c);
+    setModalOpenSubtitle(false);
+    if (typeof onColorChange === "function") onColorChange("heroSubtitle", c);
+  };
 
   const handleTitleClick = () => setEditingTitle(true);
   const handleSubtitleClick = () => setEditingSubtitle(true);
@@ -57,20 +117,42 @@ const HeroImage = ({ primaryButton, headerFontClass, mainFontClass }) => {
               fontWeight: 700,
               textAlign: "center",
               width: "100%",
+              color: titleColor,
             }}
           />
         ) : (
-          <div style={{ position: "relative", display: "inline-block", width: "100%" }}>
+          <div
+            style={{
+              position: "relative",
+              display: "inline-block",
+              width: "100%",
+            }}
+            onMouseEnter={() => {
+              setShowTitleTooltip(true);
+              setHoverTitle(true);
+            }}
+            onMouseLeave={() => {
+              setShowTitleTooltip(false);
+              setHoverTitle(false);
+            }}
+          >
             <h1
               className={headerFontClass}
               onClick={handleTitleClick}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", color: titleColor }}
               ref={titleRef}
-              onMouseEnter={() => setShowTitleTooltip(true)}
-              onMouseLeave={() => setShowTitleTooltip(false)}
             >
               {title}
             </h1>
+
+            {/* EditButton visible only on hover (same pattern as NavbarLink) */}
+            <div style={{ position: "absolute", right: 8, top: 4 }}>
+              <EditButton
+                visible={hoverTitle}
+                onClick={() => setModalOpenTitle(true)}
+              />
+            </div>
+
             {showTitleTooltip && (
               <div
                 style={{
@@ -95,6 +177,7 @@ const HeroImage = ({ primaryButton, headerFontClass, mainFontClass }) => {
             )}
           </div>
         )}
+
         {editingSubtitle ? (
           <input
             className={mainFontClass}
@@ -103,20 +186,45 @@ const HeroImage = ({ primaryButton, headerFontClass, mainFontClass }) => {
             onBlur={handleSubtitleBlur}
             onKeyDown={handleSubtitleKeyDown}
             autoFocus
-            style={{ fontSize: "1.25rem", textAlign: "center", width: "100%" }}
+            style={{
+              fontSize: "1.25rem",
+              textAlign: "center",
+              width: "100%",
+              color: subtitleColor,
+            }}
           />
         ) : (
-          <div style={{ position: "relative", display: "inline-block", width: "100%" }}>
+          <div
+            style={{
+              position: "relative",
+              display: "inline-block",
+              width: "100%",
+            }}
+            onMouseEnter={() => {
+              setShowSubtitleTooltip(true);
+              setHoverSubtitle(true);
+            }}
+            onMouseLeave={() => {
+              setShowSubtitleTooltip(false);
+              setHoverSubtitle(false);
+            }}
+          >
             <p
               className={mainFontClass}
               onClick={handleSubtitleClick}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", color: subtitleColor }}
               ref={subtitleRef}
-              onMouseEnter={() => setShowSubtitleTooltip(true)}
-              onMouseLeave={() => setShowSubtitleTooltip(false)}
             >
               {subtitle}
             </p>
+
+            <div style={{ position: "absolute", right: 8, top: 2 }}>
+              <EditButton
+                visible={hoverSubtitle}
+                onClick={() => setModalOpenSubtitle(true)}
+              />
+            </div>
+
             {showSubtitleTooltip && (
               <div
                 style={{
@@ -141,7 +249,26 @@ const HeroImage = ({ primaryButton, headerFontClass, mainFontClass }) => {
             )}
           </div>
         )}
+
         <div>{primaryButton}</div>
+
+        {/* Reuse the same Modal component as NavbarLink */}
+        <Modal
+          open={modalOpenTitle}
+          onClose={() => setModalOpenTitle(false)}
+          palettes={colours}
+          initialColor={titleColor}
+          onSelect={handleTitleColorPick}
+          title={`Pick color for "${title}"`}
+        />
+        <Modal
+          open={modalOpenSubtitle}
+          onClose={() => setModalOpenSubtitle(false)}
+          palettes={colours}
+          initialColor={subtitleColor}
+          onSelect={handleSubtitleColorPick}
+          title={`Pick color for subtitle`}
+        />
       </div>
     </div>
   );

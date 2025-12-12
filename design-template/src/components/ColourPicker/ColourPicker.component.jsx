@@ -116,7 +116,8 @@ const ColourPicker = ({
             }}
             onClick={() => {
               setPaletteIdx(idx);
-              setSelected(idx < 3 ? palette1 : idx === 3 ? palette2 : palette3);
+              // setSelected to the actual palette for this index
+              setSelected(palettes[idx]);
               setHexInput("");
             }}
             aria-pressed={paletteIdx === idx}

@@ -26,8 +26,6 @@ const Display = ({
   console.log(colours);
   console.log(spacingChart);
 
-  const colorGroups = Array.isArray(colours) ? colours : [];
-
   const headerFontClass =
     fontMap && fonts && fonts.head ? fontMap[fonts.head] : "";
   const mainFontClass =
@@ -63,36 +61,43 @@ const Display = ({
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
         secondaryButton={secondaryButton}
+        colours={colours}
       />
       <HeroImage
         primaryButton={primaryButton}
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
+        colours={colours}
       />
       <Description
         secondaryButton={secondaryButton}
         tertiaryButton={tertiaryButton}
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
+        colours={colours}
       />
       <ThreeIcons
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
         borderRadius={borderRadius}
+        colours={colours}
       />
       <Companies
         mainFontClass={mainFontClass}
         extraFontClass={extraFontClass}
+        colours={colours}
       />
       <Testimonial
         mainFontClass={mainFontClass}
         extraFontClass={extraFontClass}
         borderRadius={borderRadius}
+        colours={colours}
       />
       <Footer
         logo={logo}
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
+        colours={colours}
       />
     </div>
   );

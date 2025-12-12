@@ -1,23 +1,20 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./Navbar.module.css";
+import EditableElement from "../../Modal/EditableElement.component";
+// import NavbarLink from "./NavbarLink.component.jsx";
 
-const defaultLinks = ["Home", "About", "Contact"];
-
-const Navbar = ({ logo, headerFontClass, mainFontClass, secondaryButton }) => {
-  const [links, setLinks] = useState(defaultLinks);
-  const [editingLink, setEditingLink] = useState({}); // { idx: true }
-
-  const handleLinkClick = (idx) =>
-    setEditingLink((prev) => ({ ...prev, [idx]: true }));
-  const handleLinkChange = (idx, value) => {
-    setLinks((prev) => prev.map((l, i) => (i === idx ? value : l)));
-  };
-  const handleLinkBlur = (idx) =>
-    setEditingLink((prev) => ({ ...prev, [idx]: false }));
-  const handleLinkKeyDown = (e, idx) => {
-    if (e.key === "Enter") handleLinkBlur(idx);
-  };
+const Navbar = ({
+  logo,
+  headerFontClass,
+  mainFontClass,
+  mainFontSize,
+  secondaryButton,
+  colours = [],
+  onColorChange,
+}) => {
+  const links = ["Home", "About", "Contact"];
+  const [overrides, setOverrides] = useState({});
 
   return (
     <nav className={styles.navbar}>
@@ -28,38 +25,39 @@ const Navbar = ({ logo, headerFontClass, mainFontClass, secondaryButton }) => {
           "Logo"
         )}
       </div>
+
       <div className={styles.navRight}>
         <div className={styles.navLinks}>
-          {links.map((label, idx) =>
-            editingLink[idx] ? (
-              <input
-                key={label + idx}
-                value={label}
-                className={styles.link + " " + mainFontClass}
-                onChange={(e) => handleLinkChange(idx, e.target.value)}
-                onBlur={() => handleLinkBlur(idx)}
-                onKeyDown={(e) => handleLinkKeyDown(e, idx)}
-                autoFocus
-                style={{
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  textAlign: "center",
-                  width: "90px",
-                }}
-              />
-            ) : (
-              <a
-                key={label + idx}
-                href="#"
-                className={styles.link + " " + mainFontClass}
-                onClick={() => handleLinkClick(idx)}
-                style={{ cursor: "pointer" }}
-              >
+          {links?.map((label, idx) => (
+            <EditableElement
+              key={idx + 1}
+              palettes={colours}
+              initialColor={overrides[idx]}
+              onSelect={(c) => {
+                setOverrides((p) => ({ ...p, [idx]: c }));
+                onColorChange?.(`navLink:${idx}`, c);
+              }}
+            >
+              <a className={`${styles.link} ${mainFontClass}`} href="#">
                 {label}
               </a>
-            )
-          )}
+            </EditableElement>
+            // <NavbarLink
+            //   key={idx}
+            //   idx={idx}
+            //   label={label}
+            //   mainFontClass={mainFontClass}
+            //   fontSize={mainFontSize}
+            //   palettes={colours}
+            //   initialColor={overrides[idx] || undefined}
+            //   onColorChange={(i, c) => {
+            //     setOverrides((prev) => ({ ...prev, [i]: c }));
+            //     if (onColorChange) onColorChange(`navLink:${i}`, c);
+            //   }}
+            // />
+          ))}
         </div>
+
         <div className={styles.cta}>{secondaryButton}</div>
       </div>
     </nav>

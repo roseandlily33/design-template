@@ -1,0 +1,81 @@
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.36);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 120;
+}
+.modalBox {
+  background: #fff;
+  border-radius: 12px;
+  width: 420px;
+  max-width: calc(100% - 32px);
+  box-shadow: 0 16px 48px rgba(2, 6, 23, 0.26);
+  overflow: hidden;
+  border: 2px solid red;
+}
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.modalClose {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+.modalBody {
+  padding: 12px 16px;
+  max-height: 60vh;
+  overflow: auto;
+}
+.paletteRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.paletteLabel {
+  width: 70px;
+  color: #666;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+.paletteColors {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.colorBlock {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+.customRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.customLabel {
+  width: 70px;
+  color: #666;
+  font-size: 13px;
+}
+.applyBtn {
+  background: #111;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}

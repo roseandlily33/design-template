@@ -34,7 +34,7 @@ import Buttons from "@/components/Buttons/Buttons.component";
 import Logo from "@/components/Logo/Logo.component";
 import BorderRadius from "@/components/BorderRadius/BorderRadius.component";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // ColourPicker initial state
 
 // Organize fonts by type
@@ -277,12 +277,87 @@ export default function Home() {
 
   const [drawerOpen, setDrawerOpen] = React.useState(true);
 
+  // Simple color helpers (shade and complement)
+  const hexToRgb = (hex) => {
+    const h = hex.replace("#", "");
+    return [
+      parseInt(h.length === 3 ? h[0] + h[0] : h.slice(0, 2), 16),
+      parseInt(h.length === 3 ? h[1] + h[1] : h.slice(2, 4), 16),
+      parseInt(h.length === 3 ? h[2] + h[2] : h.slice(4, 6), 16),
+    ];
+  };
+
+  const rgbToHex = (r, g, b) =>
+    "#" +
+    [r, g, b]
+      .map((c) => {
+        const s = Math.max(0, Math.min(255, Math.round(c))).toString(16);
+        return s.length === 1 ? "0" + s : s;
+      })
+      .join("");
+
+  // percent: positive -> lighten toward white, negative -> darken toward black (0.2 = +20%)
+  const shade = (hex, percent) => {
+    const [r, g, b] = hexToRgb(hex || "#000000");
+    if (percent >= 0) {
+      return rgbToHex(
+        r + (255 - r) * percent,
+        g + (255 - g) * percent,
+        b + (255 - b) * percent
+      );
+    } else {
+      const p = 1 + percent; // percent is negative
+      return rgbToHex(r * p, g * p, b * p);
+    }
+  };
+
+  // quick complement (invert) — simple, reliable, good for palettes
+  const complement = (hex) => {
+    const [r, g, b] = hexToRgb(hex || "#000000");
+    return rgbToHex(255 - r, 255 - g, 255 - b);
+  };
+
+  // initial palette #1 derived from your button colors
   const initialRowsPalette1 = [
-    { label: "Grey", colors: [null, null, null, null] },
-    { label: "Main", colors: [null, null, null, null] },
-    { label: "Accent", colors: [null, null, null, null] },
-    { label: "Extra", colors: [null, null, null, null] },
+    {
+      label: "Grey",
+      colors: [
+        tertiaryColor || "#a4a4a4",
+        shade(tertiaryColor || "#a4a4a4", 0.18),
+        shade(tertiaryColor || "#a4a4a4", -0.12),
+        shade(tertiaryColor || "#a4a4a4", 0.36),
+      ],
+    },
+    {
+      label: "Main",
+      colors: [
+        primaryColor || "#6883a1",
+        shade(primaryColor || "#6883a1", 0.16),
+        shade(primaryColor || "#6883a1", -0.14),
+        shade(primaryColor || "#6883a1", 0.38),
+      ],
+    },
+    {
+      label: "Accent",
+      colors: [
+        secondaryColor || "#e5c2c2",
+        shade(secondaryColor || "#e5c2c2", 0.16),
+        shade(secondaryColor || "#e5c2c2", -0.14),
+        shade(secondaryColor || "#e5c2c2", 0.38),
+      ],
+    },
+    {
+      label: "Extra",
+      // complementary picks for the above three; last slot is a neutral white
+      colors: [
+        complement(primaryColor || "#6883a1"),
+        complement(secondaryColor || "#e5c2c2"),
+        complement(tertiaryColor || "#a4a4a4"),
+        "#ffffff",
+      ],
+    },
   ];
+
   const initialRowsPalette2 = [
     { label: "Grey", colors: [null, null, null, null] },
     { label: "Main", colors: [null, null, null, null] },
@@ -298,7 +373,14 @@ export default function Home() {
   const [palette1, setPalette1] = useState(initialRowsPalette1);
   const [palette2, setPalette2] = useState(initialRowsPalette2);
   const [palette3, setPalette3] = useState(initialRowsPalette3);
+  // `selected` mirrors the active palette object so Display/Navbar always get current colors.
   const [selected, setSelected] = useState(palette1);
+
+  // Keep `selected` in sync when palette1 is edited (so Display updates immediately).
+  useEffect(() => {
+    setSelected(palette1);
+  }, [palette1]);
+
   const [logoUrl, setLogoUrl] = useState(null);
   const [radius, setRadius] = useState(0);
   const [projectTitle, setProjectTitle] = useState("");
