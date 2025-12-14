@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import styles from "./Navbar.module.css";
-import Modal, { EditButton } from "../../Modal/Modal.component";
+import EditableWithColor from "../../Modal/EditableElement.component";
 
 const NavbarLink = ({
   label,
@@ -78,33 +78,18 @@ const NavbarLink = ({
         />
       ) : (
         <>
-          <a
-            href="#"
-            className={`${styles.link} ${mainFontClass}`}
-            onClick={(e) => {
-              e.preventDefault();
-              setEditing(true);
+          <EditableWithColor
+            palettes={colours}
+            initialColor={overrides[idx]}
+            onSelect={(c) => {
+              setOverrides((p) => ({ ...p, [idx]: c }));
+              onColorChange?.(`navLink:${idx}`, c);
             }}
-            style={{ color, fontSize }}
           >
-            {value}
-          </a>
-
-          {/* Edit icon rendered here (visible only when hovered and not when modal open) */}
-          <EditButton
-            visible={hover && !modalOpen}
-            onClick={() => setModalOpen(true)}
-          />
-
-          {/* reusable colour modal */}
-          <Modal
-            open={modalOpen}
-            onClose={() => setModalOpen(false)}
-            palettes={palettes}
-            initialColor={color}
-            onSelect={(c) => handlePickColor(c)}
-            title={`Pick a color for "${value}"`}
-          />
+            <a className={`${styles.link} ${mainFontClass}`} href="#">
+              {label}
+            </a>
+          </EditableWithColor>
         </>
       )}
     </div>

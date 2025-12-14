@@ -1,26 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Modal, { EditButton } from "./Modal.component";
 
-const pickFirstAvailable = (palettes = []) => {
-  const order = ["main", "accent", "grey", "extra"];
-  for (const name of order) {
-    const p = palettes.find(
-      (x) => x && x.label && x.label.toLowerCase() === name
-    );
-    if (p && Array.isArray(p.colors)) {
-      const c = p.colors.find(Boolean);
-      if (c) return c;
-    }
-  }
-  if (palettes && palettes.length) {
-    for (const p of palettes) {
-      if (p && Array.isArray(p.colors)) {
-        const c = p.colors.find(Boolean);
-        if (c) return c;
-      }
-    }
-  }
-  return "#222";
+const pickFirstAvailable = (palettes = [], fallback = "#222") => {
+    const order = ["main", "accent", "grey", "extra"];
+   for (const name of order) {
+     const p = palettes.find(
+       (x) => x && x.label && x.label.toLowerCase() === name
+     );
+     if (p && Array.isArray(p.colors)) {
+       const c = p.colors.find(Boolean);
+       if (c) return c;
+     }
+   }
+   if (palettes && palettes.length) {
+     for (const p of palettes) {
+       if (p && Array.isArray(p.colors)) {
+         const c = p.colors.find(Boolean);
+         if (c) return c;
+       }
+     }
+   }
+   return fallback;
 };
 
 const EditableWithColor = ({
