@@ -3,7 +3,8 @@
   align-items: center;
   justify-content: space-between;
   background: #fff;
-  padding: 16px 24px;
+  /* vertical ~= m, horizontal ~= l (when base=1, unit=rem -> 1rem / 1.5rem) */
+  padding: var(--spacing-m) var(--spacing-l);
 }
 .logo {
   font-size: 1.5rem;
@@ -12,7 +13,7 @@
 }
 .navLinks {
   display: flex;
-  gap: 24px;
+  gap: var(--spacing-l);
   align-items: center;
 }
 .link {
@@ -28,13 +29,13 @@
 .navRight {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: var(--spacing-s);
 }
 .linkWrap {
   position: relative;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-xs);
 }
 .editBtn {
   display: inline-flex;

@@ -1,13 +1,14 @@
 .iconsSection {
   width: 100%;
-  margin: 40px 0;
+  /* vertical spacing follows spacing vars */
+  margin: var(--spacing-xl) 0;
   display: flex;
   justify-content: center;
 }
 
 .cardsRow {
   display: flex;
-  gap: 32px;
+  gap: var(--spacing-xl);
   justify-content: center;
   width: 100%;
   max-width: 900px;
@@ -16,7 +17,8 @@
 .card {
   background: #fff;
   box-shadow: 0 2px 12px #0001;
-  padding: 36px 28px 28px 28px;
+  /* top ~ spacing-xxl, horizontal & bottom ~ spacing-m */
+  padding: var(--spacing-xxl) var(--spacing-m) var(--spacing-m) var(--spacing-m);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -31,10 +33,10 @@
 }
 
 .iconCircle {
-  width: 56px;
-  height: 56px;
+  width: var(--spacing-xxl);
+  height: var(--spacing-xxl);
   border-radius: 50%;
-  margin-bottom: 18px;
+  margin-bottom: var(--spacing-l);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -44,7 +46,7 @@
 .cardTitle {
   font-size: 1.25rem;
   font-weight: 700;
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-xs);
   color: #1a1a1a;
   text-align: center;
 }
@@ -59,12 +61,13 @@
 @media (max-width: 900px) {
   .cardsRow {
     flex-direction: column;
-    gap: 24px;
+    gap: var(--spacing-l);
     align-items: center;
   }
   .card {
     min-width: 0;
     width: 100%;
     max-width: 400px;
+    /* keep padding responsive — handled by vars */
   }
 }

@@ -29,6 +29,7 @@
   z-index: 2;
 }
 
+/* use spacing vars injected by Display (eg --spacing-xl / --spacing-m) */
 .heroImage > div {
   position: relative;
   z-index: 3;
@@ -37,13 +38,13 @@
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
-  padding: 32px 16px;
+  padding: var(--spacing-xl) var(--spacing-m);
 }
 
 .heroImage h1 {
   font-size: 2.8rem;
   font-weight: 700;
-  margin-bottom: 18px;
+  margin-bottom: var(--spacing-m);
   letter-spacing: -1px;
   line-height: 1.1;
   position: relative;
@@ -57,11 +58,11 @@
   background: rgba(40, 40, 40, 0.97);
   color: #fff;
   font-size: 0.95rem;
-  padding: 8px 14px;
+  padding: var(--spacing-xs) var(--spacing-s);
   border-radius: 7px;
   box-shadow: 0 2px 12px #0002;
   white-space: pre;
-  margin-top: 8px;
+  margin-top: var(--spacing-xs);
   z-index: 10;
   pointer-events: none;
 }
@@ -69,7 +70,7 @@
 .heroImage p {
   font-size: 1.25rem;
   font-weight: 400;
-  margin-bottom: 28px;
+  margin-bottom: var(--spacing-l);
   color: #f3f3f3;
   position: relative;
 }
@@ -82,11 +83,11 @@
   background: rgba(40, 40, 40, 0.97);
   color: #fff;
   font-size: 0.95rem;
-  padding: 8px 14px;
+  padding: var(--spacing-xs) var(--spacing-s);
   border-radius: 7px;
   box-shadow: 0 2px 12px #0002;
   white-space: pre;
-  margin-top: 8px;
+  margin-top: var(--spacing-xs);
   z-index: 10;
   pointer-events: none;
 }
@@ -94,5 +95,5 @@
 .heroImage div > div {
   display: flex;
   justify-content: center;
-  gap: 16px;
+  gap: var(--spacing-m);
 }

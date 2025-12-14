@@ -7,8 +7,6 @@ const Testimonial = ({
   extraFontClass,
   colours = [],
   spacingChart,
-  spacingBase,
-  spacingUnit,
 }) => {
   const [editingQuote, setEditingQuote] = useState(false);
   const [editingAuthor, setEditingAuthor] = useState(false);
@@ -17,7 +15,6 @@ const Testimonial = ({
   );
   const [author, setAuthor] = useState("— Jamie L., CEO of Acme Corp");
 
-  // local colour state for quote/author (can be persisted via onSelect)
   const [quoteColor, setQuoteColor] = useState("#fff");
   const [authorColor, setAuthorColor] = useState("#fff");
 
@@ -34,14 +31,15 @@ const Testimonial = ({
     if (e.key === "Enter") setEditingAuthor(false);
   };
 
+  // inline fallback when CSS vars not present
+  const cardStyle = spacingChart
+    ? { padding: `${spacingChart.xxl.css} ${spacingChart.m.css} ${spacingChart.m.css} ${spacingChart.m.css}` }
+    : undefined;
+
   return (
     <section className={styles.testimonialSection}>
-      <div className={styles.card}>
-        <EditableWithColor
-          palettes={colours}
-          initialColor={quoteColor}
-          onSelect={(c) => setQuoteColor(c)}
-        >
+      <div className={styles.card} style={cardStyle}>
+        <EditableWithColor palettes={colours} initialColor={quoteColor} onSelect={(c) => setQuoteColor(c)}>
           {editingQuote ? (
             <input
               className={mainFontClass + " " + styles.quote}
@@ -55,27 +53,20 @@ const Testimonial = ({
                 fontStyle: "italic",
                 textAlign: "center",
                 width: "100%",
-                // color will be injected by EditableWithColor
               }}
             />
           ) : (
             <blockquote
               className={mainFontClass + " " + styles.quote}
               onClick={handleQuoteClick}
-              style={{
-                cursor: "pointer" /* color injected by EditableWithColor */,
-              }}
+              style={{ cursor: "pointer" }}
             >
               &ldquo;{quote}&rdquo;
             </blockquote>
           )}
         </EditableWithColor>
 
-        <EditableWithColor
-          palettes={colours}
-          initialColor={authorColor}
-          onSelect={(c) => setAuthorColor(c)}
-        >
+        <EditableWithColor palettes={colours} initialColor={authorColor} onSelect={(c) => setAuthorColor(c)}>
           {editingAuthor ? (
             <input
               className={extraFontClass + " " + styles.author}
@@ -88,17 +79,10 @@ const Testimonial = ({
                 fontSize: "1rem",
                 textAlign: "center",
                 width: "100%",
-                // color injected by EditableWithColor
               }}
             />
           ) : (
-            <h5
-              className={extraFontClass + " " + styles.author}
-              onClick={handleAuthorClick}
-              style={{
-                cursor: "pointer" /* color injected by EditableWithColor */,
-              }}
-            >
+            <h5 className={extraFontClass + " " + styles.author} onClick={handleAuthorClick} style={{ cursor: "pointer" }}>
               {author}
             </h5>
           )}

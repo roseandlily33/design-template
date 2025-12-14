@@ -1,6 +1,7 @@
 .footer {
   background: rgb(43, 53, 72);
-  padding: 36px 0 18px 0;
+  /* top ~= spacing-xl (32px when base=1), bottom ~= spacing-m (16px) */
+  padding: var(--spacing-xl) 0 var(--spacing-m) 0;
   border-top: 1px solid #e0e0e0;
   width: 100%;
 }
@@ -10,8 +11,8 @@
   align-items: center;
   justify-content: space-between;
   max-width: 1100px;
-  margin: 0 auto 12px auto;
-  padding: 0 24px;
+  margin: 0 auto var(--spacing-s) auto; /* small vertical spacing */
+  padding: 0 var(--spacing-l); /* horizontal padding ~24px */
   flex-wrap: wrap;
 }
 
@@ -25,7 +26,7 @@
 
 .linksSection {
   display: flex;
-  gap: 28px;
+  gap: var(--spacing-l);
   flex-wrap: wrap;
 }
 
@@ -45,17 +46,17 @@
   text-align: center;
   color: #fff;
   font-size: 0.95rem;
-  margin-top: 8px;
+  margin-top: var(--spacing-xs);
 }
 
 @media (max-width: 700px) {
   .footerContent {
     flex-direction: column;
     align-items: center;
-    gap: 18px;
+    gap: var(--spacing-s);
   }
   .linksSection {
-    gap: 16px;
+    gap: var(--spacing-m);
     justify-content: center;
   }
 }

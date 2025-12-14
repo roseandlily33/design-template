@@ -13,14 +13,16 @@ const Navbar = ({
   colours = [],
   onColorChange,
   spacingChart,
-  spacingBase,
-  spacingUnit,
 }) => {
+  // optional inline fallback from spacingChart (used only if CSS vars are not set)
+  const navStyle = spacingChart
+    ? { padding: `${spacingChart.m.css} ${spacingChart.l.css}` }
+    : undefined;
   const links = ["Home", "About", "Contact"];
   const [overrides, setOverrides] = useState({});
 
   return (
-    <nav className={styles.navbar}>
+    <nav className={styles.navbar} style={navStyle}>
       <div className={styles.logo + " " + headerFontClass}>
         {logo ? (
           <Image src={logo} alt="Logo Preview" width={150} height={150} />
@@ -41,23 +43,13 @@ const Navbar = ({
                 onColorChange?.(`navLink:${idx}`, c);
               }}
             >
-              <a className={`${styles.link} ${mainFontClass}`} href="#">
+              <a
+                className={`${styles.link} ${mainFontClass} ${styles.navStyle}`}
+                href="#"
+              >
                 {label}
               </a>
             </EditableElement>
-            // <NavbarLink
-            //   key={idx}
-            //   idx={idx}
-            //   label={label}
-            //   mainFontClass={mainFontClass}
-            //   fontSize={mainFontSize}
-            //   palettes={colours}
-            //   initialColor={overrides[idx] || undefined}
-            //   onColorChange={(i, c) => {
-            //     setOverrides((prev) => ({ ...prev, [i]: c }));
-            //     if (onColorChange) onColorChange(`navLink:${i}`, c);
-            //   }}
-            // />
           ))}
         </div>
 

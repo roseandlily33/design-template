@@ -37,6 +37,9 @@ const getSpacingCSS = (base, unit) => {
 const baseOptions = [
   { label: "0.5rem", value: 0.5, unit: "rem" },
   { label: "1rem", value: 1, unit: "rem" },
+  { label: "1.25rem", value: 1.25, unit: "rem" },
+  { label: "1.5rem", value: 1.5, unit: "rem" },
+  { label: "1.75rem", value: 1.75, unit: "rem" },
   { label: "2rem", value: 2, unit: "rem" },
   { label: "8px", value: 8, unit: "px" },
   { label: "16px", value: 16, unit: "px" },

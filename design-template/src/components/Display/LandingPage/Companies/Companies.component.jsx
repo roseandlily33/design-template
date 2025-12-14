@@ -13,9 +13,7 @@ const defaultCompanies = [
 const Companies = ({
   mainFontClass,
   colours = [],
-  spacingChart,
-  spacingBase,
-  spacingUnit,
+  spacingChart, 
 }) => {
   const [trustedText, setTrustedText] = useState("Trusted by 10+ companies");
   const [editingTrusted, setEditingTrusted] = useState(false);
@@ -34,8 +32,14 @@ const Companies = ({
     );
   };
 
+  // optional inline fallback using spacingChart (Display already injects CSS vars)
+  const sectionStyle = spacingChart
+    ? { margin: `${spacingChart.l.css} 0 ${spacingChart.m.css} 0` }
+    : undefined;
+  const rowStyle = spacingChart ? { gap: spacingChart.l.css } : undefined;
+
   return (
-    <section className={styles.companiesSection}>
+    <section className={styles.companiesSection} style={sectionStyle}>
       <EditableWithColor
         palettes={colours}
         initialColor={undefined}
@@ -72,7 +76,7 @@ const Companies = ({
         )}
       </EditableWithColor>
 
-      <div className={styles.companiesRow}>
+      <div className={styles.companiesRow} style={rowStyle}>
         {companies.map((company, idx) => (
           <EditableWithColor
             key={company.name + idx}

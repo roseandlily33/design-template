@@ -1,7 +1,8 @@
 .companyBadge {
   display: inline-block;
-  padding: 8px 20px;
-  margin: 6px 10px;
+  /* vertical ~= 0.5rem, horizontal ~= 1.5rem */
+  padding: var(--spacing-xs) var(--spacing-l);
+  margin: var(--spacing-xxs) var(--spacing-xs);
   border-radius: 18px;
   font-size: 1.1rem;
   font-weight: 700;
@@ -19,7 +20,7 @@
 }
 .companiesSection {
   width: 100%;
-  margin: 36px 0 24px 0;
+  margin: var(--spacing-l) 0 var(--spacing-m) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,7 +29,7 @@
 .trustedTitle {
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 18px;
+  margin-bottom: var(--spacing-s);
   color: #222;
   letter-spacing: 0.5px;
   text-align: center;
@@ -36,16 +37,17 @@
 
 .companiesRow {
   display: flex;
-  gap: 28px;
+  gap: var(--spacing-l);
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 }
 
 .companyLogo {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
+  /* use spacing vars for consistent sizing */
+  width: var(--spacing-xxl);
+  height: var(--spacing-xxl);
+  border-radius: calc(var(--spacing-xxl) / 4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -62,11 +64,11 @@
 
 @media (max-width: 700px) {
   .companiesRow {
-    gap: 16px;
+    gap: var(--spacing-m);
   }
   .companyLogo {
-    width: 38px;
-    height: 38px;
+    width: var(--spacing-xl);
+    height: var(--spacing-xl);
     font-size: 1.1rem;
   }
 }

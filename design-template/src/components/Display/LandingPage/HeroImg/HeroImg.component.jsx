@@ -9,8 +9,6 @@ const HeroImage = ({
   mainFontClass,
   colours = [],
   spacingChart,
-  spacingBase,
-  spacingUnit,
   onColorChange, // optional callback, pass from parent if you want persistence
 }) => {
   // content state stays in the parent (this component)
@@ -22,6 +20,13 @@ const HeroImage = ({
 
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingSubtitle, setEditingSubtitle] = useState(false);
+
+  const containerStyle = spacingChart
+    ? {
+        padding: `${spacingChart.xl.css} ${spacingChart.m.css}`,
+        gap: spacingChart.m.css,
+      }
+    : { padding: "2rem 1rem", gap: "1rem" };
 
   return (
     <div className={styles.heroImage}>
@@ -37,7 +42,7 @@ const HeroImage = ({
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "1rem",
+          ...containerStyle,
         }}
       >
         <EditableWithColor

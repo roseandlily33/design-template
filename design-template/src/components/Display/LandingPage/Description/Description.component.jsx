@@ -7,9 +7,7 @@ const Description = ({
   headerFontClass,
   mainFontClass,
   colours,
-   spacingChart,
-  spacingBase,
-  spacingUnit,
+  spacingChart,
 }) => {
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingDesc, setEditingDesc] = useState(false);
@@ -35,8 +33,13 @@ const Description = ({
     if (e.key === "Enter") setEditingDesc(false);
   };
 
+  // optional inline fallback using spacingChart (Display injects CSS vars already)
+  const sectionStyle = spacingChart
+    ? { padding: `${spacingChart.xl.css} ${spacingChart.m.css}` }
+    : undefined;
+
   return (
-    <section className={styles.descriptionSection}>
+    <section className={styles.descriptionSection} style={sectionStyle}>
       <EditableWithColor
         palettes={colours}
         initialColor={titleColor}

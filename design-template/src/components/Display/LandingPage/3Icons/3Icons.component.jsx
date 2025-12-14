@@ -32,8 +32,6 @@ const ThreeIcons = ({
   borderRadius,
   colours,
   spacingChart,
-  spacingBase,
-  spacingUnit,
 }) => {
   const [cards, setCards] = useState(defaultIcons);
   const [editing, setEditing] = useState({}); // { [cardIdx]: { label: bool, desc: bool } }
@@ -56,14 +54,34 @@ const ThreeIcons = ({
     if (e.key === "Enter") handleBlur(idx, field);
   };
 
+  const sectionStyle = spacingChart
+    ? { margin: `${spacingChart.xl.css} 0` }
+    : undefined;
+  const rowStyle = spacingChart ? { gap: spacingChart.xl.css } : undefined;
+  const cardPaddingStyle = spacingChart
+    ? {
+        padding: `${spacingChart.xxl.css} ${spacingChart.m.css} ${spacingChart.m.css} ${spacingChart.m.css}`,
+      }
+    : undefined;
+  const iconCircleStyle = spacingChart
+    ? {
+        width: spacingChart.xxl.css,
+        height: spacingChart.xxl.css,
+        marginBottom: spacingChart.l.css,
+      }
+    : undefined;
+  const titleStyle = spacingChart
+    ? { marginBottom: spacingChart.xs.css }
+    : undefined;
+
   return (
-    <section className={styles.iconsSection}>
-      <div className={styles.cardsRow}>
+    <section className={styles.iconsSection} style={sectionStyle}>
+      <div className={styles.cardsRow} style={rowStyle}>
         {cards.map((icon, idx) => (
           <div
             key={icon.label + idx}
             className={styles.card}
-            style={{ borderRadius: borderRadius }}
+            style={{ borderRadius: borderRadius, ...cardPaddingStyle }}
           >
             {/* icon circle: reuse editable modal to pick a background color.
                 onSelect updates the card.color, and the div's background uses that value. */}
@@ -75,7 +93,7 @@ const ThreeIcons = ({
             >
               <div
                 className={styles.iconCircle}
-                style={{ background: icon.color }}
+                style={{ background: icon.color, ...iconCircleStyle }}
               />
             </EditableWithColor>
 
@@ -101,6 +119,7 @@ const ThreeIcons = ({
                     fontSize: "1.25rem",
                     width: "100%",
                     color: icon.labelColor || "#222",
+                    ...titleStyle,
                   }}
                 />
               ) : (
@@ -110,6 +129,7 @@ const ThreeIcons = ({
                   style={{
                     cursor: "pointer",
                     color: icon.labelColor || "#222",
+                    ...titleStyle,
                   }}
                 >
                   {icon.label}
