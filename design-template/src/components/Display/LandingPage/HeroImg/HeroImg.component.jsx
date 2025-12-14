@@ -8,14 +8,17 @@ const HeroImage = ({
   headerFontClass,
   mainFontClass,
   colours = [],
+  spacingChart,
+  spacingBase,
+  spacingUnit,
   onColorChange, // optional callback, pass from parent if you want persistence
 }) => {
   // content state stays in the parent (this component)
   const [title, setTitle] = useState("ABC Company");
   const [subtitle, setSubtitle] = useState("Your success is our priority");
 
-  const [titleColor, setTitleColor] = useState('#ffffff');
-  const [subtitleColor, setSubtitleColor] = useState('#ffffff');
+  const [titleColor, setTitleColor] = useState("#ffffff");
+  const [subtitleColor, setSubtitleColor] = useState("#ffffff");
 
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingSubtitle, setEditingSubtitle] = useState(false);

@@ -1,13 +1,26 @@
 import React, { useState } from "react";
 import styles from "./Description.module.css";
+import EditableWithColor from "../../Modal/EditableElement.component";
 
-const Description = ({ tertiaryButton, headerFontClass, mainFontClass }) => {
+const Description = ({
+  tertiaryButton,
+  headerFontClass,
+  mainFontClass,
+  colours,
+   spacingChart,
+  spacingBase,
+  spacingUnit,
+}) => {
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingDesc, setEditingDesc] = useState(false);
   const [title, setTitle] = useState("About Our Company");
   const [desc, setDesc] = useState(
     "We are dedicated to delivering innovative solutions and exceptional service to help your business thrive in a dynamic world."
   );
+
+  // local color state for title / desc (EditableWithColor will control UI)
+  const [titleColor, setTitleColor] = useState("#222");
+  const [descColor, setDescColor] = useState("#444");
 
   const handleTitleClick = () => setEditingTitle(true);
   const handleDescClick = () => setEditingDesc(true);
@@ -24,49 +37,69 @@ const Description = ({ tertiaryButton, headerFontClass, mainFontClass }) => {
 
   return (
     <section className={styles.descriptionSection}>
-      {editingTitle ? (
-        <input
-          className={headerFontClass + " " + styles.title}
-          value={title}
-          onChange={handleTitleChange}
-          onBlur={handleTitleBlur}
-          onKeyDown={handleTitleKeyDown}
-          autoFocus
-          style={{
-            fontSize: "2rem",
-            fontWeight: 700,
-            textAlign: "center",
-            width: "100%",
-          }}
-        />
-      ) : (
-        <h2
-          className={headerFontClass + " " + styles.title}
-          onClick={handleTitleClick}
-          style={{ cursor: "pointer" }}
-        >
-          {title}
-        </h2>
-      )}
-      {editingDesc ? (
-        <input
-          className={mainFontClass + " " + styles.text}
-          value={desc}
-          onChange={handleDescChange}
-          onBlur={handleDescBlur}
-          onKeyDown={handleDescKeyDown}
-          autoFocus
-          style={{ fontSize: "1.15rem", textAlign: "center", width: "100%" }}
-        />
-      ) : (
-        <p
-          className={mainFontClass + " " + styles.text}
-          onClick={handleDescClick}
-          style={{ cursor: "pointer" }}
-        >
-          {desc}
-        </p>
-      )}
+      <EditableWithColor
+        palettes={colours}
+        initialColor={titleColor}
+        onSelect={(c) => setTitleColor(c)}
+      >
+        {editingTitle ? (
+          <input
+            className={headerFontClass + " " + styles.title}
+            value={title}
+            onChange={handleTitleChange}
+            onBlur={handleTitleBlur}
+            onKeyDown={handleTitleKeyDown}
+            autoFocus
+            style={{
+              fontSize: "2rem",
+              fontWeight: 700,
+              textAlign: "center",
+              width: "100%",
+              color: titleColor,
+            }}
+          />
+        ) : (
+          <h2
+            className={headerFontClass + " " + styles.title}
+            onClick={handleTitleClick}
+            style={{ cursor: "pointer", color: titleColor }}
+          >
+            {title}
+          </h2>
+        )}
+      </EditableWithColor>
+
+      <EditableWithColor
+        palettes={colours}
+        initialColor={descColor}
+        onSelect={(c) => setDescColor(c)}
+      >
+        {editingDesc ? (
+          <input
+            className={mainFontClass + " " + styles.text}
+            value={desc}
+            onChange={handleDescChange}
+            onBlur={handleDescBlur}
+            onKeyDown={handleDescKeyDown}
+            autoFocus
+            style={{
+              fontSize: "1.15rem",
+              textAlign: "center",
+              width: "100%",
+              color: descColor,
+            }}
+          />
+        ) : (
+          <p
+            className={mainFontClass + " " + styles.text}
+            onClick={handleDescClick}
+            style={{ cursor: "pointer", color: descColor }}
+          >
+            {desc}
+          </p>
+        )}
+      </EditableWithColor>
+
       <div className={styles.buttonRow}>{tertiaryButton}</div>
     </section>
   );

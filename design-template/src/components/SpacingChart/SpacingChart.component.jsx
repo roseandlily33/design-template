@@ -43,9 +43,7 @@ const baseOptions = [
   { label: "24px", value: 24, unit: "px" },
 ];
 
-const SpacingChart = () => {
-  const [base, setBase] = useState(1); // default 1rem
-  const [unit, setUnit] = useState("rem");
+const SpacingChart = ({ base, setBase, unit, setUnit }) => {
   const [copied, setCopied] = useState(false);
 
   const handleBaseChange = (e) => {

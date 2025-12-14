@@ -1,19 +1,25 @@
 import React, { useState } from "react";
 import styles from "./Companies.module.css";
+import EditableWithColor from "../../Modal/EditableElement.component";
 
 const defaultCompanies = [
-  { name: "Acme Corp", color: "#6883a1" }, // primary
-  { name: "Globex", color: "#e5c2c2" }, // secondary
-  { name: "Initech", color: "#a4a4a4ff" }, // tertiary
-  { name: "Umbrella", color: "#b3b3b3" }, // light variation of tertiary
-  { name: "Hooli", color: "#85a0be" }, // white
+  { name: "Alvardo", color: "#6883a1", textColor: "#ffffff" }, // primary
+  { name: "Hayfield", color: "#e5c2c2", textColor: "#ffffff" }, // secondary
+  { name: "Muskova", color: "#a4a4a4ff", textColor: "#ffffff" }, // tertiary
+  { name: "Emerson", color: "#b3b3b3", textColor: "#ffffff" }, // light variation of tertiary
+  { name: "Pine", color: "#85a0be", textColor: "#ffffff" }, // badge text white
 ];
 
-const Companies = ({ mainFontClass }) => {
+const Companies = ({
+  mainFontClass,
+  colours = [],
+  spacingChart,
+  spacingBase,
+  spacingUnit,
+}) => {
   const [trustedText, setTrustedText] = useState("Trusted by 10+ companies");
   const [editingTrusted, setEditingTrusted] = useState(false);
   const [companies, setCompanies] = useState(defaultCompanies);
-  const [editingCompany, setEditingCompany] = useState({}); // { idx: true }
 
   const handleTrustedClick = () => setEditingTrusted(true);
   const handleTrustedChange = (e) => setTrustedText(e.target.value);
@@ -22,78 +28,73 @@ const Companies = ({ mainFontClass }) => {
     if (e.key === "Enter") setEditingTrusted(false);
   };
 
-  const handleCompanyClick = (idx) =>
-    setEditingCompany((prev) => ({ ...prev, [idx]: true }));
-  const handleCompanyChange = (idx, value) => {
+  const handleCompanyColorPick = (idx, color) => {
     setCompanies((prev) =>
-      prev.map((c, i) => (i === idx ? { ...c, name: value } : c))
+      prev.map((c, i) => (i === idx ? { ...c, color } : c))
     );
-  };
-  const handleCompanyBlur = (idx) =>
-    setEditingCompany((prev) => ({ ...prev, [idx]: false }));
-  const handleCompanyKeyDown = (e, idx) => {
-    if (e.key === "Enter") handleCompanyBlur(idx);
   };
 
   return (
     <section className={styles.companiesSection}>
-      {editingTrusted ? (
-        <input
-          className={mainFontClass + " " + styles.trustedTitle}
-          value={trustedText}
-          onChange={handleTrustedChange}
-          onBlur={handleTrustedBlur}
-          onKeyDown={handleTrustedKeyDown}
-          autoFocus
-          style={{
-            textAlign: "center",
-            fontWeight: 600,
-            fontSize: "1.1rem",
-            width: "100%",
-          }}
-        />
-      ) : (
-        <h4
-          className={mainFontClass + " " + styles.trustedTitle}
-          onClick={handleTrustedClick}
-          style={{ cursor: "pointer" }}
-        >
-          {trustedText}
-        </h4>
-      )}
+      <EditableWithColor
+        palettes={colours}
+        initialColor={undefined}
+        defaultColor="#fff"
+        onSelect={(c) => {
+          /* trusted title color change (if needed) */
+        }}
+      >
+        {editingTrusted ? (
+          <input
+            className={mainFontClass + " " + styles.trustedTitle}
+            value={trustedText}
+            onChange={handleTrustedChange}
+            onBlur={handleTrustedBlur}
+            onKeyDown={handleTrustedKeyDown}
+            autoFocus
+            style={{
+              textAlign: "center",
+              fontWeight: 600,
+              fontSize: "1.1rem",
+              width: "100%",
+              background: "transparent",
+              border: "none",
+            }}
+          />
+        ) : (
+          <h4
+            className={mainFontClass + " " + styles.trustedTitle}
+            onClick={handleTrustedClick}
+            style={{ cursor: "pointer" }}
+          >
+            {trustedText}
+          </h4>
+        )}
+      </EditableWithColor>
+
       <div className={styles.companiesRow}>
         {companies.map((company, idx) => (
-          <span
+          <EditableWithColor
             key={company.name + idx}
-            className={styles.companyBadge + " " + mainFontClass}
-            style={{ background: company.color }}
-            title={company.name}
-            onClick={() => handleCompanyClick(idx)}
+            palettes={colours}
+            initialColor={company.color}
+            defaultColor={company.color}
+            applyTo="background"
+            onSelect={(c) => handleCompanyColorPick(idx, c)}
           >
-            {editingCompany[idx] ? (
-              <input
-                value={company.name}
-                className={mainFontClass}
-                onChange={(e) => handleCompanyChange(idx, e.target.value)}
-                onBlur={() => handleCompanyBlur(idx)}
-                onKeyDown={(e) => handleCompanyKeyDown(e, idx)}
-                autoFocus
-                style={{
-                  textAlign: "center",
-                  fontWeight: 700,
-                  fontSize: "1.1rem",
-                  width: "100%",
-                  background: "transparent",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: "18px",
-                  padding: "0 12px",
-                }}
-              />
-            ) : (
-              company.name
-            )}
-          </span>
+            {/* badge text is not editable — always display white text */}
+            <span
+              className={styles.companyBadge + " " + mainFontClass}
+              style={{
+                background: company.color,
+                color: company.textColor || "#fff",
+                cursor: "default",
+              }}
+              title={company.name}
+            >
+              {company.name}
+            </span>
+          </EditableWithColor>
         ))}
       </div>
     </section>

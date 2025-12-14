@@ -7,24 +7,26 @@ import ThreeIcons from "./LandingPage/3Icons/3Icons.component";
 import Companies from "./LandingPage/Companies/Companies.component";
 import Testimonial from "./LandingPage/Testimonial/Testimonial.component";
 import Footer from "./LandingPage/Footer/Footer.component";
+import { buildSpacingVars, buildSpacingChart } from "./spacingChart";
 
 const Display = ({
   logo,
+  // The buttons
   primaryButton,
   secondaryButton,
   tertiaryButton,
   typeScale,
   borderRadius,
-  spacingChart,
   colours,
+  // For Fonts
   fonts,
   fontMap,
+  // For the spacing
+  base = 1, // spacing base (from SpacingChart)
+  unit = "rem", // spacing unit (from SpacingChart)
 }) => {
-  // console.log(fonts);
-  // console.log(logo);
-  // console.log(borderRadius);
-  console.log(colours);
-  console.log(spacingChart);
+  const spacingVars = buildSpacingVars(base, unit);
+  const spacingChart = buildSpacingChart(base, unit);
 
   const headerFontClass =
     fontMap && fonts && fonts.head ? fontMap[fonts.head] : "";
@@ -51,7 +53,7 @@ const Display = ({
   }, []);
 
   return (
-    <div className={styles.displayRoot} ref={displayRef}>
+    <div className={styles.displayRoot} ref={displayRef} style={spacingVars}>
       <p style={{ fontSize: 14, color: "#888", marginBottom: 8 }}>
         Size: {size.width}px × {size.height}px
       </p>
@@ -62,12 +64,18 @@ const Display = ({
         mainFontClass={mainFontClass}
         secondaryButton={secondaryButton}
         colours={colours}
+        spacingChart={spacingChart}
+        spacingBase={base}
+        spacingUnit={unit}
       />
       <HeroImage
         primaryButton={primaryButton}
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
         colours={colours}
+        spacingChart={spacingChart}
+        spacingBase={base}
+        spacingUnit={unit}
       />
       <Description
         secondaryButton={secondaryButton}
@@ -75,29 +83,44 @@ const Display = ({
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
         colours={colours}
+        spacingChart={spacingChart}
+        spacingBase={base}
+        spacingUnit={unit}
       />
       <ThreeIcons
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
         borderRadius={borderRadius}
         colours={colours}
+        spacingChart={spacingChart}
+        spacingBase={base}
+        spacingUnit={unit}
       />
       <Companies
         mainFontClass={mainFontClass}
         extraFontClass={extraFontClass}
         colours={colours}
+        spacingChart={spacingChart}
+        spacingBase={base}
+        spacingUnit={unit}
       />
       <Testimonial
         mainFontClass={mainFontClass}
         extraFontClass={extraFontClass}
         borderRadius={borderRadius}
         colours={colours}
+        spacingChart={spacingChart}
+        spacingBase={base}
+        spacingUnit={unit}
       />
       <Footer
         logo={logo}
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
         colours={colours}
+        spacingChart={spacingChart}
+        spacingBase={base}
+        spacingUnit={unit}
       />
     </div>
   );

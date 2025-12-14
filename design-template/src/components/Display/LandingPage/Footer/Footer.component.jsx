@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./Footer.module.css";
+import EditableWithColor from "../../Modal/EditableElement.component";
 
 const defaultLinks = [
   "Home",
@@ -10,13 +11,30 @@ const defaultLinks = [
   "Terms & Conditions",
 ];
 
-const Footer = ({ logo, headerFontClass, mainFontClass }) => {
+const Footer = ({
+  logo,
+  headerFontClass,
+  mainFontClass,
+  colours = [],
+  spacingChart,
+  spacingBase,
+  spacingUnit,
+}) => {
   const [links, setLinks] = useState(defaultLinks);
   const [editingLink, setEditingLink] = useState({}); // { idx: true }
+  const [linkColors, setLinkColors] = useState({
+    0: "#fff",
+    1: "#fff",
+    2: "#fff",
+    3: "#fff",
+    4: "#fff",
+  }); // { idx: '#hex' }
+
   const [copyright, setCopyright] = useState(
     `© ${new Date().getFullYear()} Your Company. All rights reserved.`
   );
   const [editingCopyright, setEditingCopyright] = useState(false);
+  const [copyrightColor, setCopyrightColor] = useState(undefined);
 
   const handleLinkClick = (idx) =>
     setEditingLink((prev) => ({ ...prev, [idx]: true }));
@@ -29,12 +47,17 @@ const Footer = ({ logo, headerFontClass, mainFontClass }) => {
     if (e.key === "Enter") handleLinkBlur(idx);
   };
 
+  const handleLinkColorPick = (idx, color) => {
+    setLinkColors((prev) => ({ ...prev, [idx]: color }));
+  };
+
   const handleCopyrightClick = () => setEditingCopyright(true);
   const handleCopyrightChange = (e) => setCopyright(e.target.value);
   const handleCopyrightBlur = () => setEditingCopyright(false);
   const handleCopyrightKeyDown = (e) => {
     if (e.key === "Enter") setEditingCopyright(false);
   };
+  const handleCopyrightColorPick = (c) => setCopyrightColor(c);
 
   return (
     <footer className={styles.footer}>
@@ -46,54 +69,82 @@ const Footer = ({ logo, headerFontClass, mainFontClass }) => {
             "Logo"
           )}
         </div>
+
         <nav className={styles.linksSection}>
-          {links.map((label, idx) =>
-            editingLink[idx] ? (
-              <input
-                key={label + idx}
-                value={label}
-                className={mainFontClass + " " + styles.link}
-                onChange={(e) => handleLinkChange(idx, e.target.value)}
-                onBlur={() => handleLinkBlur(idx)}
-                onKeyDown={(e) => handleLinkKeyDown(e, idx)}
-                autoFocus
-                style={{
-                  fontSize: "1rem",
-                  fontWeight: 500,
-                  textAlign: "center",
-                  width: "110px",
-                }}
-              />
-            ) : (
-              <a
-                key={label + idx}
-                href="#"
-                className={mainFontClass + " " + styles.link}
-                onClick={() => handleLinkClick(idx)}
-                style={{ cursor: "pointer" }}
-              >
-                {label}
-              </a>
-            )
-          )}
+          {links.map((label, idx) => (
+            <EditableWithColor
+              key={label + idx}
+              palettes={colours}
+              initialColor={linkColors[idx]}
+              defaultColor="#ffffff" // ensure fallback is white
+              applyTo="color" // explicitly apply to text color
+              onSelect={(c) => handleLinkColorPick(idx, c)}
+            >
+              {editingLink[idx] ? (
+                <input
+                  value={label}
+                  className={mainFontClass + " " + styles.link}
+                  onChange={(e) => handleLinkChange(idx, e.target.value)}
+                  onBlur={() => handleLinkBlur(idx)}
+                  onKeyDown={(e) => handleLinkKeyDown(e, idx)}
+                  autoFocus
+                  style={{
+                    fontSize: "1rem",
+                    fontWeight: 500,
+                    textAlign: "center",
+                    width: "110px",
+                    /* remove direct color here; wrapper will set color */
+                  }}
+                />
+              ) : (
+                <a
+                  key={label + idx}
+                  href="#"
+                  className={mainFontClass + " " + styles.link}
+                  onClick={() => handleLinkClick(idx)}
+                  style={{
+                    cursor: "pointer",
+                    /* wrapper will set colour via inline style */
+                  }}
+                >
+                  {label}
+                </a>
+              )}
+            </EditableWithColor>
+          ))}
         </nav>
       </div>
+
       <div className={styles.copyright + " " + mainFontClass}>
-        {editingCopyright ? (
-          <input
-            value={copyright}
-            className={mainFontClass}
-            onChange={handleCopyrightChange}
-            onBlur={handleCopyrightBlur}
-            onKeyDown={handleCopyrightKeyDown}
-            autoFocus
-            style={{ fontSize: "0.95rem", textAlign: "center", width: "100%" }}
-          />
-        ) : (
-          <span onClick={handleCopyrightClick} style={{ cursor: "pointer" }}>
-            {copyright}
-          </span>
-        )}
+        <EditableWithColor
+          palettes={colours}
+          initialColor={copyrightColor}
+          onSelect={handleCopyrightColorPick}
+        >
+          {editingCopyright ? (
+            <input
+              value={copyright}
+              className={mainFontClass}
+              onChange={handleCopyrightChange}
+              onBlur={handleCopyrightBlur}
+              onKeyDown={handleCopyrightKeyDown}
+              autoFocus
+              style={{
+                fontSize: "0.95rem",
+                textAlign: "center",
+                width: "100%",
+                color: copyrightColor || undefined,
+              }}
+            />
+          ) : (
+            <span
+              onClick={handleCopyrightClick}
+              style={{ cursor: "pointer", color: copyrightColor || undefined }}
+            >
+              {copyright}
+            </span>
+          )}
+        </EditableWithColor>
       </div>
     </footer>
   );

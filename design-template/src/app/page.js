@@ -387,6 +387,8 @@ export default function Home() {
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const backendUrl = process.env.NEXT_PUBLIC_BE_URL;
+  const [base, setBase] = useState(1); // default 1rem
+  const [unit, setUnit] = useState("rem");
 
   return (
     <div>
@@ -560,10 +562,10 @@ export default function Home() {
               <FontScale fontSet={selectedFontSet} fontMap={fontMap} />
               <SpacingChart
                 colours={selected}
-                base={spacingBase}
-                setBase={setSpacingBase}
-                unit={spacingUnit}
-                setUnit={setSpacingUnit}
+                base={base}
+                setBase={setBase}
+                unit={unit}
+                setUnit={setUnit}
               />
               <Buttons
                 font={selectedFontSet.main}
@@ -610,8 +612,8 @@ export default function Home() {
             colours={selected}
             fonts={selectedFontSet}
             fontMap={fontMap}
-            spacingBase={spacingBase}
-            spacingUnit={spacingUnit}
+            base={base}
+            unit={unit}
           />
         </div>
       </main>

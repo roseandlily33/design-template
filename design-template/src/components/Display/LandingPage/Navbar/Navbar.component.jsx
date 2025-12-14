@@ -12,6 +12,9 @@ const Navbar = ({
   secondaryButton,
   colours = [],
   onColorChange,
+  spacingChart,
+  spacingBase,
+  spacingUnit,
 }) => {
   const links = ["Home", "About", "Contact"];
   const [overrides, setOverrides] = useState({});
