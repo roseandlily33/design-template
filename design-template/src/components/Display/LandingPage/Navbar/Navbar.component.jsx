@@ -8,7 +8,6 @@ const Navbar = ({
   logo,
   headerFontClass,
   mainFontClass,
-  mainFontSize,
   secondaryButton,
   colours = [],
   onColorChange,

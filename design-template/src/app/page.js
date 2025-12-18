@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import styles from "./page.module.css";
+import { buildDefaultStyles } from "../components/FontScale/fontscale.helpers";
 import {
   Inter,
   Roboto,
@@ -389,6 +390,7 @@ export default function Home() {
   const backendUrl = process.env.NEXT_PUBLIC_BE_URL;
   const [base, setBase] = useState(1); // default 1rem
   const [unit, setUnit] = useState("rem");
+  const [fontScaleStyles, setFontScaleStyles] = useState(buildDefaultStyles());
 
   return (
     <div>
@@ -559,7 +561,12 @@ export default function Home() {
                 selectedFontSetIdx={selectedFontSetIdx}
                 onSelectFontSet={handleSelectFontSet}
               />
-              <FontScale fontSet={selectedFontSet} fontMap={fontMap} />
+              <FontScale
+                fontSet={selectedFontSet}
+                fontMap={fontMap}
+                fontScaleStyles={fontScaleStyles}
+                setFontScaleStyles={setFontScaleStyles}
+              />
               <SpacingChart
                 colours={selected}
                 base={base}
@@ -612,6 +619,7 @@ export default function Home() {
             colours={selected}
             fonts={selectedFontSet}
             fontMap={fontMap}
+            fontScale={fontScaleStyles}
             base={base}
             unit={unit}
           />

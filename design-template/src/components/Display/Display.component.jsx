@@ -7,6 +7,7 @@ import ThreeIcons from "./LandingPage/3Icons/3Icons.component";
 import Companies from "./LandingPage/Companies/Companies.component";
 import Testimonial from "./LandingPage/Testimonial/Testimonial.component";
 import Footer from "./LandingPage/Footer/Footer.component";
+import { buildFontVarsCSS } from "./fontVars";
 import { buildSpacingVars, buildSpacingChart } from "./spacingChart";
 
 const Display = ({
@@ -15,12 +16,12 @@ const Display = ({
   primaryButton,
   secondaryButton,
   tertiaryButton,
-  typeScale,
   borderRadius,
   colours,
   // For Fonts
   fonts,
   fontMap,
+  fontScale,
   // For the spacing
   base = 1, // spacing base (from SpacingChart)
   unit = "rem", // spacing unit (from SpacingChart)
@@ -51,9 +52,10 @@ const Display = ({
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);
   }, []);
-
+  const fontVarsCSS = useMemo(() => buildFontVarsCSS(fontScale), [fontScale]);
   return (
     <div className={styles.displayRoot} ref={displayRef} style={spacingVars}>
+      <style dangerouslySetInnerHTML={{ __html: fontVarsCSS }} />
       <p style={{ fontSize: 14, color: "#888", marginBottom: 8 }}>
         Size: {size.width}px × {size.height}px
       </p>

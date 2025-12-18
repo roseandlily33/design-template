@@ -7,9 +7,9 @@
   padding: var(--spacing-m) var(--spacing-l);
 }
 .logo {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #222;
+  color: #6b6b6b;
+  font-size: var(--font-h3-size, 1.5rem);
+  font-weight: var(--font-h3-weight, 700);
 }
 .navLinks {
   display: flex;
@@ -18,9 +18,10 @@
 }
 .link {
   color: #6883a1; /* Use your primary button color */
+  color: var(--font-p-color, #6883a1);
+  font-size: var(--font-p-size, 1rem);
+  font-weight: var(--font-p-weight, 500);
   text-decoration: none;
-  font-weight: 500;
-  font-size: 1rem;
 }
 .cta {
   margin-left: 0;
