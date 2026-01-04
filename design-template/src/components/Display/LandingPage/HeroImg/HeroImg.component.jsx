@@ -9,32 +9,62 @@ const HeroImage = ({
   mainFontClass,
   colours = [],
   spacingChart,
-  onColorChange, // optional callback, pass from parent if you want persistence
+  // spacingBase,
+  // spacingUnit,
+  overrides = {},
+  onColorChange,
+  heroImgUrl = "/Picture.jpg",
 }) => {
+
+  // Helper to get palette color by label and index
+  const getPaletteColor = (label, idx = 0) => {
+    const row = Array.isArray(colours)
+      ? colours.find(
+        (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
+      )
+      : null;
+    return row && Array.isArray(row.colors) && row.colors[idx]
+      ? row.colors[idx]
+      : undefined;
+  };
+
+  // Palette defaults
+  const defaultTitleColor =
+    getPaletteColor("Main", 7) || getPaletteColor("Main", 6) || "#222";
+  const defaultSubtitleColor =
+    getPaletteColor("Accent", 5) || getPaletteColor("Accent", 6) || "#444";
+  const defaultBg =
+    getPaletteColor("Grey", 3) || getPaletteColor("Grey", 0) || undefined;
+
   // content state stays in the parent (this component)
   const [title, setTitle] = useState("ABC Company");
   const [subtitle, setSubtitle] = useState("Your success is our priority");
 
-  const [titleColor, setTitleColor] = useState("#ffffff");
-  const [subtitleColor, setSubtitleColor] = useState("#ffffff");
+  // Compute colors directly from overrides and palette
+  const titleColor = overrides.title ?? defaultTitleColor;
+  const subtitleColor = overrides.subtitle ?? defaultSubtitleColor;
 
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingSubtitle, setEditingSubtitle] = useState(false);
 
   const containerStyle = spacingChart
     ? {
-        padding: `${spacingChart.xl.css} ${spacingChart.m.css}`,
-        gap: spacingChart.m.css,
-      }
+      padding: `${spacingChart.xl.css} ${spacingChart.m.css}`,
+      gap: spacingChart.m.css,
+    }
     : { padding: "2rem 1rem", gap: "1rem" };
 
   return (
-    <div className={styles.heroImage}>
+    <div
+      className={styles.heroImage}
+      style={defaultBg ? { background: defaultBg } : {}}
+    >
       <Image
-        src="/Picture.jpg"
+        src={heroImgUrl}
         alt="Hero Image"
         layout="fill"
         objectFit="cover"
+        priority
       />
 
       <div
@@ -49,8 +79,7 @@ const HeroImage = ({
           palettes={colours}
           initialColor={titleColor}
           onSelect={(c) => {
-            setTitleColor(c);
-            onColorChange?.("heroTitle", c);
+            if (onColorChange) onColorChange("title", c);
           }}
         >
           {editingTitle ? (
@@ -66,13 +95,14 @@ const HeroImage = ({
                 fontWeight: 700,
                 textAlign: "center",
                 width: "100%",
+                color: titleColor,
               }}
             />
           ) : (
             <h1
               className={headerFontClass}
               onClick={() => setEditingTitle(true)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", color: titleColor }}
             >
               {title}
             </h1>
@@ -83,8 +113,7 @@ const HeroImage = ({
           palettes={colours}
           initialColor={subtitleColor}
           onSelect={(c) => {
-            setSubtitleColor(c);
-            onColorChange?.("heroSubtitle", c);
+            if (onColorChange) onColorChange("subtitle", c);
           }}
         >
           {editingSubtitle ? (
@@ -99,13 +128,14 @@ const HeroImage = ({
                 fontSize: "1.25rem",
                 textAlign: "center",
                 width: "100%",
+                color: subtitleColor,
               }}
             />
           ) : (
             <p
               className={mainFontClass}
               onClick={() => setEditingSubtitle(true)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", color: subtitleColor }}
             >
               {subtitle}
             </p>

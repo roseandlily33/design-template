@@ -17,7 +17,6 @@
 .card {
   background: #fff;
   box-shadow: 0 2px 12px #0001;
-  /* top ~ spacing-xxl, horizontal & bottom ~ spacing-m */
   padding: var(--spacing-xxl) var(--spacing-m) var(--spacing-m) var(--spacing-m);
   display: flex;
   flex-direction: column;
@@ -44,18 +43,20 @@
 }
 
 .cardTitle {
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: var(--font-h5-size, 1.25rem);
+  font-weight: var(--font-h5-weight, 700);
+  line-height: var(--font-h5-line-height, 1.4);
+  color: var(--font-h5-color, #1a1a1a);
   margin-bottom: var(--spacing-xs);
-  color: #1a1a1a;
   text-align: center;
 }
 
 .cardDesc {
-  font-size: 1rem;
-  color: #444;
+  font-size: var(--font-p-size, 1rem);
+  font-weight: var(--font-p-weight, 400);
+  line-height: var(--font-p-line-height, 1.5);
+  color: var(--font-p-color, #444);
   text-align: center;
-  line-height: 1.5;
 }
 
 @media (max-width: 900px) {

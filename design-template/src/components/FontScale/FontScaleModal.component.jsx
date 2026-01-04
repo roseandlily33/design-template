@@ -158,37 +158,6 @@ const FontScaleModal = ({
           />
         </div>
 
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ fontWeight: "bold", marginRight: 8 }}>Color:</label>
-          <input
-            type="color"
-            value={fontScaleStyles?.[modal.tag]?.[modal.bp]?.color ?? "#222"}
-            onChange={(e) =>
-              handleStyleChange(modal.tag, modal.bp, "color", e.target.value)
-            }
-            style={{
-              width: 40,
-              height: 40,
-              border: "none",
-              background: "none",
-              verticalAlign: "middle",
-            }}
-          />
-        </div>
-
-        <div style={{ marginBottom: 14 }}>
-          <label style={{ fontWeight: "bold", marginRight: 8 }}>Border:</label>
-          <input
-            type="text"
-            value={fontScaleStyles?.[modal.tag]?.[modal.bp]?.border ?? "none"}
-            onChange={(e) =>
-              handleStyleChange(modal.tag, modal.bp, "border", e.target.value)
-            }
-            style={{ width: 120, marginRight: 16 }}
-            placeholder="e.g. 1px solid #0070f3"
-          />
-        </div>
-
         {/* Only show cascade button when editing Desktop */}
         {modal.bp === "Desktop" &&
           typeof cascadeDesktopToAll === "function" && (

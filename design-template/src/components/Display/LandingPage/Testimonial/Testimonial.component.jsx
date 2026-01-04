@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./Testimonial.module.css";
 import EditableWithColor from "../../Modal/EditableElement.component";
 
@@ -7,6 +7,8 @@ const Testimonial = ({
   extraFontClass,
   colours = [],
   spacingChart,
+  overrides = {},
+  onColorChange,
 }) => {
   const [editingQuote, setEditingQuote] = useState(false);
   const [editingAuthor, setEditingAuthor] = useState(false);
@@ -15,8 +17,27 @@ const Testimonial = ({
   );
   const [author, setAuthor] = useState("— Jamie L., CEO of Acme Corp");
 
-  const [quoteColor, setQuoteColor] = useState("#fff");
-  const [authorColor, setAuthorColor] = useState("#fff");
+  // Helper to get palette color by label and index
+  const getPaletteColor = (label, idx = 0) => {
+    const row = Array.isArray(colours)
+      ? colours.find(
+          (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
+        )
+      : null;
+    return row && Array.isArray(row.colors) && row.colors[idx]
+      ? row.colors[idx]
+      : undefined;
+  };
+
+  // Palette defaults
+  const defaultQuoteColor =
+    getPaletteColor("Grey", 5) || getPaletteColor("Grey", 6) || "#fff";
+  const defaultAuthorColor =
+    getPaletteColor("Main", 1) || getPaletteColor("Main", 3) || "#fff";
+
+  // Compute colors directly from overrides and palette
+  const quoteColor = overrides.quote ?? defaultQuoteColor;
+  const authorColor = overrides.author ?? defaultAuthorColor;
 
   const handleQuoteClick = () => setEditingQuote(true);
   const handleAuthorClick = () => setEditingAuthor(true);
@@ -33,13 +54,21 @@ const Testimonial = ({
 
   // inline fallback when CSS vars not present
   const cardStyle = spacingChart
-    ? { padding: `${spacingChart.xxl.css} ${spacingChart.m.css} ${spacingChart.m.css} ${spacingChart.m.css}` }
+    ? {
+        padding: `${spacingChart.xxl.css} ${spacingChart.m.css} ${spacingChart.m.css} ${spacingChart.m.css}`,
+      }
     : undefined;
 
   return (
     <section className={styles.testimonialSection}>
       <div className={styles.card} style={cardStyle}>
-        <EditableWithColor palettes={colours} initialColor={quoteColor} onSelect={(c) => setQuoteColor(c)}>
+        <EditableWithColor
+          palettes={colours}
+          initialColor={quoteColor}
+          onSelect={(c) => {
+            if (onColorChange) onColorChange("quote", c);
+          }}
+        >
           {editingQuote ? (
             <input
               className={mainFontClass + " " + styles.quote}
@@ -59,14 +88,20 @@ const Testimonial = ({
             <blockquote
               className={mainFontClass + " " + styles.quote}
               onClick={handleQuoteClick}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", color: quoteColor }}
             >
               &ldquo;{quote}&rdquo;
             </blockquote>
           )}
         </EditableWithColor>
 
-        <EditableWithColor palettes={colours} initialColor={authorColor} onSelect={(c) => setAuthorColor(c)}>
+        <EditableWithColor
+          palettes={colours}
+          initialColor={authorColor}
+          onSelect={(c) => {
+            if (onColorChange) onColorChange("author", c);
+          }}
+        >
           {editingAuthor ? (
             <input
               className={extraFontClass + " " + styles.author}
@@ -82,7 +117,11 @@ const Testimonial = ({
               }}
             />
           ) : (
-            <h5 className={extraFontClass + " " + styles.author} onClick={handleAuthorClick} style={{ cursor: "pointer" }}>
+            <h5
+              className={extraFontClass + " " + styles.author}
+              onClick={handleAuthorClick}
+              style={{ cursor: "pointer", color: authorColor }}
+            >
               {author}
             </h5>
           )}

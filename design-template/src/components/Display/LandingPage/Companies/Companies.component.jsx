@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import styles from "./Companies.module.css";
 import EditableWithColor from "../../Modal/EditableElement.component";
 
@@ -13,11 +13,56 @@ const defaultCompanies = [
 const Companies = ({
   mainFontClass,
   colours = [],
-  spacingChart, 
+  spacingChart,
+  overrides = {},
+  onColorChange,
 }) => {
   const [trustedText, setTrustedText] = useState("Trusted by 10+ companies");
   const [editingTrusted, setEditingTrusted] = useState(false);
-  const [companies, setCompanies] = useState(defaultCompanies);
+  // Use overrides if present, else palette defaults
+  // Helper to get palette color by label and index
+
+  // Helper to get palette color by label and index
+  const getPaletteColor = React.useCallback(
+    (label, idx = 0) => {
+      const row = Array.isArray(colours)
+        ? colours.find(
+          (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
+        )
+        : null;
+      return row && Array.isArray(row.colors) && row.colors[idx]
+        ? row.colors[idx]
+        : undefined;
+    },
+    [colours]
+  );
+
+  // Title color for the section
+  const titleDefaultColor =
+    getPaletteColor("Main", 6) || getPaletteColor("Main", 5) || "#222";
+
+  const companies = useMemo(() => {
+    const paletteBadgeColors = [
+      getPaletteColor("Main", 3) || defaultCompanies[0].color,
+      getPaletteColor("Accent", 2) || defaultCompanies[1].color,
+      getPaletteColor("Grey", 2) || defaultCompanies[2].color,
+      getPaletteColor("Accent", 0) || defaultCompanies[3].color,
+      getPaletteColor("Main", 1) || defaultCompanies[4].color,
+    ];
+    const paletteBadgeTextColors = [
+      getPaletteColor("Grey", 0) || getPaletteColor("Grey", 1) || "#fff",
+      getPaletteColor("Main", 5) || getPaletteColor("Main", 6) || "#fff",
+      getPaletteColor("Accent", 6) || getPaletteColor("Accent", 5) || "#fff",
+      getPaletteColor("Grey", 6) || getPaletteColor("Grey", 5) || "#fff",
+      getPaletteColor("Accent", 2) || getPaletteColor("Accent", 1) || "#fff",
+    ];
+
+    return defaultCompanies.map((c, i) => ({
+      ...c,
+      color: overrides[`badge:${i}`] ?? paletteBadgeColors[i],
+      textColor: overrides[`badgeText:${i}`] ?? paletteBadgeTextColors[i],
+    }));
+  }, [overrides, getPaletteColor]);
 
   const handleTrustedClick = () => setEditingTrusted(true);
   const handleTrustedChange = (e) => setTrustedText(e.target.value);
@@ -27,9 +72,10 @@ const Companies = ({
   };
 
   const handleCompanyColorPick = (idx, color) => {
-    setCompanies((prev) =>
-      prev.map((c, i) => (i === idx ? { ...c, color } : c))
-    );
+    if (onColorChange) onColorChange(`badge:${idx}`, color);
+  };
+  const handleCompanyTextColorPick = (idx, color) => {
+    if (onColorChange) onColorChange(`badgeText:${idx}`, color);
   };
 
   // optional inline fallback using spacingChart (Display already injects CSS vars)
@@ -43,10 +89,7 @@ const Companies = ({
       <EditableWithColor
         palettes={colours}
         initialColor={undefined}
-        defaultColor="#fff"
-        onSelect={(c) => {
-          /* trusted title color change (if needed) */
-        }}
+        defaultColor={titleDefaultColor}
       >
         {editingTrusted ? (
           <input
@@ -58,7 +101,7 @@ const Companies = ({
             autoFocus
             style={{
               textAlign: "center",
-              fontWeight: 600,
+              fontWeight: 800,
               fontSize: "1.1rem",
               width: "100%",
               background: "transparent",
@@ -69,7 +112,7 @@ const Companies = ({
           <h4
             className={mainFontClass + " " + styles.trustedTitle}
             onClick={handleTrustedClick}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", color: titleDefaultColor }}
           >
             {trustedText}
           </h4>
@@ -86,18 +129,24 @@ const Companies = ({
             applyTo="background"
             onSelect={(c) => handleCompanyColorPick(idx, c)}
           >
-            {/* badge text is not editable — always display white text */}
-            <span
-              className={styles.companyBadge + " " + mainFontClass}
-              style={{
-                background: company.color,
-                color: company.textColor || "#fff",
-                cursor: "default",
-              }}
-              title={company.name}
+            <EditableWithColor
+              palettes={colours}
+              initialColor={company.textColor}
+              defaultColor={company.textColor}
+              onSelect={(c) => handleCompanyTextColorPick(idx, c)}
             >
-              {company.name}
-            </span>
+              <span
+                className={styles.companyBadge + " " + mainFontClass}
+                style={{
+                  background: company.color,
+                  color: company.textColor || "#fff",
+                  cursor: "default",
+                }}
+                title={company.name}
+              >
+                {company.name}
+              </span>
+            </EditableWithColor>
           </EditableWithColor>
         ))}
       </div>

@@ -9,7 +9,7 @@ const Header = () => {
   const [projects, setProjects] = useState([]);
   // const [status, setStatus] = useState("Checking login status...");
   const backendUrl = process.env.NEXT_PUBLIC_BE_URL;
-  console.log("Backend URL:", backendUrl);
+  // console.log("Backend URL:", backendUrl);
 
   // Check login status on mount (try to get user info)
   useEffect(() => {
@@ -109,7 +109,7 @@ const Header = () => {
 
   return (
     <header className={styles.headerRoot}>
-      <div className={styles.title}>Design Template</div>
+      <div className={styles.title}>Palette Playground</div>
       {loggedIn ? (
         <div
           className={styles.profileWrap + (dropdownOpen ? ` ${styles.open}` : "")}
@@ -152,7 +152,7 @@ const Header = () => {
                         });
                         const data = await res.json();
                         if (!res.ok) throw new Error(data.error || "Load failed");
-                        console.log("Loaded project:", data);
+                        // console.log("Loaded project:", data);
                         // temporary: notify user
                         alert(`Loaded project: ${data.title || p.title || p._id}`);
                         closeDropdown();

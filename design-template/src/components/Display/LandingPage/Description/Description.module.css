@@ -7,17 +7,19 @@
 }
 
 .title {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: var(--font-h2-size, 2rem);
+  font-weight: var(--font-h2-weight, 700);
+  line-height: var(--font-h2-line-height, 1.4);
+  color: var(--font-h2-color, #48525e);
   margin-bottom: var(--spacing-s);
-  color: #48525e;
 }
 
 .text {
-  font-size: 1.15rem;
-  color: #6883a1;
+  font-size: var(--font-p-size, 1.15rem);
+  font-weight: var(--font-p-weight, 400);
+  line-height: var(--font-p-line-height, 1.6);
+  color: var(--font-p-color, #6883a1);
   margin-bottom: var(--spacing-m);
-  line-height: 1.6;
 }
 
 .buttonRow {

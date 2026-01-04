@@ -1,28 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Modal, { EditButton } from "./Modal.component";
 
-const pickFirstAvailable = (palettes = [], fallback = "#222") => {
-    const order = ["main", "accent", "grey", "extra"];
-   for (const name of order) {
-     const p = palettes.find(
-       (x) => x && x.label && x.label.toLowerCase() === name
-     );
-     if (p && Array.isArray(p.colors)) {
-       const c = p.colors.find(Boolean);
-       if (c) return c;
-     }
-   }
-   if (palettes && palettes.length) {
-     for (const p of palettes) {
-       if (p && Array.isArray(p.colors)) {
-         const c = p.colors.find(Boolean);
-         if (c) return c;
-       }
-     }
-   }
-   return fallback;
-};
-
 const EditableWithColor = ({
   children,
   palettes = [],
@@ -31,13 +9,11 @@ const EditableWithColor = ({
 }) => {
   const [hover, setHover] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
-  const [color, setColor] = useState(
-    initialColor || pickFirstAvailable(palettes)
-  );
+  const [color, setColor] = useState(initialColor);
 
   useEffect(() => {
-    setColor(initialColor || pickFirstAvailable(palettes));
-  }, [initialColor, palettes]);
+    setColor(initialColor);
+  }, [initialColor]);
 
   const handlePick = (c) => {
     setColor(c);
@@ -79,7 +55,13 @@ const EditableWithColor = ({
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        palettes={palettes}
+        palettes={
+          Array.isArray(palettes)
+            ? palettes
+            : palettes && typeof palettes === "object"
+            ? Object.values(palettes)
+            : []
+        }
         initialColor={color}
         onSelect={handlePick}
         title="Pick a color"

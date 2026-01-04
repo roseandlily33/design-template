@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useMemo } from "react";
 import styles from "./Display.module.css";
 import Navbar from "./LandingPage/Navbar/Navbar.component";
 import HeroImage from "./LandingPage/HeroImg/HeroImg.component";
@@ -12,6 +12,8 @@ import { buildSpacingVars, buildSpacingChart } from "./spacingChart";
 
 const Display = ({
   logo,
+  logoWidth = 150,
+  logoHeight = 150,
   // The buttons
   primaryButton,
   secondaryButton,
@@ -25,6 +27,21 @@ const Display = ({
   // For the spacing
   base = 1, // spacing base (from SpacingChart)
   unit = "rem", // spacing unit (from SpacingChart)
+  navbarOverrides = {},
+  onNavbarColorChange,
+  threeIconsOverrides = {},
+  onThreeIconsColorChange,
+  companiesOverrides = {},
+  onCompaniesColorChange,
+  descriptionOverrides = {},
+  onDescriptionColorChange,
+  heroImgOverrides = {},
+  onHeroImgColorChange,
+  testimonialOverrides = {},
+  onTestimonialColorChange,
+  footerOverrides = {},
+  onFooterColorChange,
+  heroImgUrl,
 }) => {
   const spacingVars = buildSpacingVars(base, unit);
   const spacingChart = buildSpacingChart(base, unit);
@@ -53,6 +70,8 @@ const Display = ({
     return () => window.removeEventListener("resize", updateSize);
   }, []);
   const fontVarsCSS = useMemo(() => buildFontVarsCSS(fontScale), [fontScale]);
+  // console.log('Font var', fontVarsCSS);
+  // console.log("Colours", colours);
   return (
     <div className={styles.displayRoot} ref={displayRef} style={spacingVars}>
       <style dangerouslySetInnerHTML={{ __html: fontVarsCSS }} />
@@ -62,6 +81,8 @@ const Display = ({
       {/* Navbar mockup */}
       <Navbar
         logo={logo}
+        logoWidth={logoWidth}
+        logoHeight={logoHeight}
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
         secondaryButton={secondaryButton}
@@ -69,6 +90,8 @@ const Display = ({
         spacingChart={spacingChart}
         spacingBase={base}
         spacingUnit={unit}
+        overrides={navbarOverrides}
+        onColorChange={onNavbarColorChange}
       />
       <HeroImage
         primaryButton={primaryButton}
@@ -78,6 +101,9 @@ const Display = ({
         spacingChart={spacingChart}
         spacingBase={base}
         spacingUnit={unit}
+        overrides={heroImgOverrides}
+        onColorChange={onHeroImgColorChange}
+        heroImgUrl={heroImgUrl}
       />
       <Description
         secondaryButton={secondaryButton}
@@ -88,6 +114,8 @@ const Display = ({
         spacingChart={spacingChart}
         spacingBase={base}
         spacingUnit={unit}
+        overrides={descriptionOverrides}
+        onColorChange={onDescriptionColorChange}
       />
       <ThreeIcons
         headerFontClass={headerFontClass}
@@ -97,6 +125,8 @@ const Display = ({
         spacingChart={spacingChart}
         spacingBase={base}
         spacingUnit={unit}
+        overrides={threeIconsOverrides}
+        onColorChange={onThreeIconsColorChange}
       />
       <Companies
         mainFontClass={mainFontClass}
@@ -105,6 +135,8 @@ const Display = ({
         spacingChart={spacingChart}
         spacingBase={base}
         spacingUnit={unit}
+        overrides={companiesOverrides}
+        onColorChange={onCompaniesColorChange}
       />
       <Testimonial
         mainFontClass={mainFontClass}
@@ -114,15 +146,21 @@ const Display = ({
         spacingChart={spacingChart}
         spacingBase={base}
         spacingUnit={unit}
+        overrides={testimonialOverrides}
+        onColorChange={onTestimonialColorChange}
       />
       <Footer
         logo={logo}
+        logoWidth={logoWidth}
+        logoHeight={logoHeight}
         headerFontClass={headerFontClass}
         mainFontClass={mainFontClass}
         colours={colours}
         spacingChart={spacingChart}
         spacingBase={base}
         spacingUnit={unit}
+        overrides={footerOverrides}
+        onColorChange={onFooterColorChange}
       />
     </div>
   );

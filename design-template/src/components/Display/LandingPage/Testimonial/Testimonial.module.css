@@ -5,9 +5,8 @@
 }
 
 .card {
-  background: #6883a1; /* Use your primary button color */
-  color: #fff; /* White text for contrast */
-  /* top padding larger, horizontal & bottom use medium spacing */
+  background: #fff; 
+  color: #fff; 
   padding: var(--spacing-xxl) var(--spacing-m) var(--spacing-m) var(--spacing-m);
   width: 100%;
   display: flex;
@@ -16,11 +15,12 @@
 }
 
 .quote {
-  font-size: 1.25rem;
-  color: #fff;
+  font-size: var(--font-blockquote-size, 1.25rem);
+  font-weight: var(--font-blockquote-weight, 400);
+  line-height: var(--font-blockquote-line-height, 1.6);
+  color: var(--font-blockquote-color, #fff);
   font-style: italic;
   margin-bottom: var(--spacing-m);
-  line-height: 1.6;
   text-align: center;
   position: relative;
 }
@@ -30,15 +30,15 @@
   font-size: 2.5rem;
   color: #e0e0e0;
   position: absolute;
-  /* position the mark using spacing vars so it moves with the chart */
   left: calc(-1 * var(--spacing-l));
   top: calc(-1 * var(--spacing-s));
 }
 
 .author {
-  font-size: 1rem;
-  color: #fff;
-  font-weight: 600;
+  font-size: var(--font-h6-size, 1rem);
+  font-weight: var(--font-h6-weight, 600);
+  line-height: var(--font-h6-line-height, 1.4);
+  color: var(--font-h6-color, #fff);
   text-align: center;
   margin-top: var(--spacing-s);
 }

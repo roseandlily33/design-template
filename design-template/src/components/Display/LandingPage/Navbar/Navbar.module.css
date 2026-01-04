@@ -3,7 +3,6 @@
   align-items: center;
   justify-content: space-between;
   background: #fff;
-  /* vertical ~= m, horizontal ~= l (when base=1, unit=rem -> 1rem / 1.5rem) */
   padding: var(--spacing-m) var(--spacing-l);
 }
 .logo {
@@ -17,15 +16,12 @@
   align-items: center;
 }
 .link {
-  color: #6883a1; /* Use your primary button color */
-  color: var(--font-p-color, #6883a1);
   font-size: var(--font-p-size, 1rem);
   font-weight: var(--font-p-weight, 500);
   text-decoration: none;
 }
 .cta {
   margin-left: 0;
-  /* Optionally, add background: #e5c2c2; for secondary, or #a4a4a4ff for tertiary */
 }
 .navRight {
   display: flex;

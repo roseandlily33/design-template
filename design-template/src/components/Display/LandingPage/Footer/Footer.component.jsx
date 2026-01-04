@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import styles from "./Footer.module.css";
 import EditableWithColor from "../../Modal/EditableElement.component";
@@ -13,28 +13,56 @@ const defaultLinks = [
 
 const Footer = ({
   logo,
+  logoWidth = 100,
+  logoHeight = 100,
   headerFontClass,
   mainFontClass,
   colours = [],
   spacingChart,
-  spacingBase,
-  spacingUnit,
+  // spacingBase,
+  // spacingUnit,
+  overrides = {},
+  onColorChange,
 }) => {
+  // Helper to get palette color by label and index
+  const getPaletteColor = (label, idx = 0) => {
+    const row = Array.isArray(colours)
+      ? colours.find(
+          (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
+        )
+      : null;
+    return row && Array.isArray(row.colors) && row.colors[idx]
+      ? row.colors[idx]
+      : undefined;
+  };
+
+  // Palette defaults
+  const defaultLogoColor =
+    getPaletteColor("Main", 5) || getPaletteColor("Main", 7) || "#222";
+  const defaultLinkColor =
+    getPaletteColor("Accent", 5) || getPaletteColor("Accent", 7) || "#fff";
+  const defaultCopyrightColor =
+    getPaletteColor("Grey", 4) || getPaletteColor("Grey", 5) || "#fff";
+
   const [links, setLinks] = useState(defaultLinks);
   const [editingLink, setEditingLink] = useState({}); // { idx: true }
-  const [linkColors, setLinkColors] = useState({
-    0: "#fff",
-    1: "#fff",
-    2: "#fff",
-    3: "#fff",
-    4: "#fff",
-  }); // { idx: '#hex' }
+
+  // Compute linkColors directly from palette and overrides
+  const linkColors = {
+    0: overrides[`link:0`] ?? defaultLinkColor,
+    1: overrides[`link:1`] ?? defaultLinkColor,
+    2: overrides[`link:2`] ?? defaultLinkColor,
+    3: overrides[`link:3`] ?? defaultLinkColor,
+    4: overrides[`link:4`] ?? defaultLinkColor,
+  };
 
   const [copyright, setCopyright] = useState(
     `© ${new Date().getFullYear()} Your Company. All rights reserved.`
   );
   const [editingCopyright, setEditingCopyright] = useState(false);
-  const [copyrightColor, setCopyrightColor] = useState(undefined);
+
+  // Compute copyrightColor directly from palette and overrides
+  const copyrightColor = overrides.copyright ?? defaultCopyrightColor;
 
   const handleLinkClick = (idx) =>
     setEditingLink((prev) => ({ ...prev, [idx]: true }));
@@ -48,7 +76,7 @@ const Footer = ({
   };
 
   const handleLinkColorPick = (idx, color) => {
-    setLinkColors((prev) => ({ ...prev, [idx]: color }));
+    if (onColorChange) onColorChange(`link:${idx}`, color);
   };
 
   const handleCopyrightClick = () => setEditingCopyright(true);
@@ -57,7 +85,9 @@ const Footer = ({
   const handleCopyrightKeyDown = (e) => {
     if (e.key === "Enter") setEditingCopyright(false);
   };
-  const handleCopyrightColorPick = (c) => setCopyrightColor(c);
+  const handleCopyrightColorPick = (c) => {
+    if (onColorChange) onColorChange("copyright", c);
+  };
 
   // inline fallbacks derived from spacingChart (Display injects CSS vars already)
   const footerStyle = spacingChart
@@ -74,9 +104,17 @@ const Footer = ({
   return (
     <footer className={styles.footer} style={footerStyle}>
       <div className={styles.footerContent} style={footerContentStyle}>
-        <div className={styles.logoSection + " " + headerFontClass}>
+        <div
+          className={styles.logoSection + " " + headerFontClass}
+          style={{ color: defaultLogoColor }}
+        >
           {logo ? (
-            <Image src={logo} alt="Logo Preview" width={100} height={100} />
+            <Image
+              src={logo}
+              alt="Logo Preview"
+              width={logoWidth}
+              height={logoHeight}
+            />
           ) : (
             "Logo"
           )}

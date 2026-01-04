@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./3Icons.module.css";
 import EditableWithColor from "../../Modal/EditableElement.component";
 
@@ -32,8 +32,114 @@ const ThreeIcons = ({
   borderRadius,
   colours,
   spacingChart,
+  overrides = {},
+  onColorChange,
 }) => {
-  const [cards, setCards] = useState(defaultIcons);
+  // Helper to get palette color by label and index
+  const getPaletteColor = React.useCallback((label, idx = 0) => {
+    const row = Array.isArray(colours)
+      ? colours.find(
+        (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
+      )
+      : null;
+    return row && Array.isArray(row.colors) && row.colors[idx]
+      ? row.colors[idx]
+      : undefined;
+  }, [colours]);
+
+  // Palette defaults for icon backgrounds: Main[0], Accent[0], Grey[0]
+  const paletteIconColors = React.useMemo(() => [
+    getPaletteColor("Main", 0) || defaultIcons[0].color,
+    getPaletteColor("Accent", 0) || defaultIcons[1].color,
+    getPaletteColor("Grey", 2) || defaultIcons[2].color,
+  ], [getPaletteColor]);
+
+  // Palette defaults for label/desc
+  const defaultLabelColors = React.useMemo(() => [
+    getPaletteColor("Main", 3) || getPaletteColor("Main", 4) || "#222",
+    getPaletteColor("Accent", 5) || getPaletteColor("Accent", 4) || "#222",
+    getPaletteColor("Grey", 4) || getPaletteColor("Grey", 5) || "#222",
+  ], [getPaletteColor]);
+  const defaultDescColors = React.useMemo(() => [
+    getPaletteColor("Main", 2) || getPaletteColor("Main", 1) || "#444",
+    getPaletteColor("Accent", 3) || getPaletteColor("Accent", 4) || "#444",
+    getPaletteColor("Grey", 3) || getPaletteColor("Grey", 4) || "#444",
+  ], [getPaletteColor]);
+
+  // Use overrides if present, else palette defaults
+  const [cards, setCards] = useState(
+    defaultIcons.map((c, i) => ({
+      ...c,
+      color: overrides[`icon:${i}`] ?? paletteIconColors[i],
+      labelColor: overrides[`label:${i}`] ?? defaultLabelColors[i],
+      descColor: overrides[`desc:${i}`] ?? defaultDescColors[i],
+    }))
+  );
+
+  // Sync cards state with overrides prop when overrides or palette changes
+  useEffect(() => {
+    setCards(
+      defaultIcons.map((c, i) => ({
+        ...c,
+        color: overrides[`icon:${i}`] ?? paletteIconColors[i],
+        labelColor: overrides[`label:${i}`] ?? defaultLabelColors[i],
+        descColor: overrides[`desc:${i}`] ?? defaultDescColors[i],
+      }))
+    );
+  }, [defaultLabelColors, defaultDescColors, paletteIconColors, overrides, colours]);
+
+  // Track previous palette defaults for each card
+  const prevDefaults = useRef(
+    defaultIcons.map((c, i) => ({
+      color: paletteIconColors[i],
+      labelColor: defaultLabelColors[i],
+      descColor: defaultDescColors[i],
+    }))
+  );
+
+  useEffect(() => {
+    const newPaletteIconColors = [
+      getPaletteColor("Main", 0) || defaultIcons[0].color,
+      getPaletteColor("Accent", 0) || defaultIcons[1].color,
+      getPaletteColor("Grey", 0) || defaultIcons[2].color,
+    ];
+    const newLabelColors = [
+      getPaletteColor("Main", 1) || getPaletteColor("Main", 0) || "#222",
+      getPaletteColor("Accent", 1) || getPaletteColor("Accent", 0) || "#222",
+      getPaletteColor("Grey", 1) || getPaletteColor("Grey", 0) || "#222",
+    ];
+    const newDescColors = [
+      getPaletteColor("Accent", 1) || getPaletteColor("Accent", 0) || "#444",
+      getPaletteColor("Main", 2) || getPaletteColor("Main", 1) || "#444",
+      getPaletteColor("Grey", 2) || getPaletteColor("Grey", 1) || "#444",
+    ];
+    setCards((prevCards) =>
+      prevCards.map((card, i) => ({
+        ...card,
+        color:
+          overrides[`icon:${i}`] ??
+          (card.color === prevDefaults.current[i].color
+            ? newPaletteIconColors[i]
+            : card.color),
+        labelColor:
+          overrides[`label:${i}`] ??
+          (card.labelColor === prevDefaults.current[i].labelColor
+            ? newLabelColors[i]
+            : card.labelColor),
+        descColor:
+          overrides[`desc:${i}`] ??
+          (card.descColor === prevDefaults.current[i].descColor
+            ? newDescColors[i]
+            : card.descColor),
+      }))
+    );
+    prevDefaults.current = newPaletteIconColors.map((color, i) => ({
+      color,
+      labelColor: newLabelColors[i],
+      descColor: newDescColors[i],
+    }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [colours, overrides, defaultLabelColors, defaultDescColors, paletteIconColors]);
   const [editing, setEditing] = useState({}); // { [cardIdx]: { label: bool, desc: bool } }
 
   const handleEdit = (idx, field) => {
@@ -49,6 +155,14 @@ const ThreeIcons = ({
     setCards((prev) =>
       prev.map((card, i) => (i === idx ? { ...card, [field]: value } : card))
     );
+    if (onColorChange && ["color", "labelColor", "descColor"].includes(field)) {
+      // Map field to override key
+      let key = null;
+      if (field === "color") key = `icon:${idx}`;
+      if (field === "labelColor") key = `label:${idx}`;
+      if (field === "descColor") key = `desc:${idx}`;
+      if (key) onColorChange(key, value);
+    }
   };
   const handleKeyDown = (e, idx, field) => {
     if (e.key === "Enter") handleBlur(idx, field);
@@ -60,15 +174,15 @@ const ThreeIcons = ({
   const rowStyle = spacingChart ? { gap: spacingChart.xl.css } : undefined;
   const cardPaddingStyle = spacingChart
     ? {
-        padding: `${spacingChart.xxl.css} ${spacingChart.m.css} ${spacingChart.m.css} ${spacingChart.m.css}`,
-      }
+      padding: `${spacingChart.xxl.css} ${spacingChart.m.css} ${spacingChart.m.css} ${spacingChart.m.css}`,
+    }
     : undefined;
   const iconCircleStyle = spacingChart
     ? {
-        width: spacingChart.xxl.css,
-        height: spacingChart.xxl.css,
-        marginBottom: spacingChart.l.css,
-      }
+      width: spacingChart.xxl.css,
+      height: spacingChart.xxl.css,
+      marginBottom: spacingChart.l.css,
+    }
     : undefined;
   const titleStyle = spacingChart
     ? { marginBottom: spacingChart.xs.css }

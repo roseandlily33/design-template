@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Description.module.css";
 import EditableWithColor from "../../Modal/EditableElement.component";
 
@@ -8,6 +8,8 @@ const Description = ({
   mainFontClass,
   colours,
   spacingChart,
+  overrides = {},
+  onColorChange,
 }) => {
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingDesc, setEditingDesc] = useState(false);
@@ -16,9 +18,27 @@ const Description = ({
     "We are dedicated to delivering innovative solutions and exceptional service to help your business thrive in a dynamic world."
   );
 
-  // local color state for title / desc (EditableWithColor will control UI)
-  const [titleColor, setTitleColor] = useState("#222");
-  const [descColor, setDescColor] = useState("#444");
+
+  // Helper to get palette color by label and index
+  const getPaletteColor = (label, idx = 0) => {
+    const row = Array.isArray(colours)
+      ? colours.find(
+        (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
+      )
+      : null;
+    return row && Array.isArray(row.colors) && row.colors[idx]
+      ? row.colors[idx]
+      : undefined;
+  };
+
+
+  // Palette defaults
+  const defaultTitleColor = getPaletteColor("Main", 7) || getPaletteColor("Main", 6) || "#222";
+  const defaultDescColor = getPaletteColor("Main", 3) || getPaletteColor("Main", 4) || "#444";
+
+  // Compute colors directly from overrides and palette
+  const titleColor = overrides.title ?? defaultTitleColor;
+  const descColor = overrides.desc ?? defaultDescColor;
 
   const handleTitleClick = () => setEditingTitle(true);
   const handleDescClick = () => setEditingDesc(true);
@@ -43,7 +63,9 @@ const Description = ({
       <EditableWithColor
         palettes={colours}
         initialColor={titleColor}
-        onSelect={(c) => setTitleColor(c)}
+        onSelect={(c) => {
+          if (onColorChange) onColorChange("title", c);
+        }}
       >
         {editingTitle ? (
           <input
@@ -75,7 +97,9 @@ const Description = ({
       <EditableWithColor
         palettes={colours}
         initialColor={descColor}
-        onSelect={(c) => setDescColor(c)}
+        onSelect={(c) => {
+          if (onColorChange) onColorChange("desc", c);
+        }}
       >
         {editingDesc ? (
           <input

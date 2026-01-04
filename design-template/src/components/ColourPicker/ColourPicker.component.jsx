@@ -16,7 +16,6 @@ const ColourPicker = ({
   setPalette2,
   setPalette3,
 }) => {
-  console.log("Selected", selected);
   const [paletteIdx, setPaletteIdx] = useState(0);
 
   const [hexInput, setHexInput] = useState("");

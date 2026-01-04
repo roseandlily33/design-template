@@ -25,7 +25,7 @@ const FontScale = ({
   const [modal, setModal] = useState(null); // { tag, bp } editor portal
   const [showExport, setShowExport] = useState(false);
   const [cssExport, setCssExport] = useState("");
-  console.log("Modified", modified);
+  // console.log("Modified", modified);
   // console.log("Current styles state:", fontScaleStyles);
 
   const applyTypeScale = (scaleIdx) => {
@@ -125,7 +125,7 @@ const FontScale = ({
   return (
     <div className={styles.scaleRoot}>
       <div className={styles.scaleHeader}>
-        <div className={styles.scaleTitle}>Font Scale Chart</div>
+        <div className={styles.scaleTitle}>Font Scale</div>
 
         {/* quick copy button (keeps existing ExportFontScale) */}
         <ExportFontScale stylesState={fontScaleStyles} styles={styles} />
