@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ProductCards from "./ProductCards/ProductCards";
 import styles from "./Cards.module.css";
+import CourseCards from "./CourseCards/CourseCards.component";
 
 const CARD_TABS = [
   { label: "Product Cards", key: "product" },
@@ -42,6 +43,21 @@ const Cards = ({
         {activeTab === "product" && (
           <>
             <ProductCards
+              colours={colours}
+              fonts={fonts}
+              borderRadius={borderRadius}
+              heroImgUrl={heroImgUrl}
+              spacingBase={spacingBase}
+              spacingUnit={spacingUnit}
+              primaryButtonProps={primaryButtonProps}
+              secondaryButtonProps={secondaryButtonProps}
+              tertiaryButtonProps={tertiaryButtonProps}
+            />
+          </>
+        )}
+        {activeTab === "course" && (
+          <>
+            <CourseCards
               colours={colours}
               fonts={fonts}
               borderRadius={borderRadius}
