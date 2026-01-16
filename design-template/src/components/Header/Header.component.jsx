@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./Header.module.css";
 import LoginModal from "../Login/LoginModal";
 
-const Header = () => {
+const Header = ({ onProjectLoad }) => {
   const [showModal, setShowModal] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
@@ -112,7 +112,9 @@ const Header = () => {
       <div className={styles.title}>Palette Playground</div>
       {loggedIn ? (
         <div
-          className={styles.profileWrap + (dropdownOpen ? ` ${styles.open}` : "")}
+          className={
+            styles.profileWrap + (dropdownOpen ? ` ${styles.open}` : "")
+          }
         >
           <button
             ref={avatarRef}
@@ -147,14 +149,16 @@ const Header = () => {
                     role="menuitem"
                     onClick={async () => {
                       try {
-                        const res = await fetch(`${backendUrl}/api/project/${p._id}`, {
-                          credentials: "include",
-                        });
+                        const res = await fetch(
+                          `${backendUrl}/api/project/${p._id}`,
+                          {
+                            credentials: "include",
+                          }
+                        );
                         const data = await res.json();
-                        if (!res.ok) throw new Error(data.error || "Load failed");
-                        // console.log("Loaded project:", data);
-                        // temporary: notify user
-                        alert(`Loaded project: ${data.title || p.title || p._id}`);
+                        if (!res.ok)
+                          throw new Error(data.error || "Load failed");
+                        if (onProjectLoad) onProjectLoad(data);
                         closeDropdown();
                       } catch (err) {
                         console.error(err);
@@ -187,7 +191,9 @@ const Header = () => {
                 handleLogout();
                 closeDropdown();
               }}
-              onKeyDown={(e) => e.key === "Enter" && (handleLogout(), closeDropdown())}
+              onKeyDown={(e) =>
+                e.key === "Enter" && (handleLogout(), closeDropdown())
+              }
             >
               Logout
             </div>

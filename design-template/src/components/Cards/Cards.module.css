@@ -1,0 +1,38 @@
+.tabsRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  border-bottom: 1.5px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+.tabBtn {
+  background: #f7fafd;
+  color: #222;
+  border: 1.5px solid #6883a1;
+  border-bottom: none;
+  border-radius: 8px 8px 0 0;
+  padding: 8px 22px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+  outline: none;
+}
+.tabBtn:hover {
+  background: #eaf1fa;
+}
+.activeTab {
+  background: #fff;
+  color: #1976d2;
+  border-bottom: 2.5px solid #fff;
+  font-weight: 700;
+  z-index: 2;
+}
+.cardsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 32px 0;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const SaveAndTabs = ({
   activeTab,
@@ -17,9 +17,105 @@ const SaveAndTabs = ({
   palette3,
   spacingBase,
   spacingUnit,
+  onProjectLoad, // callback to load a project into the app
 }) => {
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
+  const [autosaveMessage, setAutosaveMessage] = useState("");
+  const autosaveTimeout = useRef(null);
+
+  // Save project function (shared by manual and autosave)
+  const saveProject = async (isAutosave = false) => {
+    if (!projectTitle.trim()) return;
+    if (!backendUrl) return;
+    if (!isAutosave) {
+      setSaveMessage("");
+      setSaving(true);
+    }
+    try {
+      const project = {
+        title: projectTitle || `Untitled ${new Date().toISOString()}`,
+        borderRadius: radius,
+        logo: logoUrl || null,
+        primaryButton: { ...primaryProps },
+        secondaryButton: { ...secondaryProps },
+        tertiaryButton: { ...tertiaryProps },
+        fontPicker1: {
+          head: fontSets[0]?.head,
+          main: fontSets[0]?.main,
+          extra: fontSets[0]?.extra,
+        },
+        fontPicker2: {
+          head: fontSets[1]?.head,
+          main: fontSets[1]?.main,
+          extra: fontSets[1]?.extra,
+        },
+        fontPicker3: {
+          head: fontSets[2]?.head,
+          main: fontSets[2]?.main,
+          extra: fontSets[2]?.extra,
+        },
+        colourPicker1: { rows: palette1 },
+        colourPicker2: { rows: palette2 },
+        colourPicker3: { rows: palette3 },
+        spacingScale: { base: spacingBase, unit: spacingUnit },
+        fontScale: {},
+      };
+
+      const res = await fetch(`${backendUrl}/api/project`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ project }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Save failed");
+      if (isAutosave) {
+        setAutosaveMessage("Autosaved");
+        setTimeout(() => setAutosaveMessage(""), 2000);
+      } else {
+        setSaveMessage("Project saved");
+      }
+    } catch (err) {
+      if (isAutosave) {
+        setAutosaveMessage("Autosave failed");
+      } else {
+        setSaveMessage(err.message || "Save failed");
+      }
+    } finally {
+      if (!isAutosave) setSaving(false);
+    }
+  };
+
+  // Autosave effect (debounced)
+  useEffect(() => {
+    if (!projectTitle.trim()) return;
+    if (autosaveTimeout.current) clearTimeout(autosaveTimeout.current);
+    autosaveTimeout.current = setTimeout(() => {
+      saveProject(true);
+    }, 2000); // 2s debounce
+    return () => {
+      if (autosaveTimeout.current) clearTimeout(autosaveTimeout.current);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    projectTitle,
+    logoUrl,
+    radius,
+    primaryProps,
+    secondaryProps,
+    tertiaryProps,
+    fontSets,
+    palette1,
+    palette2,
+    palette3,
+    spacingBase,
+    spacingUnit,
+  ]);
+
+  // Manual save button disables if no title
+  const canSave = !!projectTitle.trim();
+
   return (
     <div
       style={{
@@ -94,69 +190,26 @@ const SaveAndTabs = ({
         }}
       />
       <button
-        onClick={async () => {
-          setSaveMessage("");
-          setSaving(true);
-          try {
-            const project = {
-              title: projectTitle || `Untitled ${new Date().toISOString()}`,
-              borderRadius: radius,
-              logo: logoUrl || null,
-              primaryButton: { ...primaryProps },
-              secondaryButton: { ...secondaryProps },
-              tertiaryButton: { ...tertiaryProps },
-              fontPicker1: {
-                head: fontSets[0]?.head,
-                main: fontSets[0]?.main,
-                extra: fontSets[0]?.extra,
-              },
-              fontPicker2: {
-                head: fontSets[1]?.head,
-                main: fontSets[1]?.main,
-                extra: fontSets[1]?.extra,
-              },
-              fontPicker3: {
-                head: fontSets[2]?.head,
-                main: fontSets[2]?.main,
-                extra: fontSets[2]?.extra,
-              },
-              colourPicker1: { rows: palette1 },
-              colourPicker2: { rows: palette2 },
-              colourPicker3: { rows: palette3 },
-              spacingScale: { base: spacingBase, unit: spacingUnit },
-              fontScale: {},
-            };
-
-            const res = await fetch(`${backendUrl}/api/project`, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              credentials: "include",
-              body: JSON.stringify({ project }),
-            });
-            const data = await res.json();
-            if (!res.ok) throw new Error(data.error || "Save failed");
-            setSaveMessage("Project saved");
-          } catch (err) {
-            console.error("Save error", err);
-            setSaveMessage(err.message || "Save failed");
-          } finally {
-            setSaving(false);
-          }
-        }}
-        disabled={saving}
+        onClick={() => saveProject(false)}
+        disabled={saving || !canSave}
         style={{
           padding: "8px 14px",
           borderRadius: 8,
-          background: "#6883a1",
+          background: canSave ? "#6883a1" : "#b0b8c1",
           color: "#fff",
           border: "none",
-          cursor: "pointer",
+          cursor: canSave ? "pointer" : "not-allowed",
         }}
       >
         {saving ? "Saving..." : "Save Project"}
       </button>
       {saveMessage && (
         <div style={{ marginLeft: 12, color: "#222" }}>{saveMessage}</div>
+      )}
+      {autosaveMessage && !saveMessage && (
+        <div style={{ marginLeft: 12, color: "#666", fontStyle: "italic" }}>
+          {autosaveMessage}
+        </div>
       )}
     </div>
   );

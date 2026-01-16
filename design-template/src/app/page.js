@@ -9,6 +9,7 @@ import {
 import { fontMap, allFonts, displayFonts, bodyFonts } from "@/utils/fonts";
 import { buildDefaultStyles } from "../components/FontScale/fontscale.helpers";
 import SaveAndTabs from "@/components/Header/SaveAndTabs";
+import Cards from "@/components/Cards/Cards.component";
 import ColourPicker from "@/components/ColourPicker/ColourPicker.component";
 import FontPicker from "@/components/FontPicker/FontPicker.component";
 import FontScale from "@/components/FontScale/FontScale.component";
@@ -28,6 +29,8 @@ import { useTabOverrides } from "@/utils/tabOverrides";
 import { defaultButtonState } from "@/utils/buttonState";
 
 export default function Home() {
+  // Modal state for Cards preview
+  const [cardsOpen, setCardsOpen] = useState(false);
   // Hero image selection (static or uploaded)
   const [heroImgUrl, setHeroImgUrl] = useState("/Picture.jpg");
   // Per-tab color overrides using custom hook
@@ -199,6 +202,93 @@ export default function Home() {
   return (
     <div>
       <Header />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          padding: "12px 32px 0 32px",
+        }}
+      >
+        <button
+          onClick={() => setCardsOpen(true)}
+          style={{
+            padding: "8px 18px",
+            borderRadius: 8,
+            background: "#fff",
+            color: "#222",
+            border: "1.5px solid #6883a1",
+            fontWeight: 600,
+            fontSize: "1rem",
+            cursor: "pointer",
+            boxShadow: "0 1px 4px #0070f322",
+            marginBottom: 8,
+          }}
+        >
+          Cards
+        </button>
+      </div>
+      {cardsOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.18)",
+            zIndex: 2000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+          onClick={() => setCardsOpen(false)}
+        >
+          <div
+            style={{
+              background: "#fff",
+              borderRadius: 16,
+              boxShadow: "0 8px 32px #0002",
+              padding: 32,
+              maxWidth: 1200,
+              maxHeight: "90vh",
+              overflowY: "auto",
+              position: "relative",
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setCardsOpen(false)}
+              style={{
+                position: "absolute",
+                top: 16,
+                right: 16,
+                background: "#6883a1",
+                color: "#fff",
+                border: "none",
+                borderRadius: 6,
+                padding: "6px 14px",
+                fontWeight: 600,
+                cursor: "pointer",
+                fontSize: "1rem",
+                zIndex: 10,
+              }}
+            >
+              Close
+            </button>
+            <Cards
+              colours={selected}
+              fonts={selectedFontSet}
+              borderRadius={radius}
+              heroImgUrl={heroImgUrl}
+              spacingBase={spacingBase}
+              spacingUnit={spacingUnit}
+              primaryButtonProps={primaryProps}
+              secondaryButtonProps={secondaryProps}
+              tertiaryButtonProps={tertiaryProps}
+            />
+          </div>
+        </div>
+      )}
       <SaveAndTabs
         activeTab={activeTab}
         setActiveTab={setActiveTab}

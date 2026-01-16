@@ -15,7 +15,7 @@ const Testimonial = ({
   const [quote, setQuote] = useState(
     "Working with this company was a fantastic experience. Their team went above and beyond to deliver results."
   );
-  const [author, setAuthor] = useState("— Jamie L., CEO of Acme Corp");
+  const [author, setAuthor] = useState("— Jennie J., CEO of Jenn Corp");
 
   // Helper to get palette color by label and index
   const getPaletteColor = (label, idx = 0) => {
