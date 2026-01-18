@@ -1,0 +1,49 @@
+.tabsRow {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tabBtn {
+  background: #f5f7fa;
+  border: 1.5px solid #bfc9d9;
+  color: #222;
+  font-weight: 600;
+  font-size: 1rem;
+  border-radius: 8px 8px 0 0;
+  padding: 10px 28px;
+  cursor: pointer;
+  transition: background 0.18s, color 0.18s;
+}
+.tabBtn:hover {
+  background: #e6ecf5;
+}
+.activeTab {
+  background: #fff;
+  color: #1a3a5d;
+  border-bottom: 2.5px solid #6883a1;
+  z-index: 2;
+}
+
+.layoutsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 220px;
+}
+
+.layoutPreview {
+  min-width: 320px;
+  min-height: 180px;
+  background: #f8fafc;
+  border: 1.5px dashed #bfc9d9;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-size: 1.2rem;
+  font-style: italic;
+}
