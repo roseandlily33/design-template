@@ -14,7 +14,7 @@ const BorderRadius = ({ radius, setRadius }) => {
               type="radio"
               name="border-radius"
               value={radi}
-              checked={radius === radi}
+              checked={Number(radius) === Number(radi)}
               onChange={() => setRadius(radi)}
               className={styles.radiusRadio}
             />

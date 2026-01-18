@@ -35,7 +35,9 @@ const AccessibilityChartModal = ({
 }) => {
   const [paletteIdx, setPaletteIdx] = useState(initialIdx);
   const rows = palettes[paletteIdx];
-  const allColors = rows.flatMap((row) => row.colors);
+  const allColors = Array.isArray(rows)
+    ? rows.flatMap((row) => (Array.isArray(row.colors) ? row.colors : []))
+    : [];
 
   if (!open) return null;
 
@@ -172,7 +174,7 @@ const AccessibilityChartModal = ({
         </div>
       </div>
     </div>,
-    typeof window !== "undefined" ? document.body : undefined
+    typeof window !== "undefined" ? document.body : undefined,
   );
 };
 

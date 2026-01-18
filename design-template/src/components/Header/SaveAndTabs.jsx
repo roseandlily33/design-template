@@ -18,6 +18,8 @@ const SaveAndTabs = ({
   spacingBase,
   spacingUnit,
   onProjectLoad, // callback to load a project into the app
+  projectId,
+  setProjectId,
 }) => {
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
@@ -33,7 +35,15 @@ const SaveAndTabs = ({
       setSaving(true);
     }
     try {
+      // fontScale: try to get from props or window if available, fallback to empty
+      let fontScale = {};
+      if (typeof window !== "undefined" && window.__fontScaleStyles) {
+        fontScale = window.__fontScaleStyles;
+      } else if (typeof fontScaleStyles !== "undefined") {
+        fontScale = fontScaleStyles;
+      }
       const project = {
+        _id: projectId || undefined,
         title: projectTitle || `Untitled ${new Date().toISOString()}`,
         borderRadius: radius,
         logo: logoUrl || null,
@@ -59,7 +69,7 @@ const SaveAndTabs = ({
         colourPicker2: { rows: palette2 },
         colourPicker3: { rows: palette3 },
         spacingScale: { base: spacingBase, unit: spacingUnit },
-        fontScale: {},
+        fontScale,
       };
 
       const res = await fetch(`${backendUrl}/api/project`, {
@@ -70,6 +80,10 @@ const SaveAndTabs = ({
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Save failed");
+      // If a new project was created, update the projectId in parent
+      if (data.project && data.project._id && setProjectId) {
+        setProjectId(data.project._id);
+      }
       if (isAutosave) {
         setAutosaveMessage("Autosaved");
         setTimeout(() => setAutosaveMessage(""), 2000);
@@ -124,8 +138,32 @@ const SaveAndTabs = ({
         alignItems: "center",
         justifyContent: "flex-end",
         padding: "12px 32px",
+        position: "relative",
       }}
     >
+      {/* Visual indicator for current project name */}
+      <div
+        style={{
+          position: "absolute",
+          left: 32,
+          top: 0,
+          bottom: 0,
+          display: "flex",
+          alignItems: "center",
+          fontWeight: 600,
+          fontSize: 18,
+          color: "#6883a1",
+          letterSpacing: 0.5,
+          background: "#f7fafd",
+          borderRadius: 8,
+          padding: "6px 18px",
+          minWidth: 180,
+          boxShadow: "0 1px 4px #0070f322",
+        }}
+        title="Current Project"
+      >
+        {projectTitle || "Untitled Project"}
+      </div>
       <div
         style={{
           display: "flex",

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ProductCards from "./ProductCards/ProductCards";
 import styles from "./Cards.module.css";
 import CourseCards from "./CourseCards/CourseCards.component";
+import LoginCards from "./LoginCards/LoginCards.component";
 
 const CARD_TABS = [
   { label: "Product Cards", key: "product" },
@@ -62,6 +63,20 @@ const Cards = ({
               fonts={fonts}
               borderRadius={borderRadius}
               heroImgUrl={heroImgUrl}
+              spacingBase={spacingBase}
+              spacingUnit={spacingUnit}
+              primaryButtonProps={primaryButtonProps}
+              secondaryButtonProps={secondaryButtonProps}
+              tertiaryButtonProps={tertiaryButtonProps}
+            />
+          </>
+        )}
+        {activeTab === "login" && (
+          <>
+            <LoginCards
+              colours={colours}
+              fonts={fonts}
+              borderRadius={borderRadius}
               spacingBase={spacingBase}
               spacingUnit={spacingUnit}
               primaryButtonProps={primaryButtonProps}

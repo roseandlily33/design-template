@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./page.module.css";
 import {
   initialRowsPalette1,
@@ -24,12 +24,13 @@ import Buttons from "@/components/Buttons/Buttons.component";
 import Logo from "@/components/Logo/Logo.component";
 import BorderRadius from "@/components/BorderRadius/BorderRadius.component";
 import ImageSelector from "@/components/ImageSelector/ImageSelector.component";
-
-import { useState, useEffect } from "react";
 import { useTabOverrides } from "@/utils/tabOverrides";
 import { defaultButtonState } from "@/utils/buttonState";
+import Inputs from "@/components/Inputs/Inputs.component";
 
 export default function Home() {
+  // Track the current project ID for update vs create
+  const [projectId, setProjectId] = useState(null);
   // Modal state for Cards and Layouts preview
   const [cardsOpen, setCardsOpen] = useState(false);
   const [layoutsOpen, setLayoutsOpen] = useState(false);
@@ -71,7 +72,7 @@ export default function Home() {
 
   const handleFontSetChange = (setIdx, type, value) => {
     setFontSets((prev) =>
-      prev.map((set, i) => (i === setIdx ? { ...set, [type]: value } : set))
+      prev.map((set, i) => (i === setIdx ? { ...set, [type]: value } : set)),
     );
   };
 
@@ -122,7 +123,7 @@ export default function Home() {
                 : state.tertiary.color,
           },
         };
-      })
+      }),
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [palette1, palette2, palette3]);
@@ -131,8 +132,8 @@ export default function Home() {
   const setButtonProp = (type, prop, value) => {
     setButtonStates((prev) =>
       prev.map((s, i) =>
-        i === activeTab ? { ...s, [type]: { ...s[type], [prop]: value } } : s
-      )
+        i === activeTab ? { ...s, [type]: { ...s[type], [prop]: value } } : s,
+      ),
     );
   };
 
@@ -201,9 +202,28 @@ export default function Home() {
   const [unit, setUnit] = useState("rem");
   const [fontScaleStyles, setFontScaleStyles] = useState(buildDefaultStyles());
 
+  // Handler to load a project (from Header dropdown or elsewhere)
+  const handleProjectLoad = (project) => {
+    setProjectId(project._id || null);
+    setProjectTitle(project.title || "");
+    setLogoUrl(project.logo || null);
+    setRadius(project.borderRadius || 0);
+    setFontSets([
+      project.fontPicker1 || fontSets[0],
+      project.fontPicker2 || fontSets[1],
+      project.fontPicker3 || fontSets[2],
+    ]);
+    setPalette1(project.colourPicker1?.rows || initialRowsPalette1);
+    setPalette2(project.colourPicker2?.rows || initialRowsPalette2);
+    setPalette3(project.colourPicker3?.rows || initialRowsPalette3);
+    setSpacingBase(project.spacingScale?.base || 1);
+    setSpacingUnit(project.spacingScale?.unit || "rem");
+    // Optionally: setFontScaleStyles(project.fontScale || buildDefaultStyles());
+  };
+
   return (
     <div>
-      <Header />
+      <Header onProjectLoad={handleProjectLoad} />
       <div
         style={{
           display: "flex",
@@ -389,6 +409,8 @@ export default function Home() {
         palette3={palette3}
         spacingBase={spacingBase}
         spacingUnit={spacingUnit}
+        projectId={projectId}
+        setProjectId={setProjectId}
       />
 
       <main className={styles.displayRoot}>
@@ -455,6 +477,13 @@ export default function Home() {
                 setLogoHeight={setLogoHeight}
               />
               <BorderRadius radius={radius} setRadius={setRadius} />
+              {/* Inputs go here */}
+              <Inputs
+                font={selectedFontSet.main}
+                fontMap={fontMap}
+                colors={selected}
+                borderRadius={radius}
+              />
             </div>
           </div>
         )}
@@ -493,8 +522,8 @@ export default function Home() {
               Array.isArray(selected)
                 ? selected
                 : selected && typeof selected === "object" && selected.rows
-                ? selected.rows
-                : initialRowsPalette1
+                  ? selected.rows
+                  : initialRowsPalette1
             }
             fonts={selectedFontSet}
             fontMap={fontMap}
