@@ -1,26 +1,34 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
-import SaveAndTabs from "../components/Header/SaveAndTabs";
-// ...import other components as needed
+import SaveAndTabs from "../../../components/Header/SaveAndTabs";
+import Cards from "../../../components/Cards/Cards.component";
+import Layouts from "../../../components/Layouts/Layouts.component";
+import Display from "../../../components/Display/Display.component";
+import PrimaryButton from "../../../components/Buttons/PrimaryButton.component";
+import SecondaryButton from "../../../components/Buttons/SecondaryButton.component";
+import TertiaryButton from "../../../components/Buttons/TertiaryButton.component";
+import Logo from "../../../components/Logo/Logo.component";
+import styles from "../../page.module.css";
+import { fontMap } from "../../../utils/fonts";
 
 export default function SharedProjectPage() {
-  const router = useRouter();
   const params = useParams();
   const { id } = params;
   const [project, setProject] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  // Comments state (must be before any early return)
-  const [comments, setComments] = useState([]);
-  const [commentText, setCommentText] = useState("");
+  // Tab state for shared view
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     if (!id) return;
     const fetchProject = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/shared-project/${id}`);
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BE_URL}/api/shared-project/${id}`,
+        );
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to load project");
         setProject(data);
@@ -37,43 +45,145 @@ export default function SharedProjectPage() {
   if (error) return <div style={{ color: "red" }}>{error}</div>;
   if (!project) return <div>Project not found.</div>;
 
-  // Simple in-memory comment section (not persisted)
-  const handleAddComment = () => {
-    if (!commentText.trim()) return;
-    setComments((prev) => [...prev, { text: commentText, date: new Date() }]);
-    setCommentText("");
+  // Defensive: convert numeric string props to valid CSS values
+  const getCssValue = (val, unit = "px") => {
+    if (val === undefined || val === null) return undefined;
+    if (
+      typeof val === "number" ||
+      (typeof val === "string" && /^\d+(\.\d+)?$/.test(val))
+    ) {
+      return val + unit;
+    }
+    return val;
   };
+
+  const fontSets = [
+    project.fontPicker1,
+    project.fontPicker2,
+    project.fontPicker3,
+  ];
+  const palettes = [
+    project.colourPicker1?.rows,
+    project.colourPicker2?.rows,
+    project.colourPicker3?.rows,
+  ];
+  const selectedFontSet = fontSets[activeTab] || {
+    head: "",
+    main: "",
+    extra: "",
+  };
+  const selected = palettes[activeTab] || [];
+
+  // Fix borderRadius for Display and ThreeIcons
+  const radius = getCssValue(project.borderRadius, "px") || 0;
+  const logoUrl = project.logo || null;
+  const logoWidth = 150;
+  const logoHeight = 150;
+  const spacingBase = project.spacingScale?.base || 1;
+  const spacingUnit = project.spacingScale?.unit || "rem";
+  const fontScaleStyles = project.fontScale || {};
+
+  // Defensive: fix button props for shared view
+  const fixButtonProps = (btn) => {
+    if (!btn) return {};
+    return {
+      ...btn,
+      radius: getCssValue(btn.radius, "px"),
+      fontSize: getCssValue(btn.fontSize),
+      fontWeight: btn.fontWeight,
+      letterSpacing: getCssValue(btn.letterSpacing, "px"),
+      lineHeight:
+        typeof btn.lineHeight === "number" ||
+        (typeof btn.lineHeight === "string" &&
+          /^\d+(\.\d+)?$/.test(btn.lineHeight))
+          ? String(btn.lineHeight)
+          : btn.lineHeight,
+    };
+  };
+  const primaryProps = fixButtonProps(project.primaryButton);
+  const secondaryProps = fixButtonProps(project.secondaryButton);
+  const tertiaryProps = fixButtonProps(project.tertiaryButton);
 
   return (
     <div>
       <SaveAndTabs
-        activeTab={0}
-        setActiveTab={() => {}}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
         projectTitle={project.title}
         setProjectTitle={() => {}}
         backendUrl={process.env.NEXT_PUBLIC_BE_URL}
-        logoUrl={project.logo}
-        radius={project.borderRadius}
+        logoUrl={logoUrl}
+        radius={radius}
         primaryProps={project.primaryButton}
         secondaryProps={project.secondaryButton}
         tertiaryProps={project.tertiaryButton}
-        fontSets={[
-          project.fontPicker1,
-          project.fontPicker2,
-          project.fontPicker3,
-        ]}
+        fontSets={fontSets}
         palette1={project.colourPicker1?.rows}
         palette2={project.colourPicker2?.rows}
         palette3={project.colourPicker3?.rows}
-        spacingBase={project.spacingScale?.base}
-        spacingUnit={project.spacingScale?.unit}
+        spacingBase={spacingBase}
+        spacingUnit={spacingUnit}
         projectId={project._id}
         setProjectId={() => {}}
         isReadOnly={true}
         shared={true}
       />
-      {/* Render the rest of the project UI in read-only mode here */}
-      <div
+      <main className={styles.displayRoot}>
+        <div className={styles.rightPane}>
+          <Display
+            primaryButton={
+              <PrimaryButton
+                fontClass={selectedFontSet.main}
+                colors={selected}
+                edit={false}
+                primaryProps={primaryProps}
+              />
+            }
+            secondaryButton={
+              <SecondaryButton
+                fontClass={selectedFontSet.main}
+                colors={selected}
+                edit={false}
+                secondaryProps={secondaryProps}
+              />
+            }
+            tertiaryButton={
+              <TertiaryButton
+                fontClass={selectedFontSet.main}
+                colors={selected}
+                edit={false}
+                tertiaryProps={tertiaryProps}
+              />
+            }
+            logo={logoUrl}
+            logoWidth={logoWidth}
+            logoHeight={logoHeight}
+            borderRadius={radius}
+            colours={selected}
+            fonts={selectedFontSet}
+            fontMap={fontMap}
+            fontScale={fontScaleStyles}
+            base={spacingBase}
+            unit={spacingUnit}
+            heroImgUrl={project.heroImgUrl || "/Picture.jpg"}
+            navbarOverrides={{}}
+            onNavbarColorChange={() => {}}
+            threeIconsOverrides={{}}
+            onThreeIconsColorChange={() => {}}
+            companiesOverrides={{}}
+            onCompaniesColorChange={() => {}}
+            descriptionOverrides={{}}
+            onDescriptionColorChange={() => {}}
+            heroImgOverrides={{}}
+            onHeroImgColorChange={() => {}}
+            testimonialOverrides={{}}
+            onTestimonialColorChange={() => {}}
+            footerOverrides={{}}
+            onFooterColorChange={() => {}}
+          />
+        </div>
+      </main>
+      {/* <div
         style={{
           maxWidth: 600,
           margin: "32px auto",
@@ -137,7 +247,7 @@ export default function SharedProjectPage() {
             ))
           )}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

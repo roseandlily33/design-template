@@ -13,9 +13,9 @@ app.use(
     origin: process.env.FE_ROUTE,
     credentials: true,
     optionsSuccessStatus: 200,
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 // parse cookies so req.cookies is available in routes

@@ -182,6 +182,97 @@ const SaveAndTabs = ({
   // Manual save button disables if no title
   const canSave = !!projectTitle.trim();
 
+  // Shared (read-only) mode: only show project name (static) and tab buttons
+  if (shared || isReadOnly) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          gap: 12,
+          alignItems: "center",
+          justifyContent: "flex-end",
+          padding: "12px 32px",
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            left: 32,
+            top: 0,
+            bottom: 0,
+            display: "flex",
+            alignItems: "center",
+            fontWeight: 600,
+            fontSize: 18,
+            color: "#6883a1",
+            letterSpacing: 0.5,
+            background: "#f7fafd",
+            borderRadius: 8,
+            padding: "6px 18px",
+            minWidth: 180,
+            boxShadow: "0 1px 4px #0070f322",
+          }}
+          title="Current Project"
+        >
+          {projectTitle || "Untitled Project"}
+        </div>
+        <div
+          style={{
+            display: "flex",
+            gap: 12,
+            alignItems: "center",
+            justifyContent: "flex-end",
+            padding: "12px 32px 0 32px",
+          }}
+        >
+          <div style={{ display: "flex", gap: 8 }}>
+            <button
+              onClick={() => setActiveTab(0)}
+              style={{
+                padding: "6px 18px",
+                borderRadius: 6,
+                border: activeTab === 0 ? "2px solid #6883a1" : "1px solid #ccc",
+                background: activeTab === 0 ? "#f7fafd" : "#fff",
+                fontWeight: activeTab === 0 ? 700 : 400,
+                cursor: "pointer",
+              }}
+            >
+              Template 1
+            </button>
+            <button
+              onClick={() => setActiveTab(1)}
+              style={{
+                padding: "6px 18px",
+                borderRadius: 6,
+                border: activeTab === 1 ? "2px solid #1976d2" : "1px solid #ccc",
+                background: activeTab === 1 ? "#f7fafd" : "#fff",
+                fontWeight: activeTab === 1 ? 700 : 400,
+                cursor: "pointer",
+              }}
+            >
+              Template 2
+            </button>
+            <button
+              onClick={() => setActiveTab(2)}
+              style={{
+                padding: "6px 18px",
+                borderRadius: 6,
+                border: activeTab === 2 ? "2px solid #ff9800" : "1px solid #ccc",
+                background: activeTab === 2 ? "#f7fafd" : "#fff",
+                fontWeight: activeTab === 2 ? 700 : 400,
+                cursor: "pointer",
+              }}
+            >
+              Template 3
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Normal (editable) mode
   return (
     <div
       style={{
