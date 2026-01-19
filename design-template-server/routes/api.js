@@ -146,7 +146,7 @@ router.get("/projects", authMiddleware, async (req, res) => {
     }
     // populate project basic info
     const projects = await Project.find({ _id: { $in: user.projects } }).select(
-      "title createdAt updatedAt"
+      "title createdAt updatedAt",
     );
     console.log("Returning projects for user:", projects.length);
     return res.json({ projects });
@@ -159,7 +159,7 @@ router.get("/projects", authMiddleware, async (req, res) => {
 router.post("/project", authMiddleware, async (req, res) => {
   try {
     const { project } = req.body;
-    console.log("/project called for userId:", req.userId, "project:", project);
+    console.log("/project called for userId:", req.userId, "project:", project?.title);
     let user = await User.findById(req.userId);
     if (!user) {
       console.log("User not found for userId:", req.userId);
@@ -184,5 +184,70 @@ router.post("/project", authMiddleware, async (req, res) => {
     return res.status(500).json({ error: "Server error" });
   }
 });
+// --- DELETE PROJECT ---
+router.delete("/project/:id", authMiddleware, async (req, res) => {
+  try {
+    const projectId = req.params.id;
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if (!user.projects.includes(projectId)) {
+      return res
+        .status(403)
+        .json({ error: "Not authorized to delete this project" });
+    }
+    user.projects = user.projects.filter((pid) => pid.toString() !== projectId);
+    await user.save();
+    await Project.findByIdAndDelete(projectId);
+    return res.json({ message: "Project deleted" });
+  } catch (err) {
+    console.error("Error in DELETE /project/:id:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
+// --- PUBLIC GET SHARED PROJECT ---
+router.get("/shared-project/:id", async (req, res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+    if (!project.shared) {
+      return res.status(403).json({ error: "Project is not shared" });
+    }
+    return res.json(project);
+  } catch (err) {
+    console.error("Error in /shared-project/:id:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
 
+// --- SHARE PROJECT (set shared flag) ---
+router.patch("/project/:id/share", authMiddleware, async (req, res) => {
+  try {
+    const projectId = req.params.id;
+    const userId = req.userId;
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if (!user.projects.includes(projectId)) {
+      return res
+        .status(403)
+        .json({ error: "Not authorized to share this project" });
+    }
+    const project = await Project.findByIdAndUpdate(
+      projectId,
+      { shared: true },
+      { new: true },
+    );
+    console.log("Project shared:", projectId);
+    return res.json({ message: "Project shared", project });
+  } catch (err) {
+    console.error("Error in PATCH /project/:id/share:", err);
+    return res.status(500).json({ error: "Server error" });
+  }
+});
 module.exports = router;

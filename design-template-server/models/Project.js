@@ -38,6 +38,7 @@ const ColourPickerSchema = new mongoose.Schema({
 const ProjectSchema = new mongoose.Schema({
   title: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
+  shared: { type: Boolean, default: false },
   updatedAt: { type: Date, default: Date.now },
   borderRadius: String,
   primaryButton: ButtonSchema,

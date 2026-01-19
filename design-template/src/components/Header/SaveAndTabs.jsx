@@ -17,10 +17,38 @@ const SaveAndTabs = ({
   palette3,
   spacingBase,
   spacingUnit,
-  onProjectLoad, // callback to load a project into the app
   projectId,
   setProjectId,
+  isReadOnly = false,
+  shared = false,
 }) => {
+  const [shareMessage, setShareMessage] = useState("");
+  const [shareUrl, setShareUrl] = useState("");
+  // Share project function
+  const shareProject = async () => {
+    if (!projectId || !backendUrl) return;
+    try {
+      const res = await fetch(`${backendUrl}/api/project/${projectId}/share`, {
+        method: "PATCH",
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Share failed");
+      setShareMessage("Project shared!");
+      // Generate shareable URL
+      const url = `${window.location.origin}/shared/${projectId}`;
+      setShareUrl(url);
+      // Copy to clipboard
+      try {
+        await navigator.clipboard.writeText(url);
+        setShareMessage("Share link copied!");
+      } catch {
+        setShareMessage("Share link: " + url);
+      }
+    } catch (err) {
+      setShareMessage(err.message || "Share failed");
+    }
+  };
   const [saving, setSaving] = useState(false);
   const [saveMessage, setSaveMessage] = useState("");
   const [autosaveMessage, setAutosaveMessage] = useState("");
@@ -98,6 +126,30 @@ const SaveAndTabs = ({
       }
     } finally {
       if (!isAutosave) setSaving(false);
+    }
+  };
+  // Delete project function
+  const deleteProject = async () => {
+    if (!projectId || !backendUrl) return;
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this project? This cannot be undone.",
+      )
+    )
+      return;
+    try {
+      const res = await fetch(`${backendUrl}/api/project/${projectId}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Delete failed");
+      setSaveMessage("Project deleted");
+      if (setProjectId) setProjectId(null);
+      if (setProjectTitle) setProjectTitle("");
+      // Optionally clear other state here (logo, palettes, etc.)
+    } catch (err) {
+      setSaveMessage(err.message || "Delete failed");
     }
   };
 
@@ -226,21 +278,55 @@ const SaveAndTabs = ({
           border: "1px solid #ddd",
           minWidth: 220,
         }}
+        disabled={isReadOnly}
       />
       <button
         onClick={() => saveProject(false)}
-        disabled={saving || !canSave}
+        disabled={saving || !canSave || isReadOnly}
         style={{
           padding: "8px 14px",
           borderRadius: 8,
-          background: canSave ? "#6883a1" : "#b0b8c1",
+          background: canSave && !isReadOnly ? "#6883a1" : "#b0b8c1",
           color: "#fff",
           border: "none",
-          cursor: canSave ? "pointer" : "not-allowed",
+          cursor: canSave && !isReadOnly ? "pointer" : "not-allowed",
         }}
       >
         {saving ? "Saving..." : "Save Project"}
       </button>
+      <button
+        onClick={deleteProject}
+        disabled={!projectId || isReadOnly}
+        style={{
+          padding: "8px 14px",
+          borderRadius: 8,
+          background: projectId && !isReadOnly ? "#e57373" : "#f2bcbc",
+          color: "#fff",
+          border: "none",
+          cursor: projectId && !isReadOnly ? "pointer" : "not-allowed",
+          marginLeft: 8,
+        }}
+      >
+        Delete Project
+      </button>
+      <button
+        onClick={shareProject}
+        disabled={!projectId || shared || isReadOnly}
+        style={{
+          padding: "8px 14px",
+          borderRadius: 8,
+          background: projectId && !shared && !isReadOnly ? "#1976d2" : "#b0c4e7",
+          color: "#fff",
+          border: "none",
+          cursor: projectId && !shared && !isReadOnly ? "pointer" : "not-allowed",
+          marginLeft: 8,
+        }}
+      >
+        {shared ? "Shared" : "Share"}
+      </button>
+      {shareMessage && (
+        <div style={{ marginLeft: 12, color: "#1976d2" }}>{shareMessage}</div>
+      )}
       {saveMessage && (
         <div style={{ marginLeft: 12, color: "#222" }}>{saveMessage}</div>
       )}
