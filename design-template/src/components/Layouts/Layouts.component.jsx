@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./Layout.module.css";
 import LandingPages from "./LandingPages/LandingPages.component";
 import ContactPages from "./Contact/Contact.component";
-
+import DashboardPages from "./Dashboard/Dashboard.component";
 const LAYOUT_TABS = [
   { label: "Landing Pages", key: "landing" },
   { label: "Dashboard", key: "dashboard" },
@@ -55,7 +55,17 @@ const Layouts = ({
         )}
         {activeTab === "dashboard" && (
           <div className={styles.layoutPreview}>
-            Dashboard layout preview coming soon...
+            <DashboardPages
+              colours={colours}
+              fonts={fonts}
+              borderRadius={borderRadius}
+              heroImgUrl={heroImgUrl}
+              spacingBase={spacingBase}
+              spacingUnit={spacingUnit}
+              primaryButtonProps={primaryButtonProps}
+              secondaryButtonProps={secondaryButtonProps}
+              tertiaryButtonProps={tertiaryButtonProps}
+            />
           </div>
         )}
         {activeTab === "contact" && (
