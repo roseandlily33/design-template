@@ -1,3 +1,4 @@
+import Image from "next/image";
 const PC2 = ({
   colours,
   fonts,
@@ -29,9 +30,11 @@ const PC2 = ({
       <div
         style={{ height: "100%", width: 180, flexShrink: 0, display: "flex" }}
       >
-        <img
+        <Image
           src={heroImgUrl}
           alt="Product"
+          width={180}
+          height={180}
           style={{
             width: "100%",
             height: "100%",

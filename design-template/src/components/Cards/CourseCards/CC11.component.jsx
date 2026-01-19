@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const CC11 = ({
   colours,
   fonts,
@@ -45,22 +47,22 @@ const CC11 = ({
           zIndex: 2,
         }}
       >
-        Editor&apos;s Pick
+        <Image
+          src={heroImgUrl}
+          alt="Course Hero"
+          width={120}
+          height={120}
+          style={{
+            objectFit: "cover",
+            borderRadius: "50%",
+            marginTop: 32,
+            boxShadow: `0 2px 12px ${
+              colours?.find((r) => r.label === "Accent")?.colors[2] || "#ffe5b4"
+            }`,
+          }}
+          priority
+        />
       </span>
-      <img
-        src={heroImgUrl}
-        alt="Course Hero"
-        style={{
-          width: 120,
-          height: 120,
-          objectFit: "cover",
-          borderRadius: "50%",
-          marginTop: 32,
-          boxShadow: `0 2px 12px ${
-            colours?.find((r) => r.label === "Accent")?.colors[2] || "#ffe5b4"
-          }`,
-        }}
-      />
       <div
         style={{
           padding,

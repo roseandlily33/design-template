@@ -1,3 +1,4 @@
+import Image from "next/image";
 const PC1 = ({
   colours,
   fonts,
@@ -23,9 +24,11 @@ const PC1 = ({
         flexDirection: "column",
       }}
     >
-      <img
+      <Image
         src={heroImgUrl}
         alt="Product"
+        width={320}
+        height={180}
         style={{
           width: "100%",
           height: 180,

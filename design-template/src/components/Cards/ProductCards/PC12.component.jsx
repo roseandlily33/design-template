@@ -1,3 +1,4 @@
+import Image from "next/image";
 const PC12 = ({
   colours,
   fonts,
@@ -42,7 +43,7 @@ const PC12 = ({
         }}
       />
       <div style={{ position: "relative", width: "100%", zIndex: 2 }}>
-        <img
+        <Image
           src={heroImgUrl}
           alt="Creative Product"
           style={{

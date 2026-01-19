@@ -1,3 +1,4 @@
+import Image from "next/image";
 const PC9 = ({
     colours,
     fonts,
@@ -27,7 +28,7 @@ const PC9 = ({
         >
             {/* Overlapping image */}
             <div style={{ position: "absolute", top: -40, left: "50%", transform: "translateX(-50%)", zIndex: 2 }}>
-                <img
+                <Image
                     src={heroImgUrl}
                     alt="Innovative Product"
                     style={{

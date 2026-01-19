@@ -1,3 +1,4 @@
+import Image from "next/image";
 const PC3 = ({
   colours,
   fonts,
@@ -21,7 +22,6 @@ const PC3 = ({
         overflow: "hidden",
         display: "flex",
         flexDirection: "column",
-        
       }}
     >
       <div
@@ -32,9 +32,11 @@ const PC3 = ({
           padding: "12px 0 0 0",
         }}
       >
-        <img
+        <Image
           src={heroImgUrl}
           alt="Product"
+          width={60}
+          height={60}
           style={{
             width: 60,
             height: 60,

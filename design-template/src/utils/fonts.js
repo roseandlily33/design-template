@@ -17,8 +17,28 @@ import {
   Libre_Baskerville,
   Abril_Fatface,
   Prata,
+  Lato,
+  Pacifico,
+  Nunito,
+  Source_Sans_3,
+  Josefin_Sans,
+  Rubik,
+  Mulish,
+  Fira_Sans,
+  Cabin,
+  PT_Sans,
+  Arimo,
+  Work_Sans,
+  Dancing_Script,
+  Righteous,
+  Anton,
+  Barlow,
+  Exo_2,
+  Manrope,
+  Satisfy,
+  Oxygen,
+  Ubuntu,
 } from "next/font/google";
-
 
 // Organize fonts by type
 export const displayFonts = [
@@ -29,6 +49,11 @@ export const displayFonts = [
   "Abril Fatface",
   "Playfair Display",
   "Prata",
+  "Pacifico",
+  "Dancing Script",
+  "Righteous",
+  "Anton",
+  "Satisfy",
 ];
 export const bodyFonts = [
   "Inter",
@@ -42,6 +67,22 @@ export const bodyFonts = [
   "DM Sans",
   "Quicksand",
   "Libre Baskerville",
+  "Lato",
+  "Nunito",
+  "Source Sans 3",
+  "Josefin Sans",
+  "Rubik",
+  "Mulish",
+  "Fira Sans",
+  "Cabin",
+  "PT Sans",
+  "Arimo",
+  "Work Sans",
+  "Barlow",
+  "Exo 2",
+  "Manrope",
+  "Oxygen",
+  "Ubuntu",
 ];
 export const allFonts = [...displayFonts, ...bodyFonts];
 
@@ -67,6 +108,27 @@ const libreBaskerville = Libre_Baskerville({
 });
 const abrilFatface = Abril_Fatface({ subsets: ["latin"], weight: "400" });
 const prata = Prata({ subsets: ["latin"], weight: "400" });
+const lato = Lato({ subsets: ["latin"], weight: "400" });
+const pacifico = Pacifico({ subsets: ["latin"], weight: "400" });
+const nunito = Nunito({ subsets: ["latin"], weight: "400" });
+const sourceSans3 = Source_Sans_3({ subsets: ["latin"], weight: "400" });
+const josefinSans = Josefin_Sans({ subsets: ["latin"], weight: "400" });
+const rubik = Rubik({ subsets: ["latin"], weight: "400" });
+const mulish = Mulish({ subsets: ["latin"], weight: "400" });
+const firaSans = Fira_Sans({ subsets: ["latin"], weight: "400" });
+const cabin = Cabin({ subsets: ["latin"], weight: "400" });
+const ptSans = PT_Sans({ subsets: ["latin"], weight: "400" });
+const arimo = Arimo({ subsets: ["latin"], weight: "400" });
+const workSans = Work_Sans({ subsets: ["latin"], weight: "400" });
+const dancingScript = Dancing_Script({ subsets: ["latin"], weight: "400" });
+const righteous = Righteous({ subsets: ["latin"], weight: "400" });
+const anton = Anton({ subsets: ["latin"], weight: "400" });
+const barlow = Barlow({ subsets: ["latin"], weight: "400" });
+const exo2 = Exo_2({ subsets: ["latin"], weight: "400" });
+const manrope = Manrope({ subsets: ["latin"], weight: "400" });
+const satisfy = Satisfy({ subsets: ["latin"], weight: "400" });
+const oxygen = Oxygen({ subsets: ["latin"], weight: "400" });
+const ubuntu = Ubuntu({ subsets: ["latin"], weight: "400" });
 
 // Map font names to classNames
 export const fontMap = {
@@ -88,4 +150,25 @@ export const fontMap = {
   "Libre Baskerville": libreBaskerville.className,
   "Abril Fatface": abrilFatface.className,
   Prata: prata.className,
+  Lato: lato.className,
+  Pacifico: pacifico.className,
+  Nunito: nunito.className,
+  "Source Sans 3": sourceSans3.className,
+  "Josefin Sans": josefinSans.className,
+  Rubik: rubik.className,
+  Mulish: mulish.className,
+  "Fira Sans": firaSans.className,
+  Cabin: cabin.className,
+  "PT Sans": ptSans.className,
+  Arimo: arimo.className,
+  "Work Sans": workSans.className,
+  "Dancing Script": dancingScript.className,
+  Righteous: righteous.className,
+  Anton: anton.className,
+  Barlow: barlow.className,
+  "Exo 2": exo2.className,
+  Manrope: manrope.className,
+  Satisfy: satisfy.className,
+  Oxygen: oxygen.className,
+  Ubuntu: ubuntu.className,
 };

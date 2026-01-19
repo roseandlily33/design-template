@@ -1,6 +1,7 @@
 
 import React, { useRef } from "react";
 import Image from "next/image";
+import styles from '../FontPicker/FontPicker.module.css';
 
 const staticImages = [
     "Picture.jpg",
@@ -29,7 +30,7 @@ export default function ImageSelector({ value, onChange }) {
 
     return (
         <div style={{ marginBottom: 18 }}>
-            <div style={{ fontWeight: 500, marginBottom: 6 }}>Hero Image</div>
+            <div className={styles.pickerTitle}>Hero Image</div>
             <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
                 {staticImages.map((img) => (
                     <button

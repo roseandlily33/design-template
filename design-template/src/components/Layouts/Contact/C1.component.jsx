@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 const C1 = ({
   colours,
@@ -61,7 +62,7 @@ const C1 = ({
           }}
         >
           {heroImgUrl ? (
-            <img
+            <Image
               src={heroImgUrl}
               alt="hero"
               style={{
