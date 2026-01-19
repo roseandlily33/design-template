@@ -15,13 +15,12 @@ const HeroImage = ({
   onColorChange,
   heroImgUrl = "/Picture.jpg",
 }) => {
-
   // Helper to get palette color by label and index
   const getPaletteColor = (label, idx = 0) => {
     const row = Array.isArray(colours)
       ? colours.find(
-        (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
-      )
+          (r) => r.label && r.label.toLowerCase() === label.toLowerCase(),
+        )
       : null;
     return row && Array.isArray(row.colors) && row.colors[idx]
       ? row.colors[idx]
@@ -49,9 +48,9 @@ const HeroImage = ({
 
   const containerStyle = spacingChart
     ? {
-      padding: `${spacingChart.xl.css} ${spacingChart.m.css}`,
-      gap: spacingChart.m.css,
-    }
+        padding: `${spacingChart.xl.css} ${spacingChart.m.css}`,
+        gap: spacingChart.m.css,
+      }
     : { padding: "2rem 1rem", gap: "1rem" };
 
   return (

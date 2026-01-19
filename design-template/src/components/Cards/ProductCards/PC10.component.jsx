@@ -29,6 +29,8 @@ const PC10 = ({
         <Image
           src={heroImgUrl}
           alt="Modern Product"
+          width={320}
+          height={140}
           style={{
             width: "100%",
             height: 140,

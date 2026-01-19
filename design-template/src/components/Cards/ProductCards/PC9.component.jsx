@@ -31,6 +31,8 @@ const PC9 = ({
                 <Image
                     src={heroImgUrl}
                     alt="Innovative Product"
+                    width={80}
+                    height={80}
                     style={{
                         width: 80,
                         height: 80,

@@ -28,7 +28,7 @@ const Footer = ({
   const getPaletteColor = (label, idx = 0) => {
     const row = Array.isArray(colours)
       ? colours.find(
-          (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
+          (r) => r.label && r.label.toLowerCase() === label.toLowerCase(),
         )
       : null;
     return row && Array.isArray(row.colors) && row.colors[idx]
@@ -57,7 +57,7 @@ const Footer = ({
   };
 
   const [copyright, setCopyright] = useState(
-    `© ${new Date().getFullYear()} Your Company. All rights reserved.`
+    `© ${new Date().getFullYear()} Your Company. All rights reserved.`,
   );
   const [editingCopyright, setEditingCopyright] = useState(false);
 
@@ -110,6 +110,8 @@ const Footer = ({
         >
           {logo ? (
             <Image
+              width={logoWidth}
+              height={logoHeight}
               src={logo}
               alt="Logo Preview"
               width={logoWidth}

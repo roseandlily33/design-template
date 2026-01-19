@@ -1,6 +1,7 @@
 # Design Template
+
 all rights reserved
-Link: https://design-template-1rg9.onrender.com
+Link: https://design-template-eotn.onrender.com/
 
 ## Table of Contents
 
@@ -14,12 +15,16 @@ Link: https://design-template-1rg9.onrender.com
 8. [Border Radius](#border-radius)
 9. [Development](#development)
 10. [Tools](#tools)
+11. [Future Development](#future-development)
+12. [Contributions](#contributions)
 
 ---
 
 ## Description
 
-I created this project out of a need for a more visual, flexible design process. As a highly visual designer, I found that most design software didn't offer the kind of real-time, side-by-side comparison I wanted for fonts, colors, border radii, type scales, and spacing systems. Designing can be tedious when you can't see all your options at once. This tool lets me quickly draft and visualize every aspect of a design system, so I can experiment with different fonts, color palettes, and styles to find the perfect combination for my projects.
+I created this project out of a need for a more visual, flexible design process. As a highly visual designer, I found that most design software didn't offer the kind of real-time, side-by-side comparison I wanted for fonts, colors, border radii, type scales, and spacing systems. Designing can be tedious when you can't see all your options at once. This tool lets me quickly draft and visualize every aspect of a design system, so I can experiment with different fonts, color palettes, and styles to find the perfect combination for my projects. Design systems can be shared with other people - during a share the user does not have access to edit only view.
+
+![Screenshot of DesignTemplate](public/DesignTemplate.png)
 
 ## Colour Picker
 
@@ -64,3 +69,23 @@ I started by mapping out all the components I wanted: color picker, font picker,
 
 - Next.js
 - MongoDB
+
+## Future Development
+
+Some ideas that I have:
+
+- Drag & Drop Layout Ideas
+- More standard ideas for cards, layouts
+- Expansions on input ideas and customizing those
+- Search bar expansion
+- Notification expansion
+- Review and Testimonial expansion
+- Form expansion
+- Vertical expansion
+- Breadcrumbs expansion
+- Tab Button expansions
+- Save changes within the actual inputs for the template
+
+## Contributions
+
+Contributions are not welcome, everything done here is to my own personal specifications for desigining.

@@ -207,7 +207,7 @@ export default function Home() {
     setProjectId(project._id || null);
     setProjectTitle(project.title || "");
     setLogoUrl(project.logo || null);
-    setRadius(project.borderRadius || 0);
+    setRadius(project.borderRadius + "px" || 0);
     setFontSets([
       project.fontPicker1 || fontSets[0],
       project.fontPicker2 || fontSets[1],
@@ -218,7 +218,25 @@ export default function Home() {
     setPalette3(project.colourPicker3?.rows || initialRowsPalette3);
     setSpacingBase(project.spacingScale?.base || 1);
     setSpacingUnit(project.spacingScale?.unit || "rem");
-    // Optionally: setFontScaleStyles(project.fontScale || buildDefaultStyles());
+    // Set button states for the active tab (or all tabs if you want)
+    setButtonStates((prev) => {
+      // Only update the active tab, keep others as is
+      return prev.map((state, idx) =>
+        idx === activeTab
+          ? {
+              primary: project.primaryButton
+                ? { ...state.primary, ...project.primaryButton }
+                : state.primary,
+              secondary: project.secondaryButton
+                ? { ...state.secondary, ...project.secondaryButton }
+                : state.secondary,
+              tertiary: project.tertiaryButton
+                ? { ...state.tertiary, ...project.tertiaryButton }
+                : state.tertiary,
+            }
+          : state,
+      );
+    });
   };
 
   return (

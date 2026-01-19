@@ -64,6 +64,8 @@ const PC11 = ({
       <Image
         src={heroImgUrl}
         alt="Product"
+        width={120}
+        height={120}
         style={{
           width: 120,
           height: 120,
