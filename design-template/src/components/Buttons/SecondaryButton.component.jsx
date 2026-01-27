@@ -7,29 +7,44 @@ const SecondaryButton = ({ fontClass, colors, edit = false, secondaryProps: s })
   // Flatten all hex codes from colors prop
   const hexOptions = Array.isArray(colors)
     ? colors
-        .flatMap((group) => (Array.isArray(group.colors) ? group.colors : []))
-        .filter((c) => typeof c === "string" && c.startsWith("#"))
+      .flatMap((group) => (Array.isArray(group.colors) ? group.colors : []))
+      .filter((c) => typeof c === "string" && c.startsWith("#"))
     : [];
 
   const [copied, setCopied] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const baseStyle = {
+    background: s.color,
+    color: s.textColor,
+    borderRadius: s.radius,
+    border: s.border,
+    padding: s.padding,
+    fontSize: s.fontSize,
+    fontWeight: s.fontWeight,
+    letterSpacing: s.letterSpacing,
+    textTransform: s.textTransform,
+    boxShadow: s.boxShadow,
+    lineHeight: s.lineHeight,
+    transition: "background 0.18s, color 0.18s, border 0.18s",
+    outline: "none",
+  };
+  const hoverStyle = isHovered
+    ? {
+      background: s.hoverBg || s.color,
+      color: s.hoverText || s.textColor,
+      border: s.hoverBorder || s.border,
+    }
+    : {};
+
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
       <button
         className={`${fontClass} ${styles.button} secondary-button`}
-        style={{
-          background: s.color,
-          color: s.textColor,
-          borderRadius: s.radius,
-          border: s.border,
-          padding: s.padding,
-          fontSize: s.fontSize,
-          fontWeight: s.fontWeight,
-          letterSpacing: s.letterSpacing,
-          textTransform: s.textTransform,
-          boxShadow: s.boxShadow,
-          lineHeight: s.lineHeight,
-        }}
+        style={{ ...baseStyle, ...hoverStyle }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         Secondary
       </button>

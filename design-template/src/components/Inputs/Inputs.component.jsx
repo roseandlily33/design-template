@@ -52,10 +52,21 @@ const Inputs = ({ font, colors, borderRadius }) => {
         display: "flex",
         flexDirection: "column",
         gap: 36,
-        fontFamily: mainFont,
+        // fontFamily: mainFont,
+        padding: "32px 10px",
       }}
     >
-      <h3>Inputs</h3>
+      <h3
+        style={{
+          fontWeight: "600",
+          fontSize: "1.35rem",
+          marginBottom: "18px",
+          color: "#222",
+          letterSpacing: "0.01em",
+        }}
+      >
+        Inputs
+      </h3>
       {/* Email input row */}
       <div style={{ display: "flex", gap: 32, alignItems: "flex-end" }}>
         {/* Email label above, empty input */}

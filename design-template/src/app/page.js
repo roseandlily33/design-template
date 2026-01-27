@@ -27,8 +27,63 @@ import ImageSelector from "@/components/ImageSelector/ImageSelector.component";
 import { useTabOverrides } from "@/utils/tabOverrides";
 import { defaultButtonState } from "@/utils/buttonState";
 import Inputs from "@/components/Inputs/Inputs.component";
+import BoxShadow from "@/components/BoxShadows/BoxShadow.component";
 
 export default function Home() {
+  // --- Shared text state for Display children ---
+  // HeroImage
+  const [heroTitle, setHeroTitle] = useState("ABC Company");
+  const [heroSubtitle, setHeroSubtitle] = useState(
+    "Your success is our priority",
+  );
+
+  // Description
+  const [descriptionTitle, setDescriptionTitle] = useState("About Our Company");
+  const [descriptionDesc, setDescriptionDesc] = useState(
+    "We are dedicated to delivering innovative solutions and exceptional service to help your business thrive in a dynamic world.",
+  );
+
+  // Testimonial
+  const [testimonialQuote, setTestimonialQuote] = useState(
+    "Working with this company was a fantastic experience. Their team went above and beyond to deliver results.",
+  );
+  const [testimonialAuthor, setTestimonialAuthor] = useState(
+    "— Jennie J., CEO of Jenn Corp",
+  );
+
+  // Companies
+  const [companiesTrustedText, setCompaniesTrustedText] = useState(
+    "Trusted by 10+ companies",
+  );
+
+  // Footer
+  const [footerCopyright, setFooterCopyright] = useState(
+    `© ${new Date().getFullYear()} Your Company. All rights reserved.`,
+  );
+  const [footerLinks, setFooterLinks] = useState([
+    "Home",
+    "About",
+    "Contact",
+    "Privacy Policy",
+    "Terms & Conditions",
+  ]);
+
+  // ThreeIcons (array of 3 objects)
+  const [threeIcons, setThreeIcons] = useState([
+    {
+      label: "Fast Delivery",
+      desc: "We ensure quick and reliable delivery for all your needs.",
+    },
+    {
+      label: "Quality Service",
+      desc: "Our team is dedicated to providing top-notch service every time.",
+    },
+    {
+      label: "Support 24/7",
+      desc: "We are here to help you around the clock, whenever you need us.",
+    },
+  ]);
+
   // Track the current project ID for update vs create
   const [projectId, setProjectId] = useState(null);
   // Modal state for Cards and Layouts preview
@@ -70,6 +125,28 @@ export default function Home() {
   const selected = palettes[activeTab];
   const setSelected = setPalettes[activeTab];
 
+  // Per-palette box shadow state
+  const defaultBoxShadow = {
+    x: 0,
+    y: 2,
+    blur: 8,
+    spread: 0,
+    color: "#222",
+    alpha: 0.18,
+    inset: false,
+  };
+  const [boxShadows, setBoxShadows] = useState([
+    { ...defaultBoxShadow },
+    { ...defaultBoxShadow },
+    { ...defaultBoxShadow },
+  ]);
+  const boxShadow = boxShadows[activeTab];
+  const setBoxShadow = (newShadow) => {
+    setBoxShadows((prev) =>
+      prev.map((s, i) => (i === activeTab ? { ...s, ...newShadow } : s)),
+    );
+  };
+
   const handleFontSetChange = (setIdx, type, value) => {
     setFontSets((prev) =>
       prev.map((set, i) => (i === setIdx ? { ...set, [type]: value } : set)),
@@ -87,9 +164,18 @@ export default function Home() {
 
   // Store button state for each palette tab
   const [buttonStates, setButtonStates] = useState([
-    defaultButtonState(initialRowsPalette1),
-    defaultButtonState(initialRowsPalette2),
-    defaultButtonState(initialRowsPalette3),
+    {
+      ...defaultButtonState(initialRowsPalette1),
+      tab: { ...defaultButtonState(initialRowsPalette1).tab },
+    },
+    {
+      ...defaultButtonState(initialRowsPalette2),
+      tab: { ...defaultButtonState(initialRowsPalette2).tab },
+    },
+    {
+      ...defaultButtonState(initialRowsPalette3),
+      tab: { ...defaultButtonState(initialRowsPalette3).tab },
+    },
   ]);
 
   useEffect(() => {
@@ -122,6 +208,19 @@ export default function Home() {
                 ? def.tertiary.color
                 : state.tertiary.color,
           },
+          tab: {
+            ...state.tab,
+            color:
+              (state.tab && state.tab.color) === def.tab.color
+                ? def.tab.color
+                : (state.tab && state.tab.color) || def.tab.color,
+            padding:
+              !state.tab ||
+              state.tab.padding === undefined ||
+              state.tab.padding === ""
+                ? def.tab.padding
+                : state.tab.padding,
+          },
         };
       }),
     );
@@ -135,6 +234,23 @@ export default function Home() {
         i === activeTab ? { ...s, [type]: { ...s[type], [prop]: value } } : s,
       ),
     );
+  };
+  const tabProps = {
+    ...buttonStates[activeTab].tab,
+    setColor: (c) => setButtonProp("tab", "color", c),
+    setTextColor: (c) => setButtonProp("tab", "textColor", c),
+    setRadius: (v) => setButtonProp("tab", "radius", v),
+    setBorder: (v) => setButtonProp("tab", "border", v),
+    setFontWeight: (v) => setButtonProp("tab", "fontWeight", v),
+    setFontSize: (v) => setButtonProp("tab", "fontSize", v),
+    setLetterSpacing: (v) => setButtonProp("tab", "letterSpacing", v),
+    setBoxShadow: (v) => setButtonProp("tab", "boxShadow", v),
+    setPadding: (v) => setButtonProp("tab", "padding", v),
+    setTextTransform: (v) => setButtonProp("tab", "textTransform", v),
+    setHoverBg: (v) => setButtonProp("tab", "hoverBg", v),
+    setHoverText: (v) => setButtonProp("tab", "hoverText", v),
+    setHoverBorder: (v) => setButtonProp("tab", "hoverBorder", v),
+    setLineHeight: (v) => setButtonProp("tab", "lineHeight", v),
   };
 
   const primaryProps = {
@@ -218,6 +334,84 @@ export default function Home() {
     setPalette3(project.colourPicker3?.rows || initialRowsPalette3);
     setSpacingBase(project.spacingScale?.base || 1);
     setSpacingUnit(project.spacingScale?.unit || "rem");
+    // Restore all shared text fields and boxShadows
+    setHeroTitle(project.heroTitle || "ABC Company");
+    setHeroSubtitle(project.heroSubtitle || "Your success is our priority");
+    setDescriptionTitle(project.descriptionTitle || "About Our Company");
+    setDescriptionDesc(
+      project.descriptionDesc ||
+        "We are dedicated to delivering innovative solutions and exceptional service to help your business thrive in a dynamic world.",
+    );
+    setTestimonialQuote(
+      project.testimonialQuote ||
+        "Working with this company was a fantastic experience. Their team went above and beyond to deliver results.",
+    );
+    setTestimonialAuthor(
+      project.testimonialAuthor || "— Jennie J., CEO of Jenn Corp",
+    );
+    setCompaniesTrustedText(
+      project.companiesTrustedText || "Trusted by 10+ companies",
+    );
+    setFooterCopyright(
+      project.footerCopyright ||
+        `© ${new Date().getFullYear()} Your Company. All rights reserved.`,
+    );
+    setFooterLinks(
+      project.footerLinks || [
+        "Home",
+        "About",
+        "Contact",
+        "Privacy Policy",
+        "Terms & Conditions",
+      ],
+    );
+    setThreeIcons(
+      project.threeIcons || [
+        {
+          label: "Fast Delivery",
+          desc: "We ensure quick and reliable delivery for all your needs.",
+        },
+        {
+          label: "Quality Service",
+          desc: "Our team is dedicated to providing top-notch service every time.",
+        },
+        {
+          label: "Support 24/7",
+          desc: "We are here to help you around the clock, whenever you need us.",
+        },
+      ],
+    );
+    setBoxShadows(
+      project.boxShadows || [
+        {
+          x: 0,
+          y: 2,
+          blur: 8,
+          spread: 0,
+          color: "#222",
+          alpha: 0.18,
+          inset: false,
+        },
+        {
+          x: 0,
+          y: 2,
+          blur: 8,
+          spread: 0,
+          color: "#222",
+          alpha: 0.18,
+          inset: false,
+        },
+        {
+          x: 0,
+          y: 2,
+          blur: 8,
+          spread: 0,
+          color: "#222",
+          alpha: 0.18,
+          inset: false,
+        },
+      ],
+    );
     // Set button states for the active tab (or all tabs if you want)
     setButtonStates((prev) => {
       // Only update the active tab, keep others as is
@@ -242,6 +436,7 @@ export default function Home() {
   return (
     <div>
       <Header onProjectLoad={handleProjectLoad} />
+      <p>Testimonial Quote{testimonialQuote}</p>
       <div
         style={{
           display: "flex",
@@ -429,6 +624,18 @@ export default function Home() {
         spacingUnit={spacingUnit}
         projectId={projectId}
         setProjectId={setProjectId}
+        // Shared text values
+        heroTitle={heroTitle}
+        heroSubtitle={heroSubtitle}
+        descriptionTitle={descriptionTitle}
+        descriptionDesc={descriptionDesc}
+        testimonialQuote={testimonialQuote}
+        testimonialAuthor={testimonialAuthor}
+        companiesTrustedText={companiesTrustedText}
+        footerCopyright={footerCopyright}
+        footerLinks={footerLinks}
+        threeIcons={threeIcons}
+        boxShadows={boxShadows}
       />
 
       <main className={styles.displayRoot}>
@@ -470,6 +677,7 @@ export default function Home() {
                 fontMap={fontMap}
                 fontScaleStyles={fontScaleStyles}
                 setFontScaleStyles={setFontScaleStyles}
+                colours={selected}
               />
               <SpacingChart
                 colours={selected}
@@ -485,6 +693,7 @@ export default function Home() {
                 primaryProps={primaryProps}
                 secondaryProps={secondaryProps}
                 tertiaryProps={tertiaryProps}
+                tabProps={tabProps}
               />
               <Logo
                 logoUrl={logoUrl}
@@ -502,12 +711,23 @@ export default function Home() {
                 colors={selected}
                 borderRadius={radius}
               />
+              {/* Box Shadow component goes here */}
+              <BoxShadow
+                borderRadius={radius}
+                boxShadow={boxShadow}
+                setBoxShadow={setBoxShadow}
+                paletteColors={selected}
+              />
             </div>
           </div>
         )}
         {/* Right pane always underneath, responsive */}
         <div className={styles.rightPane}>
           <Display
+            heroTitle={heroTitle}
+            setHeroTitle={setHeroTitle}
+            heroSubtitle={heroSubtitle}
+            setHeroSubtitle={setHeroSubtitle}
             primaryButton={
               <PrimaryButton
                 fontClass={fontMap[selectedFontSet.main]}
@@ -563,6 +783,22 @@ export default function Home() {
             onTestimonialColorChange={handleTestimonialColorChange}
             footerOverrides={footerOverrides[activeTab]}
             onFooterColorChange={handleFooterColorChange}
+            testimonialQuote={testimonialQuote}
+            setTestimonialQuote={setTestimonialQuote}
+            testimonialAuthor={testimonialAuthor}
+            setTestimonialAuthor={setTestimonialAuthor}
+            companiesTrustedText={companiesTrustedText}
+            setCompaniesTrustedText={setCompaniesTrustedText}
+            descriptionTitle={descriptionTitle}
+            setDescriptionTitle={setDescriptionTitle}
+            descriptionDesc={descriptionDesc}
+            setDescriptionDesc={setDescriptionDesc}
+            threeIcons={threeIcons}
+            setThreeIcons={setThreeIcons}
+            footerCopyright={footerCopyright}
+            setFooterCopyright={setFooterCopyright}
+            footerLinks={footerLinks}
+            setFooterLinks={setFooterLinks}
           />
         </div>
       </main>

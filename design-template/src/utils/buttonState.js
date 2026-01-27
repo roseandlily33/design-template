@@ -57,4 +57,23 @@ export const defaultButtonState = (palette) => ({
     hoverBorder: "",
     lineHeight: 1.2,
   },
+  tab: {
+    color:
+      getPaletteColor(palette, "Tab") ||
+      getPaletteColor(palette, "Main") ||
+      "#b7c7e6",
+    textColor: "#fff",
+    radius: 8,
+    border: "none",
+    fontWeight: 500,
+    fontSize: 18,
+    letterSpacing: 0,
+    boxShadow: "",
+    padding: "12px 32px",
+    textTransform: "none",
+    hoverBg: "",
+    hoverText: "",
+    hoverBorder: "",
+    lineHeight: 1.2,
+  },
 });

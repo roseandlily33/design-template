@@ -42,6 +42,27 @@ const Display = ({
   footerOverrides = {},
   onFooterColorChange,
   heroImgUrl,
+  testimonialQuote,
+  setTestimonialQuote,
+  testimonialAuthor,
+  setTestimonialAuthor,
+  heroTitle,
+  setHeroTitle,
+  heroSubtitle,
+  setHeroSubtitle,
+  companiesTrustedText,
+  setCompaniesTrustedText,
+  descriptionTitle,
+  setDescriptionTitle,
+  descriptionDesc,
+  setDescriptionDesc,
+  threeIcons,
+  setThreeIcons,
+  footerCopyright,
+  setFooterCopyright,
+  footerLinks,
+  setFooterLinks,
+  breakpoint = "Desktop",
 }) => {
   const spacingVars = buildSpacingVars(base, unit);
   const spacingChart = buildSpacingChart(base, unit);
@@ -99,11 +120,17 @@ const Display = ({
         mainFontClass={mainFontClass}
         colours={colours}
         spacingChart={spacingChart}
-        spacingBase={base}
-        spacingUnit={unit}
-        overrides={heroImgOverrides}
-        onColorChange={onHeroImgColorChange}
+        //spacingBase={base}
+        //spacingUnit={unit}
+        //overrides={heroImgOverrides}
+        //onColorChange={onHeroImgColorChange}
         heroImgUrl={heroImgUrl}
+        heroTitle={heroTitle}
+        setHeroTitle={setHeroTitle}
+        heroSubtitle={heroSubtitle}
+        setHeroSubtitle={setHeroSubtitle}
+        fontScale={fontScale}
+        breakpoint={breakpoint}
       />
       <Description
         secondaryButton={secondaryButton}
@@ -112,10 +139,16 @@ const Display = ({
         mainFontClass={mainFontClass}
         colours={colours}
         spacingChart={spacingChart}
-        spacingBase={base}
-        spacingUnit={unit}
-        overrides={descriptionOverrides}
-        onColorChange={onDescriptionColorChange}
+        //spacingBase={base}
+        //spacingUnit={unit}
+        //overrides={descriptionOverrides}
+        //onColorChange={onDescriptionColorChange}
+        descriptionTitle={descriptionTitle}
+        setDescriptionTitle={setDescriptionTitle}
+        descriptionDesc={descriptionDesc}
+        setDescriptionDesc={setDescriptionDesc}
+        fontScale={fontScale}
+        breakpoint={breakpoint}
       />
       <ThreeIcons
         headerFontClass={headerFontClass}
@@ -123,10 +156,14 @@ const Display = ({
         borderRadius={borderRadius}
         colours={colours}
         spacingChart={spacingChart}
-        spacingBase={base}
-        spacingUnit={unit}
-        overrides={threeIconsOverrides}
-        onColorChange={onThreeIconsColorChange}
+        //spacingBase={base}
+        //spacingUnit={unit}
+        //overrides={threeIconsOverrides}
+        //onColorChange={onThreeIconsColorChange}
+        threeIcons={threeIcons}
+        setThreeIcons={setThreeIcons}
+        fontScale={fontScale}
+        breakpoint={breakpoint}
       />
       <Companies
         mainFontClass={mainFontClass}
@@ -137,6 +174,8 @@ const Display = ({
         spacingUnit={unit}
         overrides={companiesOverrides}
         onColorChange={onCompaniesColorChange}
+        companiesTrustedText={companiesTrustedText}
+        setCompaniesTrustedText={setCompaniesTrustedText}
       />
       <Testimonial
         mainFontClass={mainFontClass}
@@ -144,10 +183,16 @@ const Display = ({
         borderRadius={borderRadius}
         colours={colours}
         spacingChart={spacingChart}
-        spacingBase={base}
-        spacingUnit={unit}
-        overrides={testimonialOverrides}
-        onColorChange={onTestimonialColorChange}
+        //spacingBase={base}
+        //spacingUnit={unit}
+        //overrides={testimonialOverrides}
+        //onColorChange={onTestimonialColorChange}
+        quote={testimonialQuote}
+        setQuote={setTestimonialQuote}
+        author={testimonialAuthor}
+        setAuthor={setTestimonialAuthor}
+        fontScale={fontScale}
+        breakpoint={breakpoint}
       />
       <Footer
         logo={logo}
@@ -161,6 +206,10 @@ const Display = ({
         spacingUnit={unit}
         overrides={footerOverrides}
         onColorChange={onFooterColorChange}
+        footerCopyright={footerCopyright}
+        setFooterCopyright={setFooterCopyright}
+        footerLinks={footerLinks}
+        setFooterLinks={setFooterLinks}
       />
     </div>
   );

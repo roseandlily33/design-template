@@ -19,6 +19,18 @@ const SaveAndTabs = ({
   spacingUnit,
   projectId,
   setProjectId,
+  // Shared text values
+  heroTitle,
+  heroSubtitle,
+  descriptionTitle,
+  descriptionDesc,
+  testimonialQuote,
+  testimonialAuthor,
+  companiesTrustedText,
+  footerCopyright,
+  footerLinks,
+  threeIcons,
+  boxShadows,
   isReadOnly = false,
   shared = false,
 }) => {
@@ -98,6 +110,18 @@ const SaveAndTabs = ({
         colourPicker3: { rows: palette3 },
         spacingScale: { base: spacingBase, unit: spacingUnit },
         fontScale,
+        // Shared text values
+        heroTitle,
+        heroSubtitle,
+        descriptionTitle,
+        descriptionDesc,
+        testimonialQuote,
+        testimonialAuthor,
+        companiesTrustedText,
+        footerCopyright,
+        footerLinks,
+        threeIcons,
+        boxShadows,
       };
 
       const res = await fetch(`${backendUrl}/api/project`, {

@@ -32,262 +32,232 @@ const ThreeIcons = ({
   borderRadius,
   colours,
   spacingChart,
-  overrides = {},
-  onColorChange,
+  //overrides = {},
+  //onColorChange,
+  threeIcons,
+  setThreeIcons,
+  fontScale = {},
+  breakpoint = "Desktop",
 }) => {
   // Helper to get palette color by label and index
-  const getPaletteColor = React.useCallback((label, idx = 0) => {
-    const row = Array.isArray(colours)
-      ? colours.find(
-        (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
-      )
-      : null;
-    return row && Array.isArray(row.colors) && row.colors[idx]
-      ? row.colors[idx]
-      : undefined;
-  }, [colours]);
+  const getPaletteColor = React.useCallback(
+    (label, idx = 0) => {
+      const row = Array.isArray(colours)
+        ? colours.find(
+          (r) => r.label && r.label.toLowerCase() === label.toLowerCase(),
+        )
+        : null;
+      return row && Array.isArray(row.colors) && row.colors[idx]
+        ? row.colors[idx]
+        : undefined;
+    },
+    [colours],
+  );
 
   // Palette defaults for icon backgrounds: Main[0], Accent[0], Grey[0]
-  const paletteIconColors = React.useMemo(() => [
-    getPaletteColor("Main", 0) || defaultIcons[0].color,
-    getPaletteColor("Accent", 0) || defaultIcons[1].color,
-    getPaletteColor("Grey", 2) || defaultIcons[2].color,
-  ], [getPaletteColor]);
+  const paletteIconColors = React.useMemo(
+    () => [
+      getPaletteColor("Main", 0) || defaultIcons[0].color,
+      getPaletteColor("Accent", 0) || defaultIcons[1].color,
+      getPaletteColor("Grey", 2) || defaultIcons[2].color,
+    ],
+    [getPaletteColor],
+  );
 
   // Palette defaults for label/desc
-  const defaultLabelColors = React.useMemo(() => [
-    getPaletteColor("Main", 3) || getPaletteColor("Main", 4) || "#222",
-    getPaletteColor("Accent", 5) || getPaletteColor("Accent", 4) || "#222",
-    getPaletteColor("Grey", 4) || getPaletteColor("Grey", 5) || "#222",
-  ], [getPaletteColor]);
-  const defaultDescColors = React.useMemo(() => [
-    getPaletteColor("Main", 2) || getPaletteColor("Main", 1) || "#444",
-    getPaletteColor("Accent", 3) || getPaletteColor("Accent", 4) || "#444",
-    getPaletteColor("Grey", 3) || getPaletteColor("Grey", 4) || "#444",
-  ], [getPaletteColor]);
+  const defaultLabelColors = React.useMemo(
+    () => [
+      getPaletteColor("Main", 3) || getPaletteColor("Main", 4) || "#222",
+      getPaletteColor("Accent", 5) || getPaletteColor("Accent", 4) || "#222",
+      getPaletteColor("Grey", 4) || getPaletteColor("Grey", 5) || "#222",
+    ],
+    [getPaletteColor],
+  );
+  const defaultDescColors = React.useMemo(
+    () => [
+      getPaletteColor("Main", 2) || getPaletteColor("Main", 1) || "#444",
+      getPaletteColor("Accent", 3) || getPaletteColor("Accent", 4) || "#444",
+      getPaletteColor("Grey", 3) || getPaletteColor("Grey", 4) || "#444",
+    ],
+    [getPaletteColor],
+  );
 
   // Use overrides if present, else palette defaults
-  const [cards, setCards] = useState(
-    defaultIcons.map((c, i) => ({
-      ...c,
-      color: overrides[`icon:${i}`] ?? paletteIconColors[i],
-      labelColor: overrides[`label:${i}`] ?? defaultLabelColors[i],
-      descColor: overrides[`desc:${i}`] ?? defaultDescColors[i],
-    }))
-  );
+  // cards state is now lifted to parent
+  const [cards, setCards] = [threeIcons, setThreeIcons];
 
   // Sync cards state with overrides prop when overrides or palette changes
   useEffect(() => {
     setCards(
       defaultIcons.map((c, i) => ({
         ...c,
-        color: overrides[`icon:${i}`] ?? paletteIconColors[i],
-        labelColor: overrides[`label:${i}`] ?? defaultLabelColors[i],
-        descColor: overrides[`desc:${i}`] ?? defaultDescColors[i],
-      }))
+        color: paletteIconColors[i],
+        labelColor: defaultLabelColors[i],
+        descColor: defaultDescColors[i],
+      })),
     );
-  }, [defaultLabelColors, defaultDescColors, paletteIconColors, overrides, colours]);
+  }, [
+    defaultLabelColors,
+    defaultDescColors,
+    paletteIconColors,
+    colours,
+    setCards,
+  ]);
 
-  // Track previous palette defaults for each card
-  const prevDefaults = useRef(
-    defaultIcons.map((c, i) => ({
-      color: paletteIconColors[i],
-      labelColor: defaultLabelColors[i],
-      descColor: defaultDescColors[i],
-    }))
+const [editing, setEditing] = useState({}); 
+
+const handleEdit = (idx, field) => {
+  setEditing((prev) => ({ ...prev, [idx]: { ...prev[idx], [field]: true } }));
+};
+const handleBlur = (idx, field) => {
+  setEditing((prev) => ({
+    ...prev,
+    [idx]: { ...prev[idx], [field]: false },
+  }));
+};
+const handleChange = (idx, field, value) => {
+  setCards((prev) =>
+    prev.map((card, i) => (i === idx ? { ...card, [field]: value } : card)),
   );
+  if (onColorChange && ["color", "labelColor", "descColor"].includes(field)) {
+    let key = null;
+    if (field === "color") key = `icon:${idx}`;
+    if (field === "labelColor") key = `label:${idx}`;
+    if (field === "descColor") key = `desc:${idx}`;
+    if (key) onColorChange(key, value);
+  }
+};
+const handleKeyDown = (e, idx, field) => {
+  if (e.key === "Enter") handleBlur(idx, field);
+};
 
-  useEffect(() => {
-    const newPaletteIconColors = [
-      getPaletteColor("Main", 0) || defaultIcons[0].color,
-      getPaletteColor("Accent", 0) || defaultIcons[1].color,
-      getPaletteColor("Grey", 0) || defaultIcons[2].color,
-    ];
-    const newLabelColors = [
-      getPaletteColor("Main", 1) || getPaletteColor("Main", 0) || "#222",
-      getPaletteColor("Accent", 1) || getPaletteColor("Accent", 0) || "#222",
-      getPaletteColor("Grey", 1) || getPaletteColor("Grey", 0) || "#222",
-    ];
-    const newDescColors = [
-      getPaletteColor("Accent", 1) || getPaletteColor("Accent", 0) || "#444",
-      getPaletteColor("Main", 2) || getPaletteColor("Main", 1) || "#444",
-      getPaletteColor("Grey", 2) || getPaletteColor("Grey", 1) || "#444",
-    ];
-    setCards((prevCards) =>
-      prevCards.map((card, i) => ({
-        ...card,
-        color:
-          overrides[`icon:${i}`] ??
-          (card.color === prevDefaults.current[i].color
-            ? newPaletteIconColors[i]
-            : card.color),
-        labelColor:
-          overrides[`label:${i}`] ??
-          (card.labelColor === prevDefaults.current[i].labelColor
-            ? newLabelColors[i]
-            : card.labelColor),
-        descColor:
-          overrides[`desc:${i}`] ??
-          (card.descColor === prevDefaults.current[i].descColor
-            ? newDescColors[i]
-            : card.descColor),
-      }))
-    );
-    prevDefaults.current = newPaletteIconColors.map((color, i) => ({
-      color,
-      labelColor: newLabelColors[i],
-      descColor: newDescColors[i],
-    }));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [colours, overrides, defaultLabelColors, defaultDescColors, paletteIconColors]);
-  const [editing, setEditing] = useState({}); // { [cardIdx]: { label: bool, desc: bool } }
+const sectionStyle = spacingChart
+  ? { margin: `${spacingChart.xl.css} 0` }
+  : undefined;
+const rowStyle = spacingChart ? { gap: spacingChart.xl.css } : undefined;
+const cardPaddingStyle = spacingChart
+  ? {
+    padding: `${spacingChart.xxl.css} ${spacingChart.m.css} ${spacingChart.m.css} ${spacingChart.m.css}`,
+  }
+  : undefined;
+const iconCircleStyle = spacingChart
+  ? {
+    width: spacingChart.xxl.css,
+    height: spacingChart.xxl.css,
+    marginBottom: spacingChart.l.css,
+  }
+  : undefined;
+const titleStyle = spacingChart
+  ? { marginBottom: spacingChart.xs.css }
+  : undefined;
 
-  const handleEdit = (idx, field) => {
-    setEditing((prev) => ({ ...prev, [idx]: { ...prev[idx], [field]: true } }));
-  };
-  const handleBlur = (idx, field) => {
-    setEditing((prev) => ({
-      ...prev,
-      [idx]: { ...prev[idx], [field]: false },
-    }));
-  };
-  const handleChange = (idx, field, value) => {
-    setCards((prev) =>
-      prev.map((card, i) => (i === idx ? { ...card, [field]: value } : card))
-    );
-    if (onColorChange && ["color", "labelColor", "descColor"].includes(field)) {
-      // Map field to override key
-      let key = null;
-      if (field === "color") key = `icon:${idx}`;
-      if (field === "labelColor") key = `label:${idx}`;
-      if (field === "descColor") key = `desc:${idx}`;
-      if (key) onColorChange(key, value);
-    }
-  };
-  const handleKeyDown = (e, idx, field) => {
-    if (e.key === "Enter") handleBlur(idx, field);
-  };
-
-  const sectionStyle = spacingChart
-    ? { margin: `${spacingChart.xl.css} 0` }
-    : undefined;
-  const rowStyle = spacingChart ? { gap: spacingChart.xl.css } : undefined;
-  const cardPaddingStyle = spacingChart
-    ? {
-      padding: `${spacingChart.xxl.css} ${spacingChart.m.css} ${spacingChart.m.css} ${spacingChart.m.css}`,
-    }
-    : undefined;
-  const iconCircleStyle = spacingChart
-    ? {
-      width: spacingChart.xxl.css,
-      height: spacingChart.xxl.css,
-      marginBottom: spacingChart.l.css,
-    }
-    : undefined;
-  const titleStyle = spacingChart
-    ? { marginBottom: spacingChart.xs.css }
-    : undefined;
-
-  return (
-    <section className={styles.iconsSection} style={sectionStyle}>
-      <div className={styles.cardsRow} style={rowStyle}>
-        {cards.map((icon, idx) => (
-          <div
-            key={icon.label + idx}
-            className={styles.card}
-            style={{ borderRadius: borderRadius, ...cardPaddingStyle }}
-          >
-            {/* icon circle: reuse editable modal to pick a background color.
+return (
+  <section className={styles.iconsSection} style={sectionStyle}>
+    <div className={styles.cardsRow} style={rowStyle}>
+      {cards.map((icon, idx) => (
+        <div
+          key={icon.label + idx}
+          className={styles.card}
+          style={{ borderRadius: borderRadius, ...cardPaddingStyle }}
+        >
+          {/* icon circle: reuse editable modal to pick a background color.
                 onSelect updates the card.color, and the div's background uses that value. */}
-            <EditableWithColor
-              palettes={colours}
-              initialColor={icon.color}
-              defaultColor={icon.color}
-              onSelect={(c) => handleChange(idx, "color", c)}
-            >
-              <div
-                className={styles.iconCircle}
-                style={{ background: icon.color, ...iconCircleStyle }}
-              />
-            </EditableWithColor>
+          <EditableWithColor
+            palettes={colours}
+            initialColor={icon.color}
+            defaultColor={icon.color}
+            onSelect={(c) => handleChange(idx, "color", c)}
+          >
+            <div
+              className={styles.iconCircle}
+              style={{ background: icon.color, ...iconCircleStyle }}
+            />
+          </EditableWithColor>
 
-            {/* title: keep text edit state in this component, but wrap with EditableWithColor
+          {/* title: keep text edit state in this component, but wrap with EditableWithColor
                 so the same color-picker / edit button appear for title text. */}
+          {/*
             <EditableWithColor
               palettes={colours}
               initialColor={icon.labelColor || icon.color}
               defaultColor={icon.labelColor || "#222"}
               onSelect={(c) => handleChange(idx, "labelColor", c)}
             >
-              {editing[idx]?.label ? (
-                <input
-                  className={headerFontClass + " " + styles.cardTitle}
-                  value={icon.label}
-                  onChange={(e) => handleChange(idx, "label", e.target.value)}
-                  onBlur={() => handleBlur(idx, "label")}
-                  onKeyDown={(e) => handleKeyDown(e, idx, "label")}
-                  autoFocus
-                  style={{
-                    textAlign: "center",
-                    fontWeight: 700,
-                    fontSize: "1.25rem",
-                    width: "100%",
-                    color: icon.labelColor || "#222",
-                    ...titleStyle,
-                  }}
-                />
-              ) : (
-                <h3
-                  className={headerFontClass + " " + styles.cardTitle}
-                  onClick={() => handleEdit(idx, "label")}
-                  style={{
-                    cursor: "pointer",
-                    color: icon.labelColor || "#222",
-                    ...titleStyle,
-                  }}
-                >
-                  {icon.label}
-                </h3>
-              )}
-            </EditableWithColor>
+            */}
+          {editing[idx]?.label ? (
+            <input
+              className={headerFontClass + " " + styles.cardTitle}
+              value={icon.label}
+              onChange={(e) => handleChange(idx, "label", e.target.value)}
+              onBlur={() => handleBlur(idx, "label")}
+              onKeyDown={(e) => handleKeyDown(e, idx, "label")}
+              autoFocus
+              style={{
+                textAlign: "center",
+                fontWeight: 700,
+                fontSize: "1.25rem",
+                width: "100%",
+                color: fontScale?.h3?.[breakpoint]?.color || icon.labelColor || "#222",
+                ...titleStyle,
+              }}
+            />
+          ) : (
+            <h3
+              className={headerFontClass + " " + styles.cardTitle}
+              onClick={() => handleEdit(idx, "label")}
+              style={{
+                cursor: "pointer",
+                color: fontScale?.h3?.[breakpoint]?.color || icon.labelColor || "#222",
+                ...titleStyle,
+              }}
+            >
+              {icon.label}
+            </h3>
+          )}
+          {/*</EditableWithColor>*/}
 
-            {/* description: same pattern as title */}
+          {/* description: same pattern as title */}
+          {/*
             <EditableWithColor
               palettes={colours}
               initialColor={icon.descColor || "#444"}
               defaultColor={icon.descColor || "#444"}
               onSelect={(c) => handleChange(idx, "descColor", c)}
             >
-              {editing[idx]?.desc ? (
-                <input
-                  className={mainFontClass + " " + styles.cardDesc}
-                  value={icon.desc}
-                  onChange={(e) => handleChange(idx, "desc", e.target.value)}
-                  onBlur={() => handleBlur(idx, "desc")}
-                  onKeyDown={(e) => handleKeyDown(e, idx, "desc")}
-                  autoFocus
-                  style={{
-                    textAlign: "center",
-                    fontSize: "1rem",
-                    width: "100%",
-                    color: icon.descColor || "#444",
-                  }}
-                />
-              ) : (
-                <p
-                  className={mainFontClass + " " + styles.cardDesc}
-                  onClick={() => handleEdit(idx, "desc")}
-                  style={{ cursor: "pointer", color: icon.descColor || "#444" }}
-                >
-                  {icon.desc}
-                </p>
-              )}
-            </EditableWithColor>
-          </div>
-        ))}
-      </div>
-    </section>
-  );
+            */}
+          {editing[idx]?.desc ? (
+            <input
+              className={mainFontClass + " " + styles.cardDesc}
+              value={icon.desc}
+              onChange={(e) => handleChange(idx, "desc", e.target.value)}
+              onBlur={() => handleBlur(idx, "desc")}
+              onKeyDown={(e) => handleKeyDown(e, idx, "desc")}
+              autoFocus
+              style={{
+                textAlign: "center",
+                fontSize: "1rem",
+                width: "100%",
+                color: fontScale?.p?.[breakpoint]?.color || icon.descColor || "#444",
+              }}
+            />
+          ) : (
+            <p
+              className={mainFontClass + " " + styles.cardDesc}
+              onClick={() => handleEdit(idx, "desc")}
+              style={{
+                cursor: "pointer",
+                color: fontScale?.p?.[breakpoint]?.color || icon.descColor || "#444",
+              }}
+            >
+              {icon.desc}
+            </p>
+          )}
+          {/*</EditableWithColor>*/}
+        </div>
+      ))}
+    </div>
+  </section>
+);
 };
 
 export default ThreeIcons;

@@ -1,6 +1,6 @@
 # Design Template
 
-all rights reserved
+All Rights Reserved
 Link: https://design-template-eotn.onrender.com/
 
 ## Table of Contents
@@ -83,6 +83,7 @@ Some ideas that I have:
 - Form expansion
 - Vertical expansion
 - Breadcrumbs expansion
+- Save and upload hero image and logo
 - Tab Button expansions
 - Save changes within the actual inputs for the template
 

@@ -3,6 +3,7 @@ import styles from "./Buttons.module.css";
 import PrimaryButton from "./PrimaryButton.component";
 import SecondaryButton from "./SecondaryButton.component";
 import TertiaryButton from "./TertiaryButton.component";
+import TabButton from "./TabButton.component";
 
 const Buttons = ({
     font,
@@ -11,6 +12,7 @@ const Buttons = ({
     primaryProps,
     secondaryProps,
     tertiaryProps,
+    tabProps,
 }) => {
     const fontClass = fontMap[font] || "";
 
@@ -44,6 +46,15 @@ const Buttons = ({
                     colors={colors}
                     edit={true}
                     tertiaryProps={tertiaryProps}
+                />
+            </div>
+            {/* Tab Button */}
+            <div className={styles.buttonGroup}>
+                <TabButton
+                    fontClass={fontClass}
+                    colors={colors}
+                    edit={true}
+                    tabProps={tabProps}
                 />
             </div>
         </div>

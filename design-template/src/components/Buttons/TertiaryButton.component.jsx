@@ -12,28 +12,43 @@ const TertiaryButton = ({
   // Flatten all hex codes from colors prop
   const hexOptions = Array.isArray(colors)
     ? colors
-        .flatMap((group) => (Array.isArray(group.colors) ? group.colors : []))
-        .filter((c) => typeof c === "string" && c.startsWith("#"))
+      .flatMap((group) => (Array.isArray(group.colors) ? group.colors : []))
+      .filter((c) => typeof c === "string" && c.startsWith("#"))
     : [];
   const [copied, setCopied] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const baseStyle = {
+    background: t.color,
+    color: t.textColor,
+    borderRadius: t.radius,
+    border: t.border,
+    padding: t.padding,
+    fontSize: t.fontSize,
+    fontWeight: t.fontWeight,
+    letterSpacing: t.letterSpacing,
+    textTransform: t.textTransform,
+    boxShadow: t.boxShadow,
+    lineHeight: t.lineHeight,
+    transition: "background 0.18s, color 0.18s, border 0.18s",
+    outline: "none",
+  };
+  const hoverStyle = isHovered
+    ? {
+      background: t.hoverBg || t.color,
+      color: t.hoverText || t.textColor,
+      border: t.hoverBorder || t.border,
+    }
+    : {};
+
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
       <button
         className={`${fontClass} ${styles.button} tertiary-button`}
-        style={{
-          background: t.color,
-          color: t.textColor,
-          borderRadius: t.radius,
-          border: t.border,
-          padding: t.padding,
-          fontSize: t.fontSize,
-          fontWeight: t.fontWeight,
-          letterSpacing: t.letterSpacing,
-          textTransform: t.textTransform,
-          boxShadow: t.boxShadow,
-          lineHeight: t.lineHeight,
-        }}
+        style={{ ...baseStyle, ...hoverStyle }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
       >
         Tertiary
       </button>

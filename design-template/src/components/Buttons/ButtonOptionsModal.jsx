@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import { createPortal } from "react-dom";
+import { ColorSelect } from "../Buttons/ColourSelect.component";
 
 const ButtonOptionsModal = ({
   show,
@@ -80,24 +81,14 @@ const ButtonOptionsModal = ({
         </button>
         <h3 style={{ marginBottom: 18 }}>{label} Button Options</h3>
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <label>
+          <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {label} Color:
-            <select
+            <ColorSelect
               value={color}
-              onChange={(e) => setColor(e.target.value)}
-              style={{ width: 120, marginLeft: 8 }}
-            >
-              {hexOptions.map((c, idx) => (
-                <option
-                  key={c + idx}
-                  value={c}
-                  style={{ background: c, color: "#222" }}
-                >
-                  {c}
-                </option>
-              ))}
-              <option value={color}>Custom</option>
-            </select>
+              onChange={(v) => setColor(v)}
+              options={hexOptions}
+              customValue={color}
+            />
             {!hexOptions.includes(color) && (
               <input
                 type="color"
@@ -135,9 +126,14 @@ const ButtonOptionsModal = ({
               onChange={(e) => setFontWeight(Number(e.target.value))}
               style={{ marginLeft: 8 }}
             >
+              <option value={100}>100</option>
+              <option value={200}>200</option>
+              <option value={300}>300</option>
               <option value={400}>400</option>
               <option value={500}>500</option>
+              <option value={600}>600</option>
               <option value={700}>700</option>
+              <option value={800}>800</option>
             </select>
           </label>
           <label>
@@ -196,24 +192,14 @@ const ButtonOptionsModal = ({
               <option value="capitalize">Capitalize</option>
             </select>
           </label>
-          <label>
+          <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
             Text Color:
-            <select
+            <ColorSelect
               value={textColor}
-              onChange={(e) => setTextColor(e.target.value)}
-              style={{ marginLeft: 8, width: 120 }}
-            >
-              {hexOptions.map((c, idx) => (
-                <option
-                  key={c + idx}
-                  value={c}
-                  style={{ background: c, color: "#222" }}
-                >
-                  {c}
-                </option>
-              ))}
-              <option value={textColor}>Custom</option>
-            </select>
+              onChange={(v) => setTextColor(v)}
+              options={hexOptions}
+              customValue={textColor}
+            />
             {!hexOptions.includes(textColor) && (
               <input
                 type="color"
@@ -223,24 +209,14 @@ const ButtonOptionsModal = ({
               />
             )}
           </label>
-          <label>
+          <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
             Hover BG:
-            <select
+            <ColorSelect
               value={hoverBg}
-              onChange={(e) => setHoverBg(e.target.value)}
-              style={{ marginLeft: 8, width: 120 }}
-            >
-              {hexOptions.map((c, idx) => (
-                <option
-                  key={c + idx}
-                  value={c}
-                  style={{ background: c, color: "#222" }}
-                >
-                  {c}
-                </option>
-              ))}
-              <option value={hoverBg}>Custom</option>
-            </select>
+              onChange={(v) => setHoverBg(v)}
+              options={hexOptions}
+              customValue={hoverBg}
+            />
             {!hexOptions.includes(hoverBg) && (
               <input
                 type="color"
@@ -250,24 +226,14 @@ const ButtonOptionsModal = ({
               />
             )}
           </label>
-          <label>
+          <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
             Hover Text:
-            <select
+            <ColorSelect
               value={hoverText}
-              onChange={(e) => setHoverText(e.target.value)}
-              style={{ marginLeft: 8, width: 120 }}
-            >
-              {hexOptions.map((c, idx) => (
-                <option
-                  key={c + idx}
-                  value={c}
-                  style={{ background: c, color: "#222" }}
-                >
-                  {c}
-                </option>
-              ))}
-              <option value={hoverText}>Custom</option>
-            </select>
+              onChange={(v) => setHoverText(v)}
+              options={hexOptions}
+              customValue={hoverText}
+            />
             {!hexOptions.includes(hoverText) && (
               <input
                 type="color"
@@ -322,7 +288,7 @@ const ButtonOptionsModal = ({
         </div>
       </div>
     </div>,
-    typeof window !== "undefined" ? document.body : undefined
+    typeof window !== "undefined" ? document.body : undefined,
   );
 };
 

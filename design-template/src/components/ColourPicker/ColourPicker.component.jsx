@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useRef } from "react";
 import AccessibilityChartModal from "./AccessibilityChartModal";
 import styles from "./ColourPicker.module.css";
+import GenerateColours from "./GenerateColours.component";
 
 const MAX_COLORS = 8;
 
@@ -38,6 +39,10 @@ const ColourPicker = ({
   ) => (
     <div className={styles.paletteSection}>
       <div className={styles.pickerTitle}>{label}</div>
+      <GenerateColours
+        rows={rows}
+        setRows={setRows}
+      />
       {rows.map((row, rowIdx) => (
         <div key={row.label} className={styles.row}>
           <div className={styles.rowLabel}>{row.label}</div>
@@ -58,8 +63,8 @@ const ColourPicker = ({
                     background: color || undefined,
                     border:
                       selected &&
-                      selected.rowIdx === rowIdx &&
-                      selected.colorIdx === idx
+                        selected.rowIdx === rowIdx &&
+                        selected.colorIdx === idx
                         ? "2px solid #6883a1"
                         : undefined,
                   }}
@@ -110,6 +115,9 @@ const ColourPicker = ({
                     marginTop: 4,
                     cursor: color ? "pointer" : "default",
                     userSelect: "all",
+                    display: "inline-block",
+                    minWidth: 70,
+                    textAlign: "center",
                   }}
                   onClick={() => {
                     if (!color) return;
@@ -128,6 +136,73 @@ const ColourPicker = ({
                       : color
                     : "#ffffff"}
                 </span>
+                {/* Move arrows below the circle */}
+                <div style={{ display: "flex", gap: 2, marginTop: 6 }}>
+                  {idx > 0 && (
+                    <button
+                      style={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: "50%",
+                        border: "none",
+                        background: "#fff",
+                        color: "#333",
+                        fontWeight: "bold",
+                        fontSize: 14,
+                        cursor: "pointer",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                        zIndex: 1,
+                      }}
+                      title="Move left"
+                      onClick={() => {
+                        setRows((prevRows) =>
+                          prevRows.map((row, rIdx) => {
+                            if (rIdx === rowIdx) {
+                              const newColors = [...row.colors];
+                              [newColors[idx - 1], newColors[idx]] = [newColors[idx], newColors[idx - 1]];
+                              return { ...row, colors: newColors };
+                            }
+                            return row;
+                          })
+                        );
+                      }}
+                    >
+                      ←
+                    </button>
+                  )}
+                  {idx < row.colors.length - 1 && (
+                    <button
+                      style={{
+                        width: 18,
+                        height: 18,
+                        borderRadius: "50%",
+                        border: "none",
+                        background: "#fff",
+                        color: "#333",
+                        fontWeight: "bold",
+                        fontSize: 14,
+                        cursor: "pointer",
+                        boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
+                        zIndex: 1,
+                      }}
+                      title="Move right"
+                      onClick={() => {
+                        setRows((prevRows) =>
+                          prevRows.map((row, rIdx) => {
+                            if (rIdx === rowIdx) {
+                              const newColors = [...row.colors];
+                              [newColors[idx], newColors[idx + 1]] = [newColors[idx + 1], newColors[idx]];
+                              return { ...row, colors: newColors };
+                            }
+                            return row;
+                          })
+                        );
+                      }}
+                    >
+                      →
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
             {row.colors.length < MAX_COLORS && (
@@ -216,9 +291,27 @@ const ColourPicker = ({
     </div>
   );
 
+  // Helper to generate CSS variables for the selected palette only
+  const getSelectedPaletteCss = () => {
+    const palettes = [palette1, palette2, palette3];
+    const palette = palettes[activeTab];
+    let css = ':root {\n';
+    palette.forEach((row) => {
+      row.colors.forEach((color, cIdx) => {
+        if (color) {
+          css += `  --palette${activeTab + 1}-${row.label?.toLowerCase() || 'row'}-${cIdx + 1}: ${color};\n`;
+        }
+      });
+    });
+    css += '}\n';
+    return css;
+  };
+
+  const [cssCopied, setCssCopied] = useState(false);
+
   return (
     <div className={styles.pickerRoot}>
-      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: 16, alignItems: "center" }}>
         {[0, 1, 2].map((idx) => (
           <button
             key={idx}
@@ -256,6 +349,28 @@ const ColourPicker = ({
           onClick={() => setShowModal(true)}
         >
           Accessibility Chart
+        </button>
+        <button
+          style={{
+            marginLeft: 16,
+            padding: "6px 16px",
+            fontSize: 15,
+            borderRadius: 6,
+            background: cssCopied ? "#6883a1" : "#eee",
+            color: cssCopied ? "#fff" : "#333",
+            border: "1px solid #ccc",
+            fontWeight: 500,
+            cursor: "pointer",
+            transition: "all 0.15s",
+          }}
+          onClick={() => {
+            navigator.clipboard.writeText(getSelectedPaletteCss());
+            setCssCopied(true);
+            setTimeout(() => setCssCopied(false), 1200);
+          }}
+          title="Copy this palette's colors as CSS variables"
+        >
+          {cssCopied ? "Copied CSS!" : "Copy CSS"}
         </button>
       </div>
       {activeTab === 0 &&

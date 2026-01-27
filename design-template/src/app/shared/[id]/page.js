@@ -121,6 +121,7 @@ export default function SharedProjectPage() {
         palette1={project.colourPicker1?.rows}
         palette2={project.colourPicker2?.rows}
         palette3={project.colourPicker3?.rows}
+        boxShadows={project.boxShadows || []}
         spacingBase={spacingBase}
         spacingUnit={spacingUnit}
         projectId={project._id}

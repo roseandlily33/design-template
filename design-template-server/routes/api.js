@@ -159,19 +159,29 @@ router.get("/projects", authMiddleware, async (req, res) => {
 router.post("/project", authMiddleware, async (req, res) => {
   try {
     const { project } = req.body;
-    console.log("/project called for userId:", req.userId, "project:", project?.title);
+    console.log(
+      "/project called for userId:",
+      req.userId,
+      "project:",
+      project?.title,
+    );
     let user = await User.findById(req.userId);
     if (!user) {
       console.log("User not found for userId:", req.userId);
       return res.status(404).json({ error: "User not found" });
     }
     let proj;
-    if (project._id) {
+    // Only update if _id is present and belongs to the user
+    if (
+      project._id &&
+      user.projects.map((id) => id.toString()).includes(project._id.toString())
+    ) {
       proj = await Project.findByIdAndUpdate(project._id, project, {
         new: true,
       });
       console.log("Project updated:", proj);
     } else {
+      // Always create a new project if no valid _id, even if title matches
       proj = new Project(project);
       await proj.save();
       user.projects.push(proj._id);

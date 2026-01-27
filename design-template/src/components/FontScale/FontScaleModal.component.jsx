@@ -1,5 +1,6 @@
 import React from "react";
 import { createPortal } from "react-dom";
+import { ColorSelect } from "../Buttons/ColourSelect.component";
 
 /*
   FontScaleModal now receives all required props from the parent.
@@ -12,6 +13,7 @@ const FontScaleModal = ({
   fontScaleStyles = {},
   handleStyleChange,
   cascadeDesktopToAll,
+  paletteColors = [],
 }) => {
   if (!modal) return null;
 
@@ -60,13 +62,24 @@ const FontScaleModal = ({
                 modal.tag,
                 modal.bp,
                 "fontSize",
-                parseFloat(e.target.value)
+                parseFloat(e.target.value),
               )
             }
             style={{ width: 80, marginRight: 16 }}
           />
         </div>
-
+        <div style={{ marginBottom: 14 }}>
+          <label style={{ fontWeight: "bold", marginRight: 8 }}>
+            Font Color:
+          </label>
+          <ColorSelect
+            value={fontScaleStyles?.[modal.tag]?.[modal.bp]?.color || paletteColors[0] || "#222"}
+            onChange={(color) =>
+              handleStyleChange(modal.tag, modal.bp, "color", color)
+            }
+            options={paletteColors}
+          />
+        </div>
         <div style={{ marginBottom: 14 }}>
           <label style={{ fontWeight: "bold", marginRight: 8 }}>
             Font Weight:
@@ -78,13 +91,17 @@ const FontScaleModal = ({
                 modal.tag,
                 modal.bp,
                 "fontWeight",
-                parseInt(e.target.value, 10)
+                parseInt(e.target.value, 10),
               )
             }
             style={{ width: 90, marginRight: 16 }}
           >
+            <option value={100}>100</option>
+            <option value={200}>200</option>
+            <option value={300}>300</option>
             <option value={400}>400 (Regular)</option>
             <option value={500}>500 (Medium)</option>
+            <option value={600}>600</option>
             <option value={700}>700 (Bold)</option>
           </select>
         </div>
@@ -102,7 +119,7 @@ const FontScaleModal = ({
                 modal.tag,
                 modal.bp,
                 "textTransform",
-                e.target.value
+                e.target.value,
               )
             }
             style={{ width: 120, marginRight: 16 }}
@@ -129,7 +146,7 @@ const FontScaleModal = ({
                 modal.tag,
                 modal.bp,
                 "lineHeight",
-                parseFloat(e.target.value)
+                parseFloat(e.target.value),
               )
             }
             style={{ width: 80, marginRight: 16 }}
@@ -151,7 +168,7 @@ const FontScaleModal = ({
                 modal.tag,
                 modal.bp,
                 "letterSpacing",
-                parseFloat(e.target.value)
+                parseFloat(e.target.value),
               )
             }
             style={{ width: 80, marginRight: 16 }}
@@ -199,7 +216,7 @@ const FontScaleModal = ({
     </div>,
     typeof window !== "undefined"
       ? document.body
-      : document.createElement("div")
+      : document.createElement("div"),
   );
 };
 

@@ -50,6 +50,7 @@ const ProjectSchema = new mongoose.Schema({
   colourPicker1: ColourPickerSchema,
   colourPicker2: ColourPickerSchema,
   colourPicker3: ColourPickerSchema,
+  boxShadows: { type: [Object], default: [] },
   spacingScale: {
     base: { type: Number, default: 1 },
     unit: { type: String, default: "rem" },
@@ -60,6 +61,17 @@ const ProjectSchema = new mongoose.Schema({
     default: {},
   },
   logo: { type: String },
+  // Shared text fields
+  heroTitle: { type: String, default: "" },
+  heroSubtitle: { type: String, default: "" },
+  descriptionTitle: { type: String, default: "" },
+  descriptionDesc: { type: String, default: "" },
+  testimonialQuote: { type: String, default: "" },
+  testimonialAuthor: { type: String, default: "" },
+  companiesTrustedText: { type: String, default: "" },
+  footerCopyright: { type: String, default: "" },
+  footerLinks: { type: [String], default: [] },
+  threeIcons: { type: [Object], default: [] },
 });
 
 module.exports = mongoose.model("Project", ProjectSchema);

@@ -1,0 +1,190 @@
+.boxShadowRoot {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px 10px;
+  margin: 0 auto;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.heading {
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: #1a2233;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+
+.copyBtn {
+  background: #e3e7ee;
+  color: #222;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+.copyBtnCopied {
+  background: #4caf50;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 14px;
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.cardPreview {
+  background: #fff;
+  border-radius: 12px;
+  transition:
+    box-shadow 0.2s,
+    border-radius 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #333;
+  width: 260px;
+  height: 140px;
+  margin: 0 auto 8px auto;
+  border: 1.5px solid #e3e7ee;
+}
+
+.controlsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  align-items: center;
+  background: #f0f3f8;
+  border-radius: 10px;
+  padding: 12px 10px;
+}
+
+.label {
+  font-weight: 500;
+  color: #223;
+}
+
+.input {
+  width: 50px;
+  margin-left: 4px;
+  border-radius: 5px;
+  border: 1px solid #c3c8d0;
+  padding: 2px 6px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+  color: #223;
+}
+
+.presetsSection {
+  margin-top: 8px;
+}
+.presetsTitle {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #223;
+}
+.presetsRow {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.presetCard {
+  border: 1px solid #e3e7ee;
+  border-radius: 8px;
+  padding: 10px;
+  min-width: 120px;
+  background: #f7f9fb;
+}
+.presetEditCol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.presetNameInput {
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: 5px;
+  border: 1px solid #c3c8d0;
+  padding: 2px 6px;
+}
+.presetInput {
+  width: 40px;
+  margin-left: 4px;
+  border-radius: 5px;
+  border: 1px solid #c3c8d0;
+  padding: 2px 6px;
+}
+.presetName {
+  font-weight: 600;
+  font-size: 15px;
+}
+.presetDesc {
+  font-size: 13px;
+  color: #555;
+  margin: 2px 0;
+}
+.presetBtnRow {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+.applyBtn {
+  padding: 2px 10px;
+  border-radius: 6px;
+  border: 1px solid #6883a1;
+  background: #fff;
+  color: #6883a1;
+  font-weight: 600;
+  cursor: pointer;
+}
+.editBtn {
+  padding: 2px 10px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+  background: #fafbfc;
+  color: #333;
+  font-weight: 500;
+  cursor: pointer;
+}
+.saveBtn {
+  margin-top: 4px;
+  padding: 2px 10px;
+  border-radius: 6px;
+  border: 1px solid #6883a1;
+  background: #6883a1;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cssString {
+  margin-top: 18px;
+  font-family: monospace;
+  font-size: 14px;
+  color: #1a2233;
+  background: #f0f3f8;
+  border-radius: 8px;
+  padding: 8px 12px;
+  border: 1px solid #e3e7ee;
+  word-break: break-all;
+}

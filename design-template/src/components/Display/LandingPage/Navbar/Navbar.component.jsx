@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import styles from "./Navbar.module.css";
-import EditableElement from "../../Modal/EditableElement.component";
+// import EditableElement from "../../Modal/EditableElement.component";
 // import NavbarLink from "./NavbarLink.component.jsx";
 
 const Navbar = ({
@@ -19,8 +19,8 @@ const Navbar = ({
   const getPaletteColor = (label, idx = 0) => {
     const row = Array.isArray(colours)
       ? colours.find(
-          (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
-        )
+        (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
+      )
       : null;
     return row && Array.isArray(row.colors) && row.colors[idx]
       ? row.colors[idx]
@@ -49,11 +49,9 @@ const Navbar = ({
     2: overrides["link:2"] ?? defaultLinkColor,
   };
 
-  // Callback for color picking
-  const handleLinkColorPick = (idx, color) => {
-    if (onColorChange) onColorChange(`link:${idx}`, color);
-  };
+  // No color picking: display-only
 
+  // Use fontScale for link color if set, else palette/override fallback
   return (
     <nav className={styles.navbar} style={navStyle}>
       <div
@@ -74,22 +72,20 @@ const Navbar = ({
 
       <div className={styles.navRight}>
         <div className={styles.navLinks}>
-          {links?.map((label, idx) => (
-            <EditableElement
-              key={idx + 1}
-              palettes={colours}
-              initialColor={linkColors[idx]}
-              onSelect={(c) => handleLinkColorPick(idx, c)}
-            >
+          {links?.map((label, idx) => {
+            // Use fontScale.p color for link if set, else palette/override
+            // const linkColor = (typeof fontScale?.p?.color === 'string' ? fontScale.p.color : undefined) || linkColors[idx] || "#fff";
+            return (
               <a
+                key={idx + 1}
                 className={`${styles.link} ${mainFontClass} ${styles.navStyle}`}
                 href="#"
-                style={{ color: linkColors[idx], cursor: "pointer" }}
+                style={{ cursor: "default" }}
               >
                 {label}
               </a>
-            </EditableElement>
-          ))}
+            );
+          })}
         </div>
 
         <div className={styles.cta}>{secondaryButton}</div>

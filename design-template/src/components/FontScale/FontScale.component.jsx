@@ -19,12 +19,17 @@ const FontScale = ({
   fontMap,
   fontScaleStyles,
   setFontScaleStyles,
+  colours: selected,
 }) => {
   const [modified, setModified] = useState({});
   const [selectedScale, setSelectedScale] = useState(0);
   const [modal, setModal] = useState(null); // { tag, bp } editor portal
   const [showExport, setShowExport] = useState(false);
   const [cssExport, setCssExport] = useState("");
+  const colours = Array.isArray(selected)
+    ? selected.map((row) => row.colors).flat()
+    : [];
+
   // console.log("Modified", modified);
   // console.log("Current styles state:", fontScaleStyles);
 
@@ -248,6 +253,7 @@ const FontScale = ({
         <FontScaleModal
           modal={modal}
           setModal={setModal}
+          paletteColors={colours}
           fontScaleStyles={fontScaleStyles}
           handleStyleChange={handleStyleChange}
           cascadeDesktopToAll={cascadeDesktopToAll}

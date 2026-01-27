@@ -18,24 +18,41 @@ const PrimaryButton = ({
         .filter((c) => typeof c === "string" && c.startsWith("#"))
     : [];
 
+  // Track hover state for inline dynamic hover styles
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Compute dynamic styles
+  const baseStyle = {
+    background: p.color,
+    color: p.textColor,
+    borderRadius: p.radius,
+    border: p.border,
+    padding: p.padding,
+    fontSize: p.fontSize,
+    fontWeight: p.fontWeight,
+    letterSpacing: p.letterSpacing,
+    textTransform: p.textTransform,
+    boxShadow: p.boxShadow,
+    lineHeight: p.lineHeight,
+    transition: "background 0.18s, color 0.18s, border 0.18s",
+    outline: "none",
+  };
+  const hoverStyle = isHovered
+    ? {
+        background: p.hoverBg || p.color,
+        color: p.hoverText || p.textColor,
+        border: p.hoverBorder || p.border,
+      }
+    : {};
+
   return (
     <>
       <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
         <button
           className={`${fontClass} ${styles.button} primary-button`}
-          style={{
-            background: p.color,
-            color: p.textColor,
-            borderRadius: p.radius,
-            border: p.border,
-            padding: p.padding,
-            fontSize: p.fontSize,
-            fontWeight: p.fontWeight,
-            letterSpacing: p.letterSpacing,
-            textTransform: p.textTransform,
-            boxShadow: p.boxShadow,
-            lineHeight: p.lineHeight,
-          }}
+          style={{ ...baseStyle, ...hoverStyle }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           Primary
         </button>
@@ -109,7 +126,7 @@ const PrimaryButton = ({
                     hoverBorder: p.hoverBorder,
                     font: fontClass,
                     lineHeight: p.lineHeight,
-                  })
+                  }),
                 );
                 setCopied(true);
                 setTimeout(() => setCopied(false), 1500);

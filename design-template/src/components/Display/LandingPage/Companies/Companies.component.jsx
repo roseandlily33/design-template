@@ -16,9 +16,12 @@ const Companies = ({
   spacingChart,
   overrides = {},
   onColorChange,
+  companiesTrustedText,
+  setCompaniesTrustedText,
+  fontScale = {},
+  breakpoint = "Desktop",
 }) => {
-  const [trustedText, setTrustedText] = useState("Trusted by 10+ companies");
-  const [editingTrusted, setEditingTrusted] = useState(false);
+  // No editing state: display-only
   // Use overrides if present, else palette defaults
   // Helper to get palette color by label and index
 
@@ -39,6 +42,7 @@ const Companies = ({
 
   // Title color for the section
   const titleDefaultColor =
+    fontScale?.h4?.[breakpoint]?.color ||
     getPaletteColor("Main", 6) || getPaletteColor("Main", 5) || "#222";
 
   const companies = useMemo(() => {
@@ -64,19 +68,7 @@ const Companies = ({
     }));
   }, [overrides, getPaletteColor]);
 
-  const handleTrustedClick = () => setEditingTrusted(true);
-  const handleTrustedChange = (e) => setTrustedText(e.target.value);
-  const handleTrustedBlur = () => setEditingTrusted(false);
-  const handleTrustedKeyDown = (e) => {
-    if (e.key === "Enter") setEditingTrusted(false);
-  };
-
-  const handleCompanyColorPick = (idx, color) => {
-    if (onColorChange) onColorChange(`badge:${idx}`, color);
-  };
-  const handleCompanyTextColorPick = (idx, color) => {
-    if (onColorChange) onColorChange(`badgeText:${idx}`, color);
-  };
+  // No editing/click handlers: display-only
 
   // optional inline fallback using spacingChart (Display already injects CSS vars)
   const sectionStyle = spacingChart
@@ -86,69 +78,32 @@ const Companies = ({
 
   return (
     <section className={styles.companiesSection} style={sectionStyle}>
-      <EditableWithColor
-        palettes={colours}
-        initialColor={undefined}
-        defaultColor={titleDefaultColor}
+      <h4
+        className={mainFontClass + " " + styles.trustedTitle}
+        style={{ color: titleDefaultColor, textAlign: "center", fontWeight: 800, fontSize: "1.1rem", width: "100%" }}
       >
-        {editingTrusted ? (
-          <input
-            className={mainFontClass + " " + styles.trustedTitle}
-            value={trustedText}
-            onChange={handleTrustedChange}
-            onBlur={handleTrustedBlur}
-            onKeyDown={handleTrustedKeyDown}
-            autoFocus
-            style={{
-              textAlign: "center",
-              fontWeight: 800,
-              fontSize: "1.1rem",
-              width: "100%",
-              background: "transparent",
-              border: "none",
-            }}
-          />
-        ) : (
-          <h4
-            className={mainFontClass + " " + styles.trustedTitle}
-            onClick={handleTrustedClick}
-            style={{ cursor: "pointer", color: titleDefaultColor }}
-          >
-            {trustedText}
-          </h4>
-        )}
-      </EditableWithColor>
+        {companiesTrustedText}
+      </h4>
 
       <div className={styles.companiesRow} style={rowStyle}>
-        {companies.map((company, idx) => (
-          <EditableWithColor
-            key={company.name + idx}
-            palettes={colours}
-            initialColor={company.color}
-            defaultColor={company.color}
-            applyTo="background"
-            onSelect={(c) => handleCompanyColorPick(idx, c)}
-          >
-            <EditableWithColor
-              palettes={colours}
-              initialColor={company.textColor}
-              defaultColor={company.textColor}
-              onSelect={(c) => handleCompanyTextColorPick(idx, c)}
+        {companies.map((company, idx) => {
+          // Use fontScale.p color for badge text if set, else badge textColor, else fallback
+          const badgeTextColor = fontScale?.p?.[breakpoint]?.color || company.textColor || "#fff";
+          return (
+            <span
+              key={company.name + idx}
+              className={styles.companyBadge + " " + mainFontClass}
+              style={{
+                background: company.color,
+                color: badgeTextColor,
+                cursor: "default",
+              }}
+              title={company.name}
             >
-              <span
-                className={styles.companyBadge + " " + mainFontClass}
-                style={{
-                  background: company.color,
-                  color: company.textColor || "#fff",
-                  cursor: "default",
-                }}
-                title={company.name}
-              >
-                {company.name}
-              </span>
-            </EditableWithColor>
-          </EditableWithColor>
-        ))}
+              {company.name}
+            </span>
+          );
+        })}
       </div>
     </section>
   );
