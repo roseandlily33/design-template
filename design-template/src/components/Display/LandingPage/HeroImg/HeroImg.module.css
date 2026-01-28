@@ -42,7 +42,7 @@
 }
 
 .heroImage h1 {
-  font-size: var(--font-h1-size, 2.8rem);
+  font-size: var(--font-h1-size);
   font-weight: var(--font-h1-weight, 700);
   color: var(--font-h1-color, #fff);
   margin-bottom: var(--spacing-m);

@@ -43,6 +43,15 @@ const Description = ({
     ? { padding: `${spacingChart.xl.css} ${spacingChart.m.css}` }
     : undefined;
 
+  // Ref for h2 to log computed font size
+  const h2Ref = React.useRef(null);
+  useEffect(() => {
+    if (h2Ref.current) {
+      const computed = window.getComputedStyle(h2Ref.current);
+      console.log("Computed h2 font-size:", computed.fontSize);
+    }
+  }, [fontScale, breakpoint, descriptionTitle]);
+
   return (
     <section className={styles.descriptionSection} style={sectionStyle}>
       {/*
@@ -72,11 +81,17 @@ const Description = ({
         />
       ) : (
         <h2
+          ref={h2Ref}
           className={headerFontClass + " " + styles.title}
           onClick={handleTitleClick}
           style={{ cursor: "pointer", color: titleColor }}
         >
           {descriptionTitle}
+          <span style={{ display: "block", fontSize: 14, color: "#888", marginTop: 4 }}>
+            {fontScale?.h2?.[breakpoint]?.fontSize && (
+              <>Font size: {fontScale.h2[breakpoint].fontSize}rem</>
+            )}
+          </span>
         </h2>
       )}
       {/*</EditableWithColor>*/}

@@ -1,8 +1,7 @@
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styles from "./HeroImg.module.css";
 import EditableWithColor from "../../Modal/EditableElement.component";
-
 
 const HeroImage = ({
   primaryButton,
@@ -59,10 +58,19 @@ const HeroImage = ({
     }
     : { padding: "2rem 1rem", gap: "1rem" };
 
+  const h1Ref = useRef(null);
+
+  useEffect(() => {
+    if (h1Ref.current) {
+      const computed = window.getComputedStyle(h1Ref.current);
+      console.log("Computed h1 font-size:", computed.fontSize);
+    }
+  }, [fontScale, breakpoint, heroTitle]);
+
   return (
     <div
       className={styles.heroImage}
-      // style={defaultBg ? { background: defaultBg } : {}}
+    // style={defaultBg ? { background: defaultBg } : {}}
     >
       <Image
         src={heroImgUrl}
@@ -107,11 +115,20 @@ const HeroImage = ({
           />
         ) : (
           <h1
+            ref={h1Ref}
             className={headerFontClass}
             onClick={() => setEditingTitle(true)}
             style={{ cursor: "pointer", color: titleColor }}
           >
             {heroTitle}
+            <p>
+              H1{" "}
+              {fontScale?.h1?.[breakpoint]?.fontSize && (
+                <span style={{ fontSize: 14, color: "#888", marginTop: 4 }}>
+                  Font size: {fontScale.h1[breakpoint].fontSize}rem
+                </span>
+              )}
+            </p>
           </h1>
         )}
         {/*</EditableWithColor>*/}
