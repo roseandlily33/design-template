@@ -28,68 +28,26 @@ import { useTabOverrides } from "@/utils/tabOverrides";
 import { defaultButtonState } from "@/utils/buttonState";
 import Inputs from "@/components/Inputs/Inputs.component";
 import BoxShadow from "@/components/BoxShadows/BoxShadow.component";
+// All the states for the display
+import useHeroImgState from "@/components/Hooks/HeroImg.state";
+import useDescriptionState from "@/components/Hooks/Description.state";
+import useCompaniesState from "@/components/Hooks/Companies.state";
+import useTestimonialState from "@/components/Hooks/Testimonial.state";
+import useThreeIconState from "@/components/Hooks/ThreeIcon.state";
+import useFooterState from "@/components/Hooks/Footer.state";
+import useContactState from "@/components/Hooks/Contact.state";
 
 export default function Home() {
-  // --- Shared text state for Display children ---
-  // HeroImage
-  const [heroTitle, setHeroTitle] = useState("ABC Company");
-  const [heroSubtitle, setHeroSubtitle] = useState(
-    "Your success is our priority",
-  );
+  const {heroTitle, setHeroTitle, heroSubtitle, setHeroSubtitle} = useHeroImgState();
+  const {descriptionTitle, descriptionDesc, setDescriptionTitle, setDescriptionDesc} = useDescriptionState();
+  const {companiesTrustedText, setCompaniesTrustedText} = useCompaniesState();
+  const {testimonialQuote, setTestimonialQuote, testimonialAuthor, setTestimonialAuthor} = useTestimonialState();
+  const {threeIcons, setThreeIcons} = useThreeIconState();
+  const {footerCopyright, footerLinks, setFooterCopyright, setFooterLinks} = useFooterState();
+  const {contact, setContact} = useContactState();
 
-  // Description
-  const [descriptionTitle, setDescriptionTitle] = useState("About Our Company");
-  const [descriptionDesc, setDescriptionDesc] = useState(
-    "We are dedicated to delivering innovative solutions and exceptional service to help your business thrive in a dynamic world.",
-  );
 
-  // Testimonial
-  const [testimonialQuote, setTestimonialQuote] = useState(
-    "Working with this company was a fantastic experience. Their team went above and beyond to deliver results.",
-  );
-  const [testimonialAuthor, setTestimonialAuthor] = useState(
-    "— Jennie J., CEO of Jenn Corp",
-  );
 
-  // Companies
-  const [companiesTrustedText, setCompaniesTrustedText] = useState(
-    "Trusted by 10+ companies",
-  );
-
-  // Footer
-  const [footerCopyright, setFooterCopyright] = useState(
-    `© ${new Date().getFullYear()} Your Company. All rights reserved.`,
-  );
-  const [footerLinks, setFooterLinks] = useState([
-    "Home",
-    "About",
-    "Contact",
-    "Privacy Policy",
-    "Terms & Conditions",
-  ]);
-
-  // ThreeIcons (array of 3 objects)
-  const [threeIcons, setThreeIcons] = useState([
-    {
-      label: "Fast Delivery",
-      desc: "We ensure quick and reliable delivery for all your needs.",
-    },
-    {
-      label: "Quality Service",
-      desc: "Our team is dedicated to providing top-notch service every time.",
-    },
-    {
-      label: "Support 24/7",
-      desc: "We are here to help you around the clock, whenever you need us.",
-    },
-  ]);
-  const [contact, setContact] = useState({
-    title: "Contact Us",
-    desc: "We'd love to hear from you! Fill out the form below and our team will get back to you soon.",
-    name: "",
-    email: "",
-    message: "",
-  });
 
   // Track the current project ID for update vs create
   const [projectId, setProjectId] = useState(null);
@@ -440,6 +398,68 @@ export default function Home() {
     });
   };
 
+  const displayText = {
+    heroTitle,
+    setHeroTitle,
+    heroSubtitle,
+    setHeroSubtitle,
+    descriptionTitle,
+    setDescriptionTitle,
+    descriptionDesc,
+    setDescriptionDesc,
+    testimonialQuote,
+    setTestimonialQuote,
+    testimonialAuthor,
+    setTestimonialAuthor,
+    companiesTrustedText,
+    setCompaniesTrustedText,
+    threeIcons,
+    setThreeIcons,
+    contact,
+    setContact,
+    footerCopyright,
+    setFooterCopyright,
+    footerLinks,
+    setFooterLinks,
+  };
+
+  const displayOverrides = {
+    navbar: {
+      overrides: navbarOverrides[activeTab],
+      onColorChange: handleNavbarColorChange,
+    },
+    threeIcons: {
+      overrides: threeIconsOverrides[activeTab],
+      onColorChange: handleThreeIconsColorChange,
+    },
+    companies: {
+      overrides: companiesOverrides[activeTab],
+      onColorChange: handleCompaniesColorChange,
+    },
+    description: {
+      overrides: descriptionOverrides[activeTab],
+      onColorChange: handleDescriptionColorChange,
+    },
+    heroImg: {
+      overrides: heroImgOverrides[activeTab],
+      onColorChange: handleHeroImgColorChange,
+    },
+    testimonial: {
+      overrides: testimonialOverrides[activeTab],
+      onColorChange: handleTestimonialColorChange,
+    },
+    footer: {
+      overrides: footerOverrides[activeTab],
+      onColorChange: handleFooterColorChange,
+    },
+  };
+
+  const displayButtons = {
+    primaryButton: <PrimaryButton {...displayText} />,
+    secondaryButton: <SecondaryButton {...displayText} />,
+    tertiaryButton: <TertiaryButton {...displayText} />,
+  };
+
   return (
     <div>
       <Header onProjectLoad={handleProjectLoad} />
@@ -732,10 +752,9 @@ export default function Home() {
         {/* Right pane always underneath, responsive */}
         <div className={styles.rightPane}>
           <Display
-            heroTitle={heroTitle}
-            setHeroTitle={setHeroTitle}
-            heroSubtitle={heroSubtitle}
-            setHeroSubtitle={setHeroSubtitle}
+            {...displayButtons}
+            {...displayText}
+            {...displayOverrides}
             primaryButton={
               <PrimaryButton
                 fontClass={fontMap[selectedFontSet.main]}
@@ -777,38 +796,7 @@ export default function Home() {
             base={base}
             unit={unit}
             heroImgUrl={heroImgUrl}
-            navbarOverrides={navbarOverrides[activeTab]}
-            onNavbarColorChange={handleNavbarColorChange}
-            threeIconsOverrides={threeIconsOverrides[activeTab]}
-            onThreeIconsColorChange={handleThreeIconsColorChange}
-            companiesOverrides={companiesOverrides[activeTab]}
-            onCompaniesColorChange={handleCompaniesColorChange}
-            descriptionOverrides={descriptionOverrides[activeTab]}
-            onDescriptionColorChange={handleDescriptionColorChange}
-            heroImgOverrides={heroImgOverrides[activeTab]}
-            onHeroImgColorChange={handleHeroImgColorChange}
-            testimonialOverrides={testimonialOverrides[activeTab]}
-            onTestimonialColorChange={handleTestimonialColorChange}
-            footerOverrides={footerOverrides[activeTab]}
-            onFooterColorChange={handleFooterColorChange}
-            testimonialQuote={testimonialQuote}
-            setTestimonialQuote={setTestimonialQuote}
-            testimonialAuthor={testimonialAuthor}
-            setTestimonialAuthor={setTestimonialAuthor}
-            companiesTrustedText={companiesTrustedText}
-            setCompaniesTrustedText={setCompaniesTrustedText}
-            descriptionTitle={descriptionTitle}
-            setDescriptionTitle={setDescriptionTitle}
-            descriptionDesc={descriptionDesc}
-            setDescriptionDesc={setDescriptionDesc}
             threeIcons={threeIcons}
-            setThreeIcons={setThreeIcons}
-            contact={contact}
-            setContact={setContact}
-            footerCopyright={footerCopyright}
-            setFooterCopyright={setFooterCopyright}
-            footerLinks={footerLinks}
-            setFooterLinks={setFooterLinks}
           />
         </div>
       </main>

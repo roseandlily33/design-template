@@ -30,16 +30,8 @@ const Display = ({
   unit = "rem", // spacing unit (from SpacingChart)
   navbarOverrides = {},
   onNavbarColorChange,
-  threeIconsOverrides = {},
-  onThreeIconsColorChange,
   companiesOverrides = {},
   onCompaniesColorChange,
-  descriptionOverrides = {},
-  onDescriptionColorChange,
-  heroImgOverrides = {},
-  onHeroImgColorChange,
-  testimonialOverrides = {},
-  onTestimonialColorChange,
   footerOverrides = {},
   onFooterColorChange,
   heroImgUrl,
@@ -94,120 +86,123 @@ const Display = ({
     return () => window.removeEventListener("resize", updateSize);
   }, []);
   const fontVarsCSS = useMemo(() => buildFontVarsCSS(fontScale), [fontScale]);
+
+  const sharedProps = {
+    colours,
+    headerFontClass,
+    mainFontClass,
+    spacingChart,
+    fontScale,
+    spacingBase: spacingVars,
+    spacingUnit: unit,
+    breakpoint,
+    borderRadius,
+  };
+
+  // Section registry for dynamic layout
+  const sections = [
+    {
+      Component: Navbar,
+      key: "navbar",
+      props: {
+        logo,
+        logoWidth,
+        logoHeight,
+        secondaryButton,
+        overrides: navbarOverrides,
+        onColorChange: onNavbarColorChange,
+      },
+    },
+    {
+      Component: HeroImage,
+      key: "hero",
+      props: {
+        primaryButton,
+        heroImgUrl,
+        heroTitle,
+        setHeroTitle,
+        heroSubtitle,
+        setHeroSubtitle,
+      },
+    },
+    {
+      Component: Description,
+      key: "description",
+      props: {
+        secondaryButton,
+        tertiaryButton,
+        descriptionTitle,
+        setDescriptionTitle,
+        descriptionDesc,
+        setDescriptionDesc,
+      },
+    },
+    {
+      Component: ThreeIcons,
+      key: "threeicons",
+      props: {
+        threeIcons,
+        setThreeIcons,
+        fontScale,
+        breakpoint,
+      },
+    },
+    {
+      Component: Companies,
+      key: "companies",
+      props: {
+        overrides: companiesOverrides,
+        onColorChange: onCompaniesColorChange,
+        companiesTrustedText,
+        setCompaniesTrustedText,
+      },
+    },
+    {
+      Component: Testimonial,
+      key: "testimonial",
+      props: {
+        quote: testimonialQuote,
+        setQuote: setTestimonialQuote,
+        author: testimonialAuthor,
+        setAuthor: setTestimonialAuthor,
+      },
+    },
+    {
+      Component: Contact,
+      key: "contact",
+      props: {
+        primaryButton,
+        contact,
+        setContact,
+        onColorChange: onCompaniesColorChange,
+      },
+    },
+    {
+      Component: Footer,
+      key: "footer",
+      props: {
+        logo,
+        logoWidth,
+        logoHeight,
+        overrides: footerOverrides,
+        onColorChange: onFooterColorChange,
+        footerCopyright,
+        setFooterCopyright,
+        footerLinks,
+        setFooterLinks,
+      },
+    },
+  ];
+
   return (
     <div className={styles.displayRoot} ref={displayRef} style={spacingVars}>
       <style dangerouslySetInnerHTML={{ __html: fontVarsCSS }} />
       <p style={{ fontSize: 14, color: "#888", marginBottom: 8 }}>
         Size: {size.width}px × {size.height}px
       </p>
-      {/* Navbar mockup */}
-      <Navbar
-        logo={logo}
-        logoWidth={logoWidth}
-        logoHeight={logoHeight}
-        headerFontClass={headerFontClass}
-        mainFontClass={mainFontClass}
-        secondaryButton={secondaryButton}
-        colours={colours}
-        spacingChart={spacingChart}
-        spacingBase={base}
-        spacingUnit={unit}
-        overrides={navbarOverrides}
-        onColorChange={onNavbarColorChange}
-      />
-      <HeroImage
-        primaryButton={primaryButton}
-        headerFontClass={headerFontClass}
-        mainFontClass={mainFontClass}
-        colours={colours}
-        spacingChart={spacingChart}
-        heroImgUrl={heroImgUrl}
-        heroTitle={heroTitle}
-        setHeroTitle={setHeroTitle}
-        heroSubtitle={heroSubtitle}
-        setHeroSubtitle={setHeroSubtitle}
-        fontScale={fontScale}
-        breakpoint={breakpoint}
-      />
-      <Description
-        secondaryButton={secondaryButton}
-        tertiaryButton={tertiaryButton}
-        headerFontClass={headerFontClass}
-        mainFontClass={mainFontClass}
-        colours={colours}
-        spacingChart={spacingChart}
-        descriptionTitle={descriptionTitle}
-        setDescriptionTitle={setDescriptionTitle}
-        descriptionDesc={descriptionDesc}
-        setDescriptionDesc={setDescriptionDesc}
-        fontScale={fontScale}
-        breakpoint={breakpoint}
-      />
-      <ThreeIcons
-        headerFontClass={headerFontClass}
-        mainFontClass={mainFontClass}
-        borderRadius={borderRadius}
-        colours={colours}
-        spacingChart={spacingChart}
-        threeIcons={threeIcons}
-        setThreeIcons={setThreeIcons}
-        fontScale={fontScale}
-        breakpoint={breakpoint}
-      />
-      <Companies
-        mainFontClass={mainFontClass}
-        extraFontClass={extraFontClass}
-        colours={colours}
-        spacingChart={spacingChart}
-        spacingBase={base}
-        spacingUnit={unit}
-        overrides={companiesOverrides}
-        onColorChange={onCompaniesColorChange}
-        companiesTrustedText={companiesTrustedText}
-        setCompaniesTrustedText={setCompaniesTrustedText}
-      />
-      <Testimonial
-        mainFontClass={mainFontClass}
-        extraFontClass={extraFontClass}
-        borderRadius={borderRadius}
-        colours={colours}
-        spacingChart={spacingChart}
-        quote={testimonialQuote}
-        setQuote={setTestimonialQuote}
-        author={testimonialAuthor}
-        setAuthor={setTestimonialAuthor}
-        fontScale={fontScale}
-        breakpoint={breakpoint}
-      />
-      <Contact
-        headerFontClass={headerFontClass}
-        mainFontClass={mainFontClass}
-        borderRadius={borderRadius}
-        primaryButton={primaryButton}
-        spacingChart={spacingChart}
-        spacingBase={base}
-        spacingUnit={unit}
-        contact={contact}
-        setContact={setContact}
-        onColorChange={onCompaniesColorChange}
-      />
-      <Footer
-        logo={logo}
-        logoWidth={logoWidth}
-        logoHeight={logoHeight}
-        headerFontClass={headerFontClass}
-        mainFontClass={mainFontClass}
-        colours={colours}
-        spacingChart={spacingChart}
-        spacingBase={base}
-        spacingUnit={unit}
-        overrides={footerOverrides}
-        onColorChange={onFooterColorChange}
-        footerCopyright={footerCopyright}
-        setFooterCopyright={setFooterCopyright}
-        footerLinks={footerLinks}
-        setFooterLinks={setFooterLinks}
-      />
+      {sections.map(({ Component, key, props }) => (
+        <Component key={key} {...sharedProps} {...props} />
+      ))}
     </div>
   );
 };

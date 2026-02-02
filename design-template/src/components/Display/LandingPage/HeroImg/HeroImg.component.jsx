@@ -16,7 +16,6 @@ const HeroImage = ({
   fontScale = {},
   breakpoint = "Desktop",
 }) => {
-
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingSubtitle, setEditingSubtitle] = useState(false);
 
@@ -25,17 +24,15 @@ const HeroImage = ({
 
   const containerStyle = spacingChart
     ? {
-      padding: `${spacingChart.xl.css} ${spacingChart.m.css}`,
-      gap: spacingChart.m.css,
-    }
+        padding: `${spacingChart.xl.css} ${spacingChart.m.css}`,
+        gap: spacingChart.m.css,
+      }
     : { padding: "2rem 1rem", gap: "1rem" };
 
   const h1Ref = useRef(null);
 
   return (
-    <div
-      className={styles.heroImage}
-    >
+    <div className={styles.heroImage}>
       <Image
         src={heroImgUrl}
         alt="Hero Image"
@@ -76,14 +73,6 @@ const HeroImage = ({
             style={{ cursor: "pointer", color: titleColor }}
           >
             {heroTitle}
-            <p>
-              H1{" "}
-              {fontScale?.h1?.[breakpoint]?.fontSize && (
-                <span style={{ fontSize: 14, color: "#888", marginTop: 4 }}>
-                  Font size: {fontScale.h1[breakpoint].fontSize}rem
-                </span>
-              )}
-            </p>
           </h1>
         )}
         {editingSubtitle ? (
