@@ -31,6 +31,7 @@ const SaveAndTabs = ({
   footerLinks,
   threeIcons,
   boxShadows,
+  contact,
   isReadOnly = false,
   shared = false,
 }) => {
@@ -120,6 +121,7 @@ const SaveAndTabs = ({
         companiesTrustedText,
         footerCopyright,
         footerLinks,
+        contact,
         threeIcons,
         boxShadows,
       };

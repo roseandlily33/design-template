@@ -1,7 +1,6 @@
 import Image from "next/image";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "./HeroImg.module.css";
-import EditableWithColor from "../../Modal/EditableElement.component";
 
 const HeroImage = ({
   primaryButton,
@@ -9,10 +8,6 @@ const HeroImage = ({
   mainFontClass,
   colours = [],
   spacingChart,
-  // spacingBase,
-  // spacingUnit,
-  //overrides = {},
-  //onColorChange,
   heroImgUrl = "/Picture.jpg",
   heroTitle,
   setHeroTitle,
@@ -21,35 +16,12 @@ const HeroImage = ({
   fontScale = {},
   breakpoint = "Desktop",
 }) => {
-  // // Helper to get palette color by label and index
-  // const getPaletteColor = (label, idx = 0) => {
-  //   const row = Array.isArray(colours)
-  //     ? colours.find(
-  //       (r) => r.label && r.label.toLowerCase() === label.toLowerCase(),
-  //     )
-  //     : null;
-  //   return row && Array.isArray(row.colors) && row.colors[idx]
-  //     ? row.colors[idx]
-  //     : undefined;
-  // };
 
-  // // Palette defaults
-  // const defaultTitleColor =
-  //   getPaletteColor("Main", 7) || getPaletteColor("Main", 6) || "#222";
-  // const defaultSubtitleColor =
-  //   getPaletteColor("Accent", 5) || getPaletteColor("Accent", 6) || "#444";
-  // const defaultBg =
-  //   getPaletteColor("Grey", 3) || getPaletteColor("Grey", 0) || undefined;
-
-  // content state is now lifted to parent
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingSubtitle, setEditingSubtitle] = useState(false);
 
-  // Use fontScaleStyles color for h1 and p, based on breakpoint
   const titleColor = fontScale?.h1?.[breakpoint]?.color || "#222";
   const subtitleColor = fontScale?.p?.[breakpoint]?.color || "#444";
-  // const titleColor = overrides.title ?? defaultTitleColor;
-  // const subtitleColor = overrides.subtitle ?? defaultSubtitleColor;
 
   const containerStyle = spacingChart
     ? {
@@ -60,17 +32,9 @@ const HeroImage = ({
 
   const h1Ref = useRef(null);
 
-  useEffect(() => {
-    if (h1Ref.current) {
-      const computed = window.getComputedStyle(h1Ref.current);
-      console.log("Computed h1 font-size:", computed.fontSize);
-    }
-  }, [fontScale, breakpoint, heroTitle]);
-
   return (
     <div
       className={styles.heroImage}
-    // style={defaultBg ? { background: defaultBg } : {}}
     >
       <Image
         src={heroImgUrl}
@@ -88,15 +52,6 @@ const HeroImage = ({
           ...containerStyle,
         }}
       >
-        {/*
-        <EditableWithColor
-          palettes={colours}
-          initialColor={titleColor}
-          onSelect={(c) => {
-            if (onColorChange) onColorChange("title", c);
-          }}
-        >
-        */}
         {editingTitle ? (
           <input
             className={headerFontClass}
@@ -131,17 +86,6 @@ const HeroImage = ({
             </p>
           </h1>
         )}
-        {/*</EditableWithColor>*/}
-
-        {/*
-        <EditableWithColor
-          palettes={colours}
-          initialColor={subtitleColor}
-          onSelect={(c) => {
-            if (onColorChange) onColorChange("subtitle", c);
-          }}
-        >
-        */}
         {editingSubtitle ? (
           <input
             className={mainFontClass}
@@ -166,8 +110,6 @@ const HeroImage = ({
             {heroSubtitle}
           </p>
         )}
-        {/*</EditableWithColor>*/}
-
         <div>{primaryButton}</div>
       </div>
     </div>

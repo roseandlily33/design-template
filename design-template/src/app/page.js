@@ -83,6 +83,13 @@ export default function Home() {
       desc: "We are here to help you around the clock, whenever you need us.",
     },
   ]);
+  const [contact, setContact] = useState({
+    title: "Contact Us",
+    desc: "We'd love to hear from you! Fill out the form below and our team will get back to you soon.",
+    name: "",
+    email: "",
+    message: "",
+  });
 
   // Track the current project ID for update vs create
   const [projectId, setProjectId] = useState(null);
@@ -436,7 +443,6 @@ export default function Home() {
   return (
     <div>
       <Header onProjectLoad={handleProjectLoad} />
-      <p>Testimonial Quote{testimonialQuote}</p>
       <div
         style={{
           display: "flex",
@@ -629,6 +635,8 @@ export default function Home() {
         heroSubtitle={heroSubtitle}
         descriptionTitle={descriptionTitle}
         descriptionDesc={descriptionDesc}
+        contact={contact}
+        setContact={setContact}
         testimonialQuote={testimonialQuote}
         testimonialAuthor={testimonialAuthor}
         companiesTrustedText={companiesTrustedText}
@@ -795,6 +803,8 @@ export default function Home() {
             setDescriptionDesc={setDescriptionDesc}
             threeIcons={threeIcons}
             setThreeIcons={setThreeIcons}
+            contact={contact}
+            setContact={setContact}
             footerCopyright={footerCopyright}
             setFooterCopyright={setFooterCopyright}
             footerLinks={footerLinks}

@@ -6,6 +6,7 @@ import Description from "./LandingPage/Description/Description.component";
 import ThreeIcons from "./LandingPage/3Icons/3Icons.component";
 import Companies from "./LandingPage/Companies/Companies.component";
 import Testimonial from "./LandingPage/Testimonial/Testimonial.component";
+import Contact from "./LandingPage/Contact/Contact.component";
 import Footer from "./LandingPage/Footer/Footer.component";
 import { buildFontVarsCSS } from "./fontVars";
 import { buildSpacingVars, buildSpacingChart } from "./spacingChart";
@@ -58,6 +59,8 @@ const Display = ({
   setDescriptionDesc,
   threeIcons,
   setThreeIcons,
+  contact,
+  setContact,
   footerCopyright,
   setFooterCopyright,
   footerLinks,
@@ -91,8 +94,6 @@ const Display = ({
     return () => window.removeEventListener("resize", updateSize);
   }, []);
   const fontVarsCSS = useMemo(() => buildFontVarsCSS(fontScale), [fontScale]);
-  // console.log('Font var', fontVarsCSS);
-  // console.log("Colours", colours);
   return (
     <div className={styles.displayRoot} ref={displayRef} style={spacingVars}>
       <style dangerouslySetInnerHTML={{ __html: fontVarsCSS }} />
@@ -120,10 +121,6 @@ const Display = ({
         mainFontClass={mainFontClass}
         colours={colours}
         spacingChart={spacingChart}
-        //spacingBase={base}
-        //spacingUnit={unit}
-        //overrides={heroImgOverrides}
-        //onColorChange={onHeroImgColorChange}
         heroImgUrl={heroImgUrl}
         heroTitle={heroTitle}
         setHeroTitle={setHeroTitle}
@@ -139,10 +136,6 @@ const Display = ({
         mainFontClass={mainFontClass}
         colours={colours}
         spacingChart={spacingChart}
-        //spacingBase={base}
-        //spacingUnit={unit}
-        //overrides={descriptionOverrides}
-        //onColorChange={onDescriptionColorChange}
         descriptionTitle={descriptionTitle}
         setDescriptionTitle={setDescriptionTitle}
         descriptionDesc={descriptionDesc}
@@ -156,10 +149,6 @@ const Display = ({
         borderRadius={borderRadius}
         colours={colours}
         spacingChart={spacingChart}
-        //spacingBase={base}
-        //spacingUnit={unit}
-        //overrides={threeIconsOverrides}
-        //onColorChange={onThreeIconsColorChange}
         threeIcons={threeIcons}
         setThreeIcons={setThreeIcons}
         fontScale={fontScale}
@@ -183,16 +172,24 @@ const Display = ({
         borderRadius={borderRadius}
         colours={colours}
         spacingChart={spacingChart}
-        //spacingBase={base}
-        //spacingUnit={unit}
-        //overrides={testimonialOverrides}
-        //onColorChange={onTestimonialColorChange}
         quote={testimonialQuote}
         setQuote={setTestimonialQuote}
         author={testimonialAuthor}
         setAuthor={setTestimonialAuthor}
         fontScale={fontScale}
         breakpoint={breakpoint}
+      />
+      <Contact
+        headerFontClass={headerFontClass}
+        mainFontClass={mainFontClass}
+        borderRadius={borderRadius}
+        primaryButton={primaryButton}
+        spacingChart={spacingChart}
+        spacingBase={base}
+        spacingUnit={unit}
+        contact={contact}
+        setContact={setContact}
+        onColorChange={onCompaniesColorChange}
       />
       <Footer
         logo={logo}

@@ -1,15 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import styles from "./Testimonial.module.css";
-import EditableWithColor from "../../Modal/EditableElement.component";
-
 
 const Testimonial = ({
   mainFontClass,
   extraFontClass,
-  colours = [],
   spacingChart,
-  //overrides = {},
-  //onColorChange,
   quote,
   setQuote,
   author,
@@ -20,7 +15,6 @@ const Testimonial = ({
   const [editingQuote, setEditingQuote] = useState(false);
   const [editingAuthor, setEditingAuthor] = useState(false);
 
-  // Use fontScale color for quote (p) and author (h5), based on breakpoint
   const quoteColor = fontScale?.p?.[breakpoint]?.color || "#fff";
   const authorColor = fontScale?.h5?.[breakpoint]?.color || "#fff";
 
@@ -47,15 +41,6 @@ const Testimonial = ({
   return (
     <section className={styles.testimonialSection}>
       <div className={styles.card} style={cardStyle}>
-        {/*
-        <EditableWithColor
-          palettes={colours}
-          initialColor={quoteColor}
-          onSelect={(c) => {
-            if (onColorChange) onColorChange("quote", c);
-          }}
-        >
-        */}
         {editingQuote ? (
           <input
             className={mainFontClass + " " + styles.quote}
@@ -81,17 +66,6 @@ const Testimonial = ({
             &ldquo;{quote}&rdquo;
           </blockquote>
         )}
-        {/*</EditableWithColor>*/}
-
-        {/*
-        <EditableWithColor
-          palettes={colours}
-          initialColor={authorColor}
-          onSelect={(c) => {
-            if (onColorChange) onColorChange("author", c);
-          }}
-        >
-        */}
         {editingAuthor ? (
           <input
             className={extraFontClass + " " + styles.author}
@@ -116,7 +90,6 @@ const Testimonial = ({
             {author}
           </h5>
         )}
-        {/*</EditableWithColor>*/}
       </div>
     </section>
   );

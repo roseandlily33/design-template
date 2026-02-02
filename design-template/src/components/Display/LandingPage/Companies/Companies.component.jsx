@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from "react";
 import styles from "./Companies.module.css";
-import EditableWithColor from "../../Modal/EditableElement.component";
 
 const defaultCompanies = [
   { name: "Alvardo", color: "#6883a1", textColor: "#ffffff" }, // primary
@@ -15,17 +14,11 @@ const Companies = ({
   colours = [],
   spacingChart,
   overrides = {},
-  onColorChange,
   companiesTrustedText,
-  setCompaniesTrustedText,
   fontScale = {},
   breakpoint = "Desktop",
 }) => {
-  // No editing state: display-only
-  // Use overrides if present, else palette defaults
-  // Helper to get palette color by label and index
 
-  // Helper to get palette color by label and index
   const getPaletteColor = React.useCallback(
     (label, idx = 0) => {
       const row = Array.isArray(colours)
@@ -40,7 +33,6 @@ const Companies = ({
     [colours]
   );
 
-  // Title color for the section
   const titleDefaultColor =
     fontScale?.h4?.[breakpoint]?.color ||
     getPaletteColor("Main", 6) || getPaletteColor("Main", 5) || "#222";
@@ -68,9 +60,7 @@ const Companies = ({
     }));
   }, [overrides, getPaletteColor]);
 
-  // No editing/click handlers: display-only
 
-  // optional inline fallback using spacingChart (Display already injects CSS vars)
   const sectionStyle = spacingChart
     ? { margin: `${spacingChart.l.css} 0 ${spacingChart.m.css} 0` }
     : undefined;
@@ -87,7 +77,6 @@ const Companies = ({
 
       <div className={styles.companiesRow} style={rowStyle}>
         {companies.map((company, idx) => {
-          // Use fontScale.p color for badge text if set, else badge textColor, else fallback
           const badgeTextColor = fontScale?.p?.[breakpoint]?.color || company.textColor || "#fff";
           return (
             <span
