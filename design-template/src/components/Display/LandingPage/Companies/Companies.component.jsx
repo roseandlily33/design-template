@@ -17,25 +17,27 @@ const Companies = ({
   companiesTrustedText,
   fontScale = {},
   breakpoint = "Desktop",
+  background,
 }) => {
-
   const getPaletteColor = React.useCallback(
     (label, idx = 0) => {
       const row = Array.isArray(colours)
         ? colours.find(
-          (r) => r.label && r.label.toLowerCase() === label.toLowerCase()
-        )
+            (r) => r.label && r.label.toLowerCase() === label.toLowerCase(),
+          )
         : null;
       return row && Array.isArray(row.colors) && row.colors[idx]
         ? row.colors[idx]
         : undefined;
     },
-    [colours]
+    [colours],
   );
 
   const titleDefaultColor =
     fontScale?.h4?.[breakpoint]?.color ||
-    getPaletteColor("Main", 6) || getPaletteColor("Main", 5) || "#222";
+    getPaletteColor("Main", 6) ||
+    getPaletteColor("Main", 5) ||
+    "#222";
 
   const companies = useMemo(() => {
     const paletteBadgeColors = [
@@ -60,24 +62,27 @@ const Companies = ({
     }));
   }, [overrides, getPaletteColor]);
 
-
   const sectionStyle = spacingChart
     ? { margin: `${spacingChart.l.css} 0 ${spacingChart.m.css} 0` }
     : undefined;
   const rowStyle = spacingChart ? { gap: spacingChart.l.css } : undefined;
 
   return (
-    <section className={styles.companiesSection} style={sectionStyle}>
-      <h4
+    <section
+      className={styles.companiesSection}
+      style={{ ...sectionStyle, ...(background ? { background } : {}) }}
+    >
+      <h3
         className={mainFontClass + " " + styles.trustedTitle}
-        style={{ color: titleDefaultColor, textAlign: "center", fontWeight: 800, fontSize: "1.1rem", width: "100%" }}
+        style={{ color: titleDefaultColor, textAlign: "center", width: "100%" }}
       >
         {companiesTrustedText}
-      </h4>
+      </h3>
 
       <div className={styles.companiesRow} style={rowStyle}>
         {companies.map((company, idx) => {
-          const badgeTextColor = fontScale?.p?.[breakpoint]?.color || company.textColor || "#fff";
+          const badgeTextColor =
+            fontScale?.p?.[breakpoint]?.color || company.textColor || "#fff";
           return (
             <span
               key={company.name + idx}

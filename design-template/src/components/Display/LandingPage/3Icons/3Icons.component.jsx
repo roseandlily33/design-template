@@ -3,21 +3,21 @@ import styles from "./3Icons.module.css";
 
 const defaultIcons = [
   {
-    color: "#6883a1", 
+    color: "#6883a1",
     label: "Fast Delivery",
     desc: "We ensure quick and reliable delivery for all your needs.",
     labelColor: undefined,
     descColor: undefined,
   },
   {
-    color: "#e5c2c2", 
+    color: "#e5c2c2",
     label: "Quality Service",
     desc: "Our team is dedicated to providing top-notch service every time.",
     labelColor: undefined,
     descColor: undefined,
   },
   {
-    color: "#a4a4a4ff", 
+    color: "#a4a4a4ff",
     label: "Support 24/7",
     desc: "We are here to help you around the clock, whenever you need us.",
     labelColor: undefined,
@@ -35,13 +35,14 @@ const ThreeIcons = ({
   setThreeIcons,
   fontScale = {},
   breakpoint = "Desktop",
+  background,
 }) => {
   const getPaletteColor = React.useCallback(
     (label, idx = 0) => {
       const row = Array.isArray(colours)
         ? colours.find(
-            (r) => r.label && r.label.toLowerCase() === label.toLowerCase(),
-          )
+          (r) => r.label && r.label.toLowerCase() === label.toLowerCase(),
+        )
         : null;
       return row && Array.isArray(row.colors) && row.colors[idx]
         ? row.colors[idx]
@@ -130,8 +131,8 @@ const ThreeIcons = ({
   const rowStyle = spacingChart ? { gap: spacingChart.xl.css } : undefined;
   const cardPaddingStyle = spacingChart
     ? {
-        padding: `${spacingChart.xxl.css} ${spacingChart.m.css} ${spacingChart.m.css} ${spacingChart.m.css}`,
-      }
+      padding: `${spacingChart.xxl.css} ${spacingChart.m.css} ${spacingChart.m.css} ${spacingChart.m.css}`,
+    }
     : undefined;
 
   const titleStyle = spacingChart
@@ -139,7 +140,7 @@ const ThreeIcons = ({
     : undefined;
 
   return (
-    <section className={styles.iconsSection} style={sectionStyle}>
+    <section className={styles.iconsSection} style={{ ...sectionStyle, ...(background ? { background } : {}) }}>
       <div className={styles.cardsRow} style={rowStyle}>
         {cards.map((icon, idx) => (
           <div
@@ -147,6 +148,30 @@ const ThreeIcons = ({
             className={styles.card}
             style={{ borderRadius: borderRadius, ...cardPaddingStyle }}
           >
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginBottom: "1rem" }}>
+              {/* SVG icons for each card, themed in grey 4 */}
+              {idx === 0 && (
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="40" height="40" rx="12" fill="var(--grey-4)" />
+                  <path d="M10 30L30 10" stroke="#fff" strokeWidth="3" />
+                  <path d="M10 10L30 30" stroke="#fff" strokeWidth="3" />
+                </svg>
+              )}
+              {idx === 1 && (
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="40" height="40" rx="12" fill="var(--grey-4)" />
+                  <circle cx="20" cy="20" r="10" stroke="#fff" strokeWidth="3" fill="none" />
+                  <path d="M20 10V30" stroke="#fff" strokeWidth="3" />
+                </svg>
+              )}
+              {idx === 2 && (
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <rect width="40" height="40" rx="12" fill="var(--grey-4)" />
+                  <path d="M10 20H30" stroke="#fff" strokeWidth="3" />
+                  <path d="M20 10V30" stroke="#fff" strokeWidth="3" />
+                </svg>
+              )}
+            </div>
             {editing[idx]?.label ? (
               <input
                 className={headerFontClass + " " + styles.cardTitle}
@@ -158,7 +183,6 @@ const ThreeIcons = ({
                 style={{
                   textAlign: "center",
                   fontWeight: 700,
-                  fontSize: "1.25rem",
                   width: "100%",
                   color:
                     fontScale?.h3?.[breakpoint]?.color ||

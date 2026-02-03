@@ -1,9 +1,7 @@
-/* Company Overview Section Styles */
-
 .descriptionSection {
   background: #fff;
-  /* use spacing CSS variables injected by Display */
   padding: var(--spacing-xl) var(--spacing-m);
+  /* border: 2px solid red; */
 }
 
 .title {

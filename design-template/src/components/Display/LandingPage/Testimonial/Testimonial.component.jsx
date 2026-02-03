@@ -11,6 +11,7 @@ const Testimonial = ({
   setAuthor,
   fontScale = {},
   breakpoint = "Desktop",
+  background,
 }) => {
   const [editingQuote, setEditingQuote] = useState(false);
   const [editingAuthor, setEditingAuthor] = useState(false);
@@ -39,7 +40,7 @@ const Testimonial = ({
     : undefined;
 
   return (
-    <section className={styles.testimonialSection}>
+    <section className={styles.testimonialSection} style={background ? { background } : undefined}>
       <div className={styles.card} style={cardStyle}>
         {editingQuote ? (
           <input

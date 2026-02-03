@@ -20,10 +20,11 @@
 }
 .companiesSection {
   width: 100%;
-  margin: var(--spacing-l) 0 var(--spacing-m) 0;
+  padding: var(--spacing-xxl) var(--spacing-xl);
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 !important;
 }
 
 .trustedTitle {

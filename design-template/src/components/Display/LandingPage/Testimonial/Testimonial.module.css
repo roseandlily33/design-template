@@ -2,11 +2,11 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  padding: var(--spacing-xxl) var(--spacing-xl);
+  margin: 0 !important;
 }
 
 .card {
-  background: #fff; 
-  color: #fff; 
   padding: var(--spacing-xxl) var(--spacing-m) var(--spacing-m) var(--spacing-m);
   width: 100%;
   display: flex;

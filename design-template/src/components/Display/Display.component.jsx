@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useMemo } from "react";
 import styles from "./Display.module.css";
 import Navbar from "./LandingPage/Navbar/Navbar.component";
+import BackgroundSelector from "./BackgroundSelector/BackgroundSelector.component";
 import HeroImage from "./LandingPage/HeroImg/HeroImg.component";
 import Description from "./LandingPage/Description/Description.component";
 import ThreeIcons from "./LandingPage/3Icons/3Icons.component";
@@ -99,6 +100,25 @@ const Display = ({
     borderRadius,
   };
 
+  // Background selection state for each section
+  const sectionKeys = [
+    "navbar",
+    "hero",
+    "description",
+    "threeicons",
+    "companies",
+    "testimonial",
+    "contact",
+    "footer",
+  ];
+  const [bgSelectorVisible, setBgSelectorVisible] = useState(false);
+  const [backgrounds, setBackgrounds] = useState(() =>
+    Object.fromEntries(sectionKeys.map(k => [k, "#fff"]))
+  );
+  const handleBgChange = (key, color) => {
+    setBackgrounds(prev => ({ ...prev, [key]: color }));
+  };
+
   // Section registry for dynamic layout
   const sections = [
     {
@@ -111,6 +131,7 @@ const Display = ({
         secondaryButton,
         overrides: navbarOverrides,
         onColorChange: onNavbarColorChange,
+        background: backgrounds.navbar,
       },
     },
     {
@@ -123,6 +144,7 @@ const Display = ({
         setHeroTitle,
         heroSubtitle,
         setHeroSubtitle,
+        background: backgrounds.hero,
       },
     },
     {
@@ -135,6 +157,7 @@ const Display = ({
         setDescriptionTitle,
         descriptionDesc,
         setDescriptionDesc,
+        background: backgrounds.description,
       },
     },
     {
@@ -145,6 +168,7 @@ const Display = ({
         setThreeIcons,
         fontScale,
         breakpoint,
+        background: backgrounds.threeicons,
       },
     },
     {
@@ -155,6 +179,7 @@ const Display = ({
         onColorChange: onCompaniesColorChange,
         companiesTrustedText,
         setCompaniesTrustedText,
+        background: backgrounds.companies,
       },
     },
     {
@@ -165,6 +190,7 @@ const Display = ({
         setQuote: setTestimonialQuote,
         author: testimonialAuthor,
         setAuthor: setTestimonialAuthor,
+        background: backgrounds.testimonial,
       },
     },
     {
@@ -175,6 +201,7 @@ const Display = ({
         contact,
         setContact,
         onColorChange: onCompaniesColorChange,
+        background: backgrounds.contact,
       },
     },
     {
@@ -190,6 +217,7 @@ const Display = ({
         setFooterCopyright,
         footerLinks,
         setFooterLinks,
+        background: backgrounds.footer,
       },
     },
   ];
@@ -197,10 +225,17 @@ const Display = ({
   return (
     <div className={styles.displayRoot} ref={displayRef} style={spacingVars}>
       <style dangerouslySetInnerHTML={{ __html: fontVarsCSS }} />
+      <BackgroundSelector
+        colours={colours}
+        onChange={handleBgChange}
+        visible={bgSelectorVisible}
+        setVisible={setBgSelectorVisible}
+        backgrounds={backgrounds}
+      />
       <p style={{ fontSize: 14, color: "#888", marginBottom: 8 }}>
         Size: {size.width}px × {size.height}px
       </p>
-      {sections.map(({ Component, key, props }) => (
+      {sections?.map(({ Component, key, props }) => (
         <Component key={key} {...sharedProps} {...props} />
       ))}
     </div>

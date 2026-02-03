@@ -12,12 +12,13 @@ const Footer = ({
   spacingChart,
   footerCopyright,
   footerLinks,
+  background,
 }) => {
   const getPaletteColor = (label, idx = 0) => {
     const row = Array.isArray(colours)
       ? colours.find(
-        (r) => r.label && r.label.toLowerCase() === label.toLowerCase(),
-      )
+          (r) => r.label && r.label.toLowerCase() === label.toLowerCase(),
+        )
       : null;
     return row && Array.isArray(row.colors) && row.colors[idx]
       ? row.colors[idx]
@@ -26,19 +27,22 @@ const Footer = ({
 
   const defaultLogoColor =
     getPaletteColor("Main", 5) || getPaletteColor("Main", 7) || "#222";
-  
+
   const footerStyle = spacingChart
     ? { padding: `${spacingChart.xl.css} 0 ${spacingChart.m.css} 0` }
     : undefined;
   const footerContentStyle = spacingChart
     ? {
-      margin: `0 auto ${spacingChart.s.css} auto`,
-      padding: `0 ${spacingChart.l.css}`,
-    }
+        margin: `0 auto ${spacingChart.s.css} auto`,
+        padding: `0 ${spacingChart.l.css}`,
+      }
     : undefined;
 
   return (
-    <footer className={styles.footer} style={footerStyle}>
+    <footer
+      className={styles.footer}
+      style={{ ...footerStyle, ...(background ? { background } : {}) }}
+    >
       <div className={styles.footerContent} style={footerContentStyle}>
         <div
           className={styles.logoSection + " " + headerFontClass}
@@ -72,10 +76,7 @@ const Footer = ({
         </nav>
       </div>
       <div className={styles.copyright + " " + mainFontClass}>
-        <span
-        >
-          {footerCopyright}
-        </span>
+        <span>{footerCopyright}</span>
       </div>
     </footer>
   );

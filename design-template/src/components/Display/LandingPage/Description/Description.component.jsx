@@ -12,6 +12,7 @@ const Description = ({
   setDescriptionDesc,
   fontScale = {},
   breakpoint = "Desktop",
+  background,
 }) => {
   const [editingTitle, setEditingTitle] = useState(false);
   const [editingDesc, setEditingDesc] = useState(false);
@@ -37,7 +38,7 @@ const Description = ({
     : undefined;
 
   return (
-    <section className={styles.descriptionSection} style={sectionStyle}>
+    <section className={styles.descriptionSection} style={{ ...sectionStyle, ...(background ? { background } : {}) }}>
       {editingTitle ? (
         <input
           className={headerFontClass + " " + styles.title}

@@ -11,6 +11,7 @@ const Navbar = ({
   secondaryButton,
   colours = [],
   spacingChart,
+  background,
 }) => {
   const getPaletteColor = (label, idx = 0) => {
     const row = Array.isArray(colours)
@@ -24,12 +25,12 @@ const Navbar = ({
   };
 
   const defaultBg =
-    getPaletteColor("Grey", 0) || getPaletteColor("Grey", 0) || "#fff";
+    getPaletteColor("Grey", 0) || getPaletteColor("Grey", 1) || "#fff";
   const defaultLogoColor =
     getPaletteColor("Main", 1) || getPaletteColor("Main", 0) || "#222";
 
   const navStyle = {
-    background: defaultBg,
+    background: background || defaultBg,
     ...(spacingChart
       ? { padding: `${spacingChart.m.css} ${spacingChart.l.css}` }
       : {}),

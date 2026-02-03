@@ -1,14 +1,15 @@
 .iconsSection {
   width: 100%;
-  /* vertical spacing follows spacing vars */
-  margin: var(--spacing-xl) 0;
   display: flex;
   justify-content: center;
+  padding: var(--spacing-xxxl) var(--spacing-l);
+  /* border: 2px solid orange; */
+  margin: 0 !important;
 }
 
 .cardsRow {
   display: flex;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-xxxl);
   justify-content: center;
   width: 100%;
   max-width: 900px;
