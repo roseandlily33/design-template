@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-
+import PrimaryButton from "@/app/buttons/PrimaryButton/PrimaryButton.component";
+import SecondaryButton from "@/app/buttons/SecondaryButton/SecondaryButton.component";
+import TertiaryButton from "@/app/buttons/TertiaryButton/TertiaryButton.component";
+import DesctructionButton from "@/app/buttons/DestructionButton/DestructionButton.component";
 const SaveAndTabs = ({
   activeTab,
   setActiveTab,
@@ -253,45 +256,18 @@ const SaveAndTabs = ({
           }}
         >
           <div style={{ display: "flex", gap: 8 }}>
-            <button
-              onClick={() => setActiveTab(0)}
-              style={{
-                padding: "6px 18px",
-                borderRadius: 6,
-                border: activeTab === 0 ? "2px solid #6883a1" : "1px solid #ccc",
-                background: activeTab === 0 ? "#f7fafd" : "#fff",
-                fontWeight: activeTab === 0 ? 700 : 400,
-                cursor: "pointer",
-              }}
-            >
-              Template 1
-            </button>
-            <button
-              onClick={() => setActiveTab(1)}
-              style={{
-                padding: "6px 18px",
-                borderRadius: 6,
-                border: activeTab === 1 ? "2px solid #1976d2" : "1px solid #ccc",
-                background: activeTab === 1 ? "#f7fafd" : "#fff",
-                fontWeight: activeTab === 1 ? 700 : 400,
-                cursor: "pointer",
-              }}
-            >
-              Template 2
-            </button>
-            <button
-              onClick={() => setActiveTab(2)}
-              style={{
-                padding: "6px 18px",
-                borderRadius: 6,
-                border: activeTab === 2 ? "2px solid #ff9800" : "1px solid #ccc",
-                background: activeTab === 2 ? "#f7fafd" : "#fff",
-                fontWeight: activeTab === 2 ? 700 : 400,
-                cursor: "pointer",
-              }}
-            >
-              Template 3
-            </button>
+            <TertiaryButton
+              span="Template 1"
+              functionName={() => setActiveTab(0)}
+            />
+            <TertiaryButton
+              span="Template 2"
+              functionName={() => setActiveTab(1)}
+            />
+            <TertiaryButton
+              span="Template 3"
+              functionName={() => setActiveTab(2)}
+            />
           </div>
         </div>
       </div>
@@ -343,45 +319,18 @@ const SaveAndTabs = ({
         }}
       >
         <div style={{ display: "flex", gap: 8 }}>
-          <button
-            onClick={() => setActiveTab(0)}
-            style={{
-              padding: "6px 18px",
-              borderRadius: 6,
-              border: activeTab === 0 ? "2px solid #6883a1" : "1px solid #ccc",
-              background: activeTab === 0 ? "#f7fafd" : "#fff",
-              fontWeight: activeTab === 0 ? 700 : 400,
-              cursor: "pointer",
-            }}
-          >
-            Template 1
-          </button>
-          <button
-            onClick={() => setActiveTab(1)}
-            style={{
-              padding: "6px 18px",
-              borderRadius: 6,
-              border: activeTab === 1 ? "2px solid #1976d2" : "1px solid #ccc",
-              background: activeTab === 1 ? "#f7fafd" : "#fff",
-              fontWeight: activeTab === 1 ? 700 : 400,
-              cursor: "pointer",
-            }}
-          >
-            Template 2
-          </button>
-          <button
-            onClick={() => setActiveTab(2)}
-            style={{
-              padding: "6px 18px",
-              borderRadius: 6,
-              border: activeTab === 2 ? "2px solid #ff9800" : "1px solid #ccc",
-              background: activeTab === 2 ? "#f7fafd" : "#fff",
-              fontWeight: activeTab === 2 ? 700 : 400,
-              cursor: "pointer",
-            }}
-          >
-            Template 3
-          </button>
+          <TertiaryButton
+            span="Template 1"
+            functionName={() => setActiveTab(0)}
+          />
+          <TertiaryButton
+            span="Template 2"
+            functionName={() => setActiveTab(1)}
+          />
+          <TertiaryButton
+            span="Template 3"
+            functionName={() => setActiveTab(2)}
+          />
         </div>
       </div>
       <input
@@ -397,50 +346,22 @@ const SaveAndTabs = ({
         }}
         disabled={isReadOnly}
       />
-      <button
-        onClick={() => saveProject(false)}
+      <PrimaryButton
+        span={saving ? "Saving..." : "Save Project"}
+        functionName={() => saveProject(false)}
         disabled={saving || !canSave || isReadOnly}
-        style={{
-          padding: "8px 14px",
-          borderRadius: 8,
-          background: canSave && !isReadOnly ? "#6883a1" : "#b0b8c1",
-          color: "#fff",
-          border: "none",
-          cursor: canSave && !isReadOnly ? "pointer" : "not-allowed",
-        }}
-      >
-        {saving ? "Saving..." : "Save Project"}
-      </button>
-      <button
-        onClick={deleteProject}
+      />
+      <DesctructionButton
+        span="Delete Project"
+        functionName={deleteProject}
         disabled={!projectId || isReadOnly}
-        style={{
-          padding: "8px 14px",
-          borderRadius: 8,
-          background: projectId && !isReadOnly ? "#e57373" : "#f2bcbc",
-          color: "#fff",
-          border: "none",
-          cursor: projectId && !isReadOnly ? "pointer" : "not-allowed",
-          marginLeft: 8,
-        }}
-      >
-        Delete Project
-      </button>
-      <button
-        onClick={shareProject}
+      />
+      <SecondaryButton
+        span="Share Project"
+        functionName={shareProject}
         disabled={!projectId || shared || isReadOnly}
-        style={{
-          padding: "8px 14px",
-          borderRadius: 8,
-          background: projectId && !shared && !isReadOnly ? "#1976d2" : "#b0c4e7",
-          color: "#fff",
-          border: "none",
-          cursor: projectId && !shared && !isReadOnly ? "pointer" : "not-allowed",
-          marginLeft: 8,
-        }}
-      >
-        {shared ? "Shared" : "Share"}
-      </button>
+      />
+
       {shareMessage && (
         <div style={{ marginLeft: 12, color: "#1976d2" }}>{shareMessage}</div>
       )}

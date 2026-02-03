@@ -36,18 +36,28 @@ import useTestimonialState from "@/components/Hooks/Testimonial.state";
 import useThreeIconState from "@/components/Hooks/ThreeIcon.state";
 import useFooterState from "@/components/Hooks/Footer.state";
 import useContactState from "@/components/Hooks/Contact.state";
+import TertiaryButtonMain from "./buttons/TertiaryButton/TertiaryButton.component";
 
 export default function Home() {
-  const {heroTitle, setHeroTitle, heroSubtitle, setHeroSubtitle} = useHeroImgState();
-  const {descriptionTitle, descriptionDesc, setDescriptionTitle, setDescriptionDesc} = useDescriptionState();
-  const {companiesTrustedText, setCompaniesTrustedText} = useCompaniesState();
-  const {testimonialQuote, setTestimonialQuote, testimonialAuthor, setTestimonialAuthor} = useTestimonialState();
-  const {threeIcons, setThreeIcons} = useThreeIconState();
-  const {footerCopyright, footerLinks, setFooterCopyright, setFooterLinks} = useFooterState();
-  const {contact, setContact} = useContactState();
-
-
-
+  const { heroTitle, setHeroTitle, heroSubtitle, setHeroSubtitle } =
+    useHeroImgState();
+  const {
+    descriptionTitle,
+    descriptionDesc,
+    setDescriptionTitle,
+    setDescriptionDesc,
+  } = useDescriptionState();
+  const { companiesTrustedText, setCompaniesTrustedText } = useCompaniesState();
+  const {
+    testimonialQuote,
+    setTestimonialQuote,
+    testimonialAuthor,
+    setTestimonialAuthor,
+  } = useTestimonialState();
+  const { threeIcons, setThreeIcons } = useThreeIconState();
+  const { footerCopyright, footerLinks, setFooterCopyright, setFooterLinks } =
+    useFooterState();
+  const { contact, setContact } = useContactState();
 
   // Track the current project ID for update vs create
   const [projectId, setProjectId] = useState(null);
@@ -459,6 +469,13 @@ export default function Home() {
     secondaryButton: <SecondaryButton {...displayText} />,
     tertiaryButton: <TertiaryButton {...displayText} />,
   };
+  console.log(
+    "All the page props for the palettes step 1",
+    palette1,
+    palette2,
+    palette3,
+    selected,
+  );
 
   return (
     <div>
@@ -471,40 +488,14 @@ export default function Home() {
           padding: "12px 32px 0 32px",
         }}
       >
-        <button
-          onClick={() => setCardsOpen(true)}
-          style={{
-            padding: "8px 18px",
-            borderRadius: 8,
-            background: "#fff",
-            color: "#222",
-            border: "1.5px solid #6883a1",
-            fontWeight: 600,
-            fontSize: "1rem",
-            cursor: "pointer",
-            boxShadow: "0 1px 4px #0070f322",
-            marginBottom: 8,
-          }}
-        >
-          Cards
-        </button>
-        <button
-          onClick={() => setLayoutsOpen(true)}
-          style={{
-            padding: "8px 18px",
-            borderRadius: 8,
-            background: "#fff",
-            color: "#222",
-            border: "1.5px solid #6883a1",
-            fontWeight: 600,
-            fontSize: "1rem",
-            cursor: "pointer",
-            boxShadow: "0 1px 4px #0070f322",
-            marginBottom: 8,
-          }}
-        >
-          Layouts
-        </button>
+        <TertiaryButtonMain
+          functionName={() => setCardsOpen(true)}
+          span="Cards"
+        />
+        <TertiaryButtonMain
+          functionName={() => setLayoutsOpen(true)}
+          span="Layouts"
+        />
       </div>
       {cardsOpen && (
         <div
@@ -535,25 +526,10 @@ export default function Home() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              onClick={() => setCardsOpen(false)}
-              style={{
-                position: "absolute",
-                top: 16,
-                right: 16,
-                background: "#6883a1",
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                padding: "6px 14px",
-                fontWeight: 600,
-                cursor: "pointer",
-                fontSize: "1rem",
-                zIndex: 10,
-              }}
-            >
-              Close
-            </button>
+            <TertiaryButtonMain
+              span="Close"
+              functionName={() => setCardsOpen(false)}
+            />
             <Cards
               colours={selected}
               fonts={selectedFontSet}
@@ -598,25 +574,10 @@ export default function Home() {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <button
-              onClick={() => setLayoutsOpen(false)}
-              style={{
-                position: "absolute",
-                top: 16,
-                right: 16,
-                background: "#6883a1",
-                color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                padding: "6px 14px",
-                fontWeight: 600,
-                cursor: "pointer",
-                fontSize: "1rem",
-                zIndex: 10,
-              }}
-            >
-              Close
-            </button>
+            <TertiaryButtonMain
+              functionName={() => setLayoutsOpen(false)}
+              span="Close"
+            />
             <Layouts
               colours={selected}
               fonts={selectedFontSet}
@@ -683,11 +644,11 @@ export default function Home() {
             <div className={styles.leftPaneContent}>
               <ColourPicker
                 palette1={palette1}
-                setPalette1={activeTab === 0 ? setPalette1 : undefined}
+                setPalette1={setPalette1}
                 palette2={palette2}
-                setPalette2={activeTab === 1 ? setPalette2 : undefined}
+                setPalette2={setPalette2}
                 palette3={palette3}
-                setPalette3={activeTab === 2 ? setPalette3 : undefined}
+                setPalette3={setPalette3}
                 selected={selected}
                 setSelected={setSelected}
               />

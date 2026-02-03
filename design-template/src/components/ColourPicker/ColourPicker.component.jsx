@@ -1,11 +1,11 @@
 "use client";
 import React, { useState } from "react";
-import { useRef } from "react";
 import AccessibilityChartModal from "./AccessibilityChartModal";
 import styles from "./ColourPicker.module.css";
-import GenerateColours from "./GenerateColours.component";
-
-const MAX_COLORS = 8;
+import RenderPalette from "./RenderPalette.component";
+import TertiaryButton from "../../app/buttons/TertiaryButton/TertiaryButton.component";
+import SecondaryButton from "../../app/buttons/SecondaryButton/SecondaryButton.component";
+import CopyPalette from "./CopyPalette.component";
 
 const ColourPicker = ({
   palette1,
@@ -14,10 +14,17 @@ const ColourPicker = ({
   setPalette1,
   setPalette2,
   setPalette3,
+  // selected,
+  // setSelected,
 }) => {
-  const [copied, setCopied] = useState(null);
+  console.log(
+    "Colour picket step 2 props",
+    palette1,
+    palette2,
+    palette3,
+    // selected,
+  );
   const [showModal, setShowModal] = useState(false);
-  // For each palette, track its own selected color and hex input
   const [selected1, setSelected1] = useState(null);
   const [hexInput1, setHexInput1] = useState("");
   const [selected2, setSelected2] = useState(null);
@@ -27,283 +34,18 @@ const ColourPicker = ({
   // Tab state: 0 = Palette 1, 1 = Palette 2, 2 = Palette 3
   const [activeTab, setActiveTab] = useState(0);
 
-  // Helper to render a palette section
-  const renderPalette = (
-    rows,
-    setRows,
-    selected,
-    setSelected,
-    hexInput,
-    setHexInput,
-    label,
-  ) => (
-    <div className={styles.paletteSection}>
-      <div className={styles.pickerTitle}>{label}</div>
-      <GenerateColours
-        rows={rows}
-        setRows={setRows}
-      />
-      {rows.map((row, rowIdx) => (
-        <div key={row.label} className={styles.row}>
-          <div className={styles.rowLabel}>{row.label}</div>
-          <div className={styles.colorGroup}>
-            {row.colors.map((color, idx) => (
-              <div
-                key={idx}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  position: "relative",
-                }}
-              >
-                <span
-                  className={styles.circle}
-                  style={{
-                    background: color || undefined,
-                    border:
-                      selected &&
-                        selected.rowIdx === rowIdx &&
-                        selected.colorIdx === idx
-                        ? "2px solid #6883a1"
-                        : undefined,
-                  }}
-                  onClick={() => {
-                    setSelected({ rowIdx, colorIdx: idx });
-                    setHexInput(row.colors[idx] || "");
-                  }}
-                />
-                {/* Delete button */}
-                <button
-                  style={{
-                    position: "absolute",
-                    top: 2,
-                    right: 2,
-                    width: 18,
-                    height: 18,
-                    borderRadius: "50%",
-                    border: "none",
-                    background: "#fff",
-                    color: "#d00",
-                    fontWeight: "bold",
-                    fontSize: 14,
-                    cursor: "pointer",
-                    boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-                    zIndex: 1,
-                  }}
-                  title="Delete color"
-                  onClick={() => {
-                    setRows((prevRows) =>
-                      prevRows.map((row, rIdx) => {
-                        if (rIdx === rowIdx) {
-                          const newColors = row.colors.filter(
-                            (_, cIdx) => cIdx !== idx,
-                          );
-                          return { ...row, colors: newColors };
-                        }
-                        return row;
-                      }),
-                    );
-                  }}
-                >
-                  ×
-                </button>
-                <span
-                  style={{
-                    fontSize: 13,
-                    color: color ? "#333" : "#bbb",
-                    marginTop: 4,
-                    cursor: color ? "pointer" : "default",
-                    userSelect: "all",
-                    display: "inline-block",
-                    minWidth: 70,
-                    textAlign: "center",
-                  }}
-                  onClick={() => {
-                    if (!color) return;
-                    navigator.clipboard.writeText(color);
-                    setCopied({ rowIdx, colorIdx: idx, label });
-                    setTimeout(() => setCopied(null), 1200);
-                  }}
-                  title={color ? "Click to copy" : ""}
-                >
-                  {color
-                    ? copied &&
-                      copied.rowIdx === rowIdx &&
-                      copied.colorIdx === idx &&
-                      copied.label === label
-                      ? "Copied!"
-                      : color
-                    : "#ffffff"}
-                </span>
-                {/* Move arrows below the circle */}
-                <div style={{ display: "flex", gap: 2, marginTop: 6 }}>
-                  {idx > 0 && (
-                    <button
-                      style={{
-                        width: 18,
-                        height: 18,
-                        borderRadius: "50%",
-                        border: "none",
-                        background: "#fff",
-                        color: "#333",
-                        fontWeight: "bold",
-                        fontSize: 14,
-                        cursor: "pointer",
-                        boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-                        zIndex: 1,
-                      }}
-                      title="Move left"
-                      onClick={() => {
-                        setRows((prevRows) =>
-                          prevRows.map((row, rIdx) => {
-                            if (rIdx === rowIdx) {
-                              const newColors = [...row.colors];
-                              [newColors[idx - 1], newColors[idx]] = [newColors[idx], newColors[idx - 1]];
-                              return { ...row, colors: newColors };
-                            }
-                            return row;
-                          })
-                        );
-                      }}
-                    >
-                      ←
-                    </button>
-                  )}
-                  {idx < row.colors.length - 1 && (
-                    <button
-                      style={{
-                        width: 18,
-                        height: 18,
-                        borderRadius: "50%",
-                        border: "none",
-                        background: "#fff",
-                        color: "#333",
-                        fontWeight: "bold",
-                        fontSize: 14,
-                        cursor: "pointer",
-                        boxShadow: "0 1px 4px rgba(0,0,0,0.08)",
-                        zIndex: 1,
-                      }}
-                      title="Move right"
-                      onClick={() => {
-                        setRows((prevRows) =>
-                          prevRows.map((row, rIdx) => {
-                            if (rIdx === rowIdx) {
-                              const newColors = [...row.colors];
-                              [newColors[idx], newColors[idx + 1]] = [newColors[idx + 1], newColors[idx]];
-                              return { ...row, colors: newColors };
-                            }
-                            return row;
-                          })
-                        );
-                      }}
-                    >
-                      →
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
-            {row.colors.length < MAX_COLORS && (
-              <span
-                className={styles.plus}
-                onClick={() => {
-                  setRows((prevRows) =>
-                    prevRows.map((row, idx) =>
-                      idx === rowIdx && row.colors.length < MAX_COLORS
-                        ? { ...row, colors: [...row.colors, null] }
-                        : row,
-                    ),
-                  );
-                }}
-                title="Add color"
-              >
-                +
-              </span>
-            )}
-          </div>
-          {/* Show color picker and hex input if a circle in this row is selected */}
-          {selected && selected.rowIdx === rowIdx && (
-            <div
-              style={{
-                marginTop: 10,
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <input
-                type="color"
-                value={hexInput || "#ffffff"}
-                onChange={(e) => {
-                  const newColor = e.target.value;
-                  setHexInput(newColor);
-                  setRows((prevRows) =>
-                    prevRows.map((row, rIdx) => {
-                      if (rIdx === selected.rowIdx) {
-                        return {
-                          ...row,
-                          colors: row.colors.map((c, cIdx) =>
-                            cIdx === selected.colorIdx ? newColor : c,
-                          ),
-                        };
-                      }
-                      return row;
-                    }),
-                  );
-                }}
-                style={{
-                  width: 40,
-                  height: 40,
-                  border: "none",
-                  background: "none",
-                }}
-              />
-              <input
-                type="text"
-                value={hexInput}
-                onChange={(e) => setHexInput(e.target.value)}
-                onBlur={() => {
-                  if (selected && /^#([0-9A-Fa-f]{3}){1,2}$/.test(hexInput)) {
-                    setRows((prevRows) =>
-                      prevRows.map((row, rIdx) => {
-                        if (rIdx === selected.rowIdx) {
-                          return {
-                            ...row,
-                            colors: row.colors.map((c, cIdx) =>
-                              cIdx === selected.colorIdx ? hexInput : c,
-                            ),
-                          };
-                        }
-                        return row;
-                      }),
-                    );
-                  }
-                }}
-                placeholder="#hex"
-                style={{ width: 80, padding: "6px 8px", fontSize: 16 }}
-              />
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
-  );
-
-  // Helper to generate CSS variables for the selected palette only
   const getSelectedPaletteCss = () => {
     const palettes = [palette1, palette2, palette3];
     const palette = palettes[activeTab];
-    let css = ':root {\n';
+    let css = ":root {\n";
     palette.forEach((row) => {
       row.colors.forEach((color, cIdx) => {
         if (color) {
-          css += `  --palette${activeTab + 1}-${row.label?.toLowerCase() || 'row'}-${cIdx + 1}: ${color};\n`;
+          css += `  --palette${activeTab + 1}-${row.label?.toLowerCase() || "row"}-${cIdx + 1}: ${color};\n`;
         }
       });
     });
-    css += '}\n';
+    css += "}\n";
     return css;
   };
 
@@ -311,98 +53,71 @@ const ColourPicker = ({
 
   return (
     <div className={styles.pickerRoot}>
-      <div style={{ display: "flex", gap: 8, marginBottom: 16, alignItems: "center" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: 8,
+          marginBottom: 16,
+          alignItems: "center",
+        }}
+      >
         {[0, 1, 2].map((idx) => (
-          <button
+          <TertiaryButton
+            functionName={() => setActiveTab(idx)}
+            span={`Palette ${idx + 1}`}
             key={idx}
-            style={{
-              padding: "6px 16px",
-              fontSize: 15,
-              borderRadius: 6,
-              background: activeTab === idx ? "#6883a1" : "#f0f0f0",
-              color: activeTab === idx ? "#fff" : "#333",
-              border:
-                activeTab === idx ? "2px solid #6883a1" : "1px solid #ccc",
-              fontWeight: activeTab === idx ? 600 : 400,
-              cursor: "pointer",
-              transition: "all 0.15s",
-            }}
-            onClick={() => setActiveTab(idx)}
-            aria-pressed={activeTab === idx}
-          >
-            {`Palette ${idx + 1}`}
-          </button>
+          />
         ))}
-        <button
-          style={{
-            marginLeft: 16,
-            padding: "6px 16px",
-            fontSize: 15,
-            borderRadius: 6,
-            background: "#eee",
-            color: "#333",
-            border: "1px solid #ccc",
-            fontWeight: 500,
-            cursor: "pointer",
-            transition: "all 0.15s",
-          }}
-          onClick={() => setShowModal(true)}
-        >
-          Accessibility Chart
-        </button>
-        <button
-          style={{
-            marginLeft: 16,
-            padding: "6px 16px",
-            fontSize: 15,
-            borderRadius: 6,
-            background: cssCopied ? "#6883a1" : "#eee",
-            color: cssCopied ? "#fff" : "#333",
-            border: "1px solid #ccc",
-            fontWeight: 500,
-            cursor: "pointer",
-            transition: "all 0.15s",
-          }}
-          onClick={() => {
+        <SecondaryButton
+          span="Accessibility Chart"
+          functionName={() => setShowModal(true)}
+        />
+        <SecondaryButton
+          span={cssCopied ? "Copied CSS!" : "Copy CSS"}
+          functionName={() => {
             navigator.clipboard.writeText(getSelectedPaletteCss());
             setCssCopied(true);
             setTimeout(() => setCssCopied(false), 1200);
           }}
-          title="Copy this palette's colors as CSS variables"
-        >
-          {cssCopied ? "Copied CSS!" : "Copy CSS"}
-        </button>
+        />
       </div>
-      {activeTab === 0 &&
-        renderPalette(
-          palette1,
-          setPalette1,
-          selected1,
-          setSelected1,
-          hexInput1,
-          setHexInput1,
-          "Palette 1",
-        )}
-      {activeTab === 1 &&
-        renderPalette(
-          palette2,
-          setPalette2,
-          selected2,
-          setSelected2,
-          hexInput2,
-          setHexInput2,
-          "Palette 2",
-        )}
-      {activeTab === 2 &&
-        renderPalette(
-          palette3,
-          setPalette3,
-          selected3,
-          setSelected3,
-          hexInput3,
-          setHexInput3,
-          "Palette 3",
-        )}
+      <CopyPalette
+        palettes={[palette1, palette2, palette3]}
+        setPalettes={[setPalette1, setPalette2, setPalette3]}
+      />
+      {activeTab === 0 && (
+        <RenderPalette
+          palette={palette1}
+          setPalette={setPalette1}
+          selected={selected1}
+          setSelected={setSelected1}
+          hexInput={hexInput1}
+          setHexInput={setHexInput1}
+          label="Palette 1"
+        />
+      )}
+      {activeTab === 1 && (
+        <RenderPalette
+          palette={palette2}
+          setPalette={setPalette2}
+          selected={selected2}
+          setSelected={setSelected2}
+          hexInput={hexInput2}
+          setHexInput={setHexInput2}
+          label="Palette 2"
+        />
+      )}
+      {activeTab === 2 && (
+        <RenderPalette
+          palette={palette3}
+          setPalette={setPalette3}
+          selected={selected3}
+          setSelected={setSelected3}
+          hexInput={hexInput3}
+          setHexInput={setHexInput3}
+          label="Palette 3"
+        />
+      )}
       <AccessibilityChartModal
         open={showModal}
         onClose={() => setShowModal(false)}

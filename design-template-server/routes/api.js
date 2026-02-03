@@ -181,14 +181,31 @@ router.post("/project", authMiddleware, async (req, res) => {
       });
       console.log("Project updated:", proj);
     } else {
-      // Always create a new project if no valid _id, even if title matches
-      proj = new Project(project);
-      await proj.save();
-      user.projects.push(proj._id);
-      await user.save();
-      console.log("Project created:", proj);
+      // Check for existing project with same title for this user
+      const existingProj = await Project.findOne({
+        title: project.title,
+        _id: { $in: user.projects },
+      });
+      if (existingProj) {
+        // Update the existing project
+        proj = await Project.findByIdAndUpdate(existingProj._id, project, {
+          new: true,
+        });
+        console.log("Project updated by title:", proj);
+      } else {
+        // Create new project
+        proj = new Project(project);
+        await proj.save();
+        user.projects.push(proj._id);
+        await user.save();
+        console.log("Project created:", proj);
+      }
     }
-    return res.json(proj);
+    // Return updated project list for dropdown refresh
+    const projects = await Project.find({ _id: { $in: user.projects } }).select(
+      "title createdAt updatedAt",
+    );
+    return res.json({ project: proj, projects });
   } catch (err) {
     console.error("Error in /project:", err);
     return res.status(500).json({ error: "Server error" });
@@ -208,7 +225,9 @@ router.delete("/project/:id", authMiddleware, async (req, res) => {
         .status(403)
         .json({ error: "Not authorized to delete this project" });
     }
-    user.projects = user.projects.filter((pid) => pid.toString() !== projectId);
+    user.projects = user.projects.filter(
+      (pid) => pid.toString() || pid._id !== projectId,
+    );
     await user.save();
     await Project.findByIdAndDelete(projectId);
     return res.json({ message: "Project deleted" });
