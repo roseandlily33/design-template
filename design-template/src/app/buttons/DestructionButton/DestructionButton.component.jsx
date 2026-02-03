@@ -1,9 +1,9 @@
 import React from "react";
-import { destructionButtonStyle } from "./DestructionButton.styles.jsx";
+import styles from "./DestructionButton.module.css";
 
 const DestructionButton = ({ functionName, span }) => {
     return (
-        <button style={destructionButtonStyle} onClick={functionName}>
+        <button className={styles.destructionButton} onClick={functionName}>
             {span}
         </button>
     );

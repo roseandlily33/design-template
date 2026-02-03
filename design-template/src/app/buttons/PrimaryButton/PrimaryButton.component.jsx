@@ -1,9 +1,9 @@
 import React from "react";
-import { primaryButtonStyle } from "./PrimaryButton.styles.jsx";
+import styles from "./PrimaryButton.module.css";
 
 const PrimaryButton = ({ span, functionName }) => {
   return (
-    <button style={primaryButtonStyle} onClick={functionName}>
+    <button className={styles.primaryButtonStyle} onClick={functionName}>
       {span}
     </button>
   );

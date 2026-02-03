@@ -1,9 +1,9 @@
 import React from "react";
-import { secondaryButtonStyle } from "./SecondaryButton.styles.jsx";
+import styles from "./SecondaryButton.module.css";
 
 const SecondaryButton = ({ span, functionName }) => {
     return (
-        <button style={secondaryButtonStyle} onClick={functionName}>
+        <button className={styles.secondaryButtonStyle} onClick={functionName}>
             {span}
         </button>
     );

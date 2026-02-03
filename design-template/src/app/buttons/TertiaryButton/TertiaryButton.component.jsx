@@ -1,12 +1,12 @@
 import React from "react";
-import { tertiaryButtonStyle } from "./TertiaryButton.styles";
+import styles from "./TertiaryButton.module.css";
 
-const TertiaryButton = ({span, functionName}) => {
-    return (  
-        <button style={tertiaryButtonStyle} onClick={functionName}>
-           {span}
-        </button>
-    );
-}
- 
+const TertiaryButton = ({ span, functionName }) => {
+  return (
+    <button className={styles.tertiaryButtonStyle} onClick={functionName}>
+      {span}
+    </button>
+  );
+};
+
 export default TertiaryButton;
