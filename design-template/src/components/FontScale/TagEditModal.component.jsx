@@ -1,14 +1,5 @@
 import React, { useState } from "react";
 
-/*
-  Simple modal to edit all style properties for a tag at a breakpoint.
-  Props:
-   - tag (string), bp (string)
-   - styleObj (object) current styles for that tag/bp
-   - onClose() to dismiss
-   - handleStyleChange(tag, bp, key, value) : called when saving for single bp
-   - applyUpdatesToAll(tag, updates) : apply same updates to Desktop/Tablet/Mobile
-*/
 const TagEditModal = ({
   tag,
   bp,
@@ -27,25 +18,25 @@ const TagEditModal = ({
     border: styleObj.border ?? "none",
   });
 
-  const setField = (k, v) => setForm((s) => ({ ...s, [k]: v }));
+  // const setField = (k, v) => setForm((s) => ({ ...s, [k]: v }));
 
-  const saveCurrent = () => {
-    // apply each field via handleStyleChange, for this bp only
-    Object.entries(form).forEach(([k, v]) => {
-      if (typeof handleStyleChange === "function")
-        handleStyleChange(tag, bp, k, v);
-    });
-    onClose();
-  };
+  // const saveCurrent = () => {
+  //   // apply each field via handleStyleChange, for this bp only
+  //   Object.entries(form).forEach(([k, v]) => {
+  //     if (typeof handleStyleChange === "function")
+  //       handleStyleChange(tag, bp, k, v);
+  //   });
+  //   onClose();
+  // };
 
-  const saveToAll = () => {
-    if (typeof applyUpdatesToAll === "function") {
-      applyUpdatesToAll(tag, { ...form });
-    } else {
-      // fallback: apply to current bp then close
-      saveCurrent();
-    }
-  };
+  // const saveToAll = () => {
+  //   if (typeof applyUpdatesToAll === "function") {
+  //     applyUpdatesToAll(tag, { ...form });
+  //   } else {
+  //     // fallback: apply to current bp then close
+  //     saveCurrent();
+  //   }
+  // };
 
   return (
     <>

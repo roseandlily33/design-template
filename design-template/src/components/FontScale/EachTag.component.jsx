@@ -7,8 +7,8 @@ const EachTag = ({
   styleObj,
   isModified,
   bp,
-  handleStyleChange,
-  cascadeDesktopToAll,
+  // handleStyleChange,
+  // cascadeDesktopToAll,
   setModal,
 }) => {
   const current = styleObj?.fontSize ?? 1;
@@ -42,6 +42,8 @@ const EachTag = ({
             ? "“Sample blockquote”"
             : tag === "small"
             ? "Small text"
+            : tag === "a"
+            ? "Sample link"
             : `Sample ${tag}`}
         </span>
 

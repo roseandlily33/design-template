@@ -8,6 +8,7 @@ export const TAGS = [
   "p",
   "small",
   "blockquote",
+  "a",
 ];
 export const BREAKPOINTS = ["Desktop", "Tablet", "Mobile"];
 
@@ -27,6 +28,7 @@ export const defaultFontSizes = {
   p: 1,
   small: 0.875,
   blockquote: 1.25,
+  a: 1,
 };
 
 export function buildDefaultStyles() {

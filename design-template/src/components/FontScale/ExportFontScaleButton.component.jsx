@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { generateCSSFromStyles } from "./fontscale.helpers.js";
+import PrimaryButton from "@/app/buttons/PrimaryButton/PrimaryButton.component.jsx";
 
 const ExportFontScale = ({ stylesState, styles }) => {
   const [copied, setCopied] = useState(false);
@@ -35,21 +36,10 @@ const ExportFontScale = ({ stylesState, styles }) => {
 
   return (
     <div style={{ position: "relative", display: "inline-block" }}>
-      <button
-        className={styles?.scaleExportBtn}
-        onClick={handleCopy}
-        style={{
-          padding: "8px 12px",
-          background: "#6883a1",
-          color: "#fff",
-          border: "none",
-          borderRadius: 6,
-          cursor: "pointer",
-        }}
-      >
-        {copied ? "Copied" : "Copy Styles"}
-      </button>
-
+      <PrimaryButton
+        span={copied ? "Copied" : "Copy Styles"}
+        functionName={handleCopy}
+      />
       {copied && (
         <div
           role="status"

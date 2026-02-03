@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import styles from "./SpacingChart.module.css";
+import PrimaryButton from "@/app/buttons/PrimaryButton/PrimaryButton.component";
+import FontTable from "./FontTable.component";
 
 const spacingRatios = {
   xxxs: 0.15,
@@ -18,11 +20,7 @@ const spacingRatios = {
   xxxxxxxxl: 24,
 };
 
-function formatValue(val, unit) {
-  // Always show up to 2 decimals for rem, no decimals for px
-  if (unit === "rem") return `${parseFloat(val.toFixed(3))}rem`;
-  return `${Math.round(val)}px`;
-}
+
 
 const getSpacingCSS = (base, unit) => {
   let css = ":root {\n";
@@ -78,7 +76,7 @@ const SpacingChart = ({ base, setBase, unit, setUnit }) => {
           </label>
           <select
             value={baseOptions.findIndex(
-              (opt) => opt.value === base && opt.unit === unit
+              (opt) => opt.value === base && opt.unit === unit,
             )}
             onChange={handleBaseChange}
             style={{
@@ -97,54 +95,13 @@ const SpacingChart = ({ base, setBase, unit, setUnit }) => {
               </option>
             ))}
           </select>
-          <button
-            style={{
-              padding: "8px 18px",
-              fontSize: 16,
-              borderRadius: 6,
-              background: "#6883a1",
-              color: "#fff",
-              border: "none",
-              cursor: "pointer",
-              fontWeight: 500,
-            }}
-            onClick={handleCopy}
-          >
-            {copied ? "Copied!" : "Copy CSS"}
-          </button>
+          <PrimaryButton
+            functionName={handleCopy}
+            span={copied ? "Copied!" : "Copy CSS"}
+          />
         </div>
       </div>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            <th>Label</th>
-            <th>Value</th>
-            <th>Preview</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Object.entries(spacingRatios).map(([label, ratio]) => {
-            const value = formatValue(base * ratio, unit);
-            return (
-              <tr key={label}>
-                <td className={styles.label}>{label}</td>
-                <td className={styles.value}>{value}</td>
-                <td>
-                  <div
-                    className={styles.preview}
-                    style={{
-                      width: value,
-                      height: "1.5rem",
-                      background: "#e0e0e0",
-                      borderRadius: 4,
-                    }}
-                  />
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+     <FontTable spacingRatios={spacingRatios} base={base} unit={unit} />˝
     </div>
   );
 };

@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from "react";
-import { createPortal } from "react-dom";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   TAGS,
   BREAKPOINTS,
@@ -8,11 +7,15 @@ import {
   TYPE_SCALES,
   cascadeDesktopToAllForTag,
   generateCSSFromStyles,
+  buildDefaultStyles,
 } from "./fontscale.helpers.js";
 import FontScaleModal from "./FontScaleModal.component.jsx";
 import styles from "./FontScale.module.css";
 import ExportFontScale from "./ExportFontScaleButton.component.jsx";
 import EachTag from "./EachTag.component.jsx";
+import PrimaryButton from "@/app/buttons/PrimaryButton/PrimaryButton.component.jsx";
+import DestructionButton from "@/app/buttons/DestructionButton/DestructionButton.component.jsx";
+import TertiaryButton from "@/app/buttons/TertiaryButton/TertiaryButton.component.jsx";
 
 const FontScale = ({
   fontSet,
@@ -26,6 +29,22 @@ const FontScale = ({
   const [modal, setModal] = useState(null); // { tag, bp } editor portal
   const [showExport, setShowExport] = useState(false);
   const [cssExport, setCssExport] = useState("");
+
+  // On mount, apply the default type scale if fontScaleStyles is not already scaled
+  useEffect(() => {
+    // Only run if all breakpoints are the same size (i.e., not yet scaled)
+    const allSame = TAGS.every((tag) => {
+      const s = fontScaleStyles[tag];
+      return (
+        s?.Desktop?.fontSize === s?.Tablet?.fontSize &&
+        s?.Desktop?.fontSize === s?.Mobile?.fontSize
+      );
+    });
+    if (allSame) {
+      applyTypeScale(selectedScale);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const colours = Array.isArray(selected)
     ? selected.map((row) => row.colors).flat()
     : [];
@@ -121,28 +140,27 @@ const FontScale = ({
     });
   };
 
-  const handleExport = () => {
-    const css = generateCSSFromStyles(fontScaleStyles || {});
-    setCssExport(css);
-    setShowExport(true);
-  };
+  // const handleExport = () => {
+  //   const css = generateCSSFromStyles(fontScaleStyles || {});
+  //   setCssExport(css);
+  //   setShowExport(true);
+  // };
 
   return (
     <div className={styles.scaleRoot}>
       <div className={styles.scaleHeader}>
         <div className={styles.scaleTitle}>Font Scale</div>
 
-        {/* quick copy button (keeps existing ExportFontScale) */}
         <ExportFontScale stylesState={fontScaleStyles} styles={styles} />
-
-        {/* longer export view (from old file) */}
-        <button
-          className={styles.scaleExportBtn}
-          onClick={handleExport}
-          style={{ marginLeft: 12 }}
-        >
-          Export CSS
-        </button>
+        {/* <PrimaryButton span="Export CSS" functionName={handleExport} /> */}
+        <DestructionButton
+          span="Reset"
+          functionName={() => {
+            setFontScaleStyles(buildDefaultStyles());
+            setModified({});
+            setSelectedScale(0);
+          }}
+        />
       </div>
 
       {showExport && (
@@ -161,20 +179,9 @@ const FontScale = ({
             position: "relative",
           }}
         >
-          <button
-            style={{
-              position: "absolute",
-              top: 12,
-              right: 12,
-              padding: "4px 10px",
-              fontSize: 14,
-              borderRadius: 5,
-              background: "#0070f3",
-              color: "#fff",
-              border: "none",
-              cursor: "pointer",
-            }}
-            onClick={() => {
+          <PrimaryButton
+            span="Copy"
+            functionName={() => {
               try {
                 navigator.clipboard.writeText(cssExport);
               } catch (e) {
@@ -188,25 +195,18 @@ const FontScale = ({
                 document.body.removeChild(ta);
               }
             }}
-          >
-            Copy
-          </button>
+          />
           {cssExport}
         </div>
       )}
 
       <div className={styles.scaleTypeScales}>
         {TYPE_SCALES.map((scale, idx) => (
-          <button
-            key={scale.name}
-            className={
-              styles.scaleTypeBtn +
-              (selectedScale === idx ? " " + styles.selected : "")
-            }
-            onClick={() => applyTypeScale(idx)}
-          >
-            {scale.name}
-          </button>
+          <TertiaryButton
+            span={scale.name}
+            key={idx}
+            functionName={() => applyTypeScale(idx)}
+          />
         ))}
         {TYPE_SCALES[selectedScale]?.name === "Custom" && (
           <span
