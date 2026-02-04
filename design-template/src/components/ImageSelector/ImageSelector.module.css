@@ -1,0 +1,76 @@
+/* Card-like root container */
+.selectorRoot {
+  background: #f7f8fa;
+  border-radius: 18px;
+  padding: 32px 24px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  margin: 0 auto 24px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.selectorTitle {
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #222;
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+}
+
+.imageGrid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.imageBtn {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 0;
+  background: #fff;
+  cursor: pointer;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border 0.2s,
+    box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+.imageBtn.selected {
+  border: 2px solid #6883a1;
+  box-shadow: 0 4px 16px rgba(104, 131, 161, 0.08);
+}
+
+.imageThumb {
+  object-fit: cover;
+  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+}
+
+.uploadIcon {
+  font-size: 24px;
+  color: #6883a1;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.selectedImagePreview {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.selectedImage {
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}

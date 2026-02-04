@@ -67,12 +67,18 @@
 
 .controlsRow {
   display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  align-items: center;
+  flex-direction: column;
+  gap: 5px;
   background: #f0f3f8;
   border-radius: 10px;
   padding: 12px 10px;
+}
+
+.controlsFieldsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-items: flex-end;
 }
 
 .label {

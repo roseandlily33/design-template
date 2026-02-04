@@ -1,5 +1,12 @@
 .logoRoot {
-  padding: 12px 10px;
+  background: #f7f8fa;
+  border-radius: 18px;
+  padding: 32px 24px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
+  margin: 0 auto 24px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 .logoHeader {
   display: flex;
@@ -8,7 +15,7 @@
   margin-bottom: 18px;
 }
 .logoTitle {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: #222;
   letter-spacing: 0.01em;
@@ -22,15 +29,23 @@
 .logoUploadBtn {
   padding: 8px 18px;
   font-size: 16px;
-  border-radius: 6px;
-  background: #6883a1; 
+  border-radius: 8px;
+  background: #6883a1;
   color: #fff;
   border: none;
   cursor: pointer;
+  box-shadow: 0 2px 8px rgba(104, 131, 161, 0.08);
+  transition:
+    background 0.2s,
+    box-shadow 0.2s;
+}
+.logoUploadBtn:hover {
+  background: #4e6a8c;
+  box-shadow: 0 4px 16px rgba(104, 131, 161, 0.12);
 }
 .logoPreviewWrapper {
   margin-top: 10px;
-  background: #fafbfc;
+  background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   border: 1px solid #eee;
@@ -44,4 +59,7 @@
   max-height: 80px;
   object-fit: contain;
   display: block;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }

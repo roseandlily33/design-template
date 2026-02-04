@@ -41,49 +41,44 @@ const Logo = ({
         >
           Upload Logo Image
         </button>
-        <div
-          style={{
-            display: "flex",
-            gap: 12,
-            alignItems: "center",
-            margin: "12px 0",
-          }}
-        >
-          <label style={{ fontWeight: 500 }}>
-            Width:
-            <input
-              type="number"
-              min={24}
-              max={600}
-              value={width}
-              onChange={(e) => setLogoWidth(Number(e.target.value))}
-              style={{ width: 60, marginLeft: 6 }}
+        <div className={styles.logoPreviewWrapper}>
+          <div style={{ display: "flex", gap: 22, alignItems: "center" }}>
+            <label style={{ fontWeight: 500 }}>
+              Width:
+              <input
+                type="number"
+                min={24}
+                max={600}
+                value={width}
+                onChange={(e) => setLogoWidth(Number(e.target.value))}
+                style={{ width: 60, marginLeft: 6 }}
+              />
+              px
+            </label>
+            <label style={{ fontWeight: 500 }}>
+              Height:
+              <input
+                type="number"
+                min={24}
+                max={600}
+                value={height}
+                onChange={(e) => setLogoHeight(Number(e.target.value))}
+                style={{ width: 60, marginLeft: 6 }}
+              />
+              px
+            </label>
+          </div>
+          {logoUrl && (
+            <Image
+              src={logoUrl}
+              alt="Logo Preview"
+              width={width}
+              height={height}
+              className={styles.logoPreview}
+              unoptimized
             />
-            px
-          </label>
-          <label style={{ fontWeight: 500 }}>
-            Height:
-            <input
-              type="number"
-              min={24}
-              max={600}
-              value={height}
-              onChange={(e) => setLogoHeight(Number(e.target.value))}
-              style={{ width: 60, marginLeft: 6 }}
-            />
-            px
-          </label>
+          )}
         </div>
-        {logoUrl && (
-          <Image
-            src={logoUrl}
-            alt="Logo Preview"
-            width={width}
-            height={height}
-            className={styles.logoPreview}
-            unoptimized
-          />
-        )}
       </div>
     </div>
   );

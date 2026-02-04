@@ -59,15 +59,18 @@ const AccessibilityChartModal = ({
     >
       <div
         style={{
-          background: "#fff",
-          borderRadius: 12,
-          boxShadow: "0 2px 24px rgba(0,0,0,0.18)",
+          background: "#f7f8fa",
+          borderRadius: 18,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.07)",
           padding: 32,
           minWidth: 400,
           maxWidth: "90vw",
           maxHeight: "80vh",
           overflow: "auto",
           position: "relative",
+          display: "flex",
+          flexDirection: "column",
+          gap: 24,
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -99,10 +102,13 @@ const AccessibilityChartModal = ({
                 padding: "6px 16px",
                 fontSize: 15,
                 borderRadius: 6,
-                background: paletteIdx === idx ? "#6883a1" : "#f0f0f0",
-                color: paletteIdx === idx ? "#fff" : "#333",
+                background:
+                  paletteIdx === idx ? "var(--accent-2)" : "#f0f0f0",
+                color: paletteIdx === idx ? "#a37373" : "#333",
                 border:
-                  paletteIdx === idx ? "2px solid #6883a1" : "1px solid #ccc",
+                  paletteIdx === idx
+                    ? "2px solid var(--accent-4)"
+                    : "1px solid #ccc",
                 fontWeight: paletteIdx === idx ? 600 : 400,
                 cursor: "pointer",
                 transition: "all 0.15s",

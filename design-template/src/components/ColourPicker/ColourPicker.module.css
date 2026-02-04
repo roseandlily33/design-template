@@ -1,12 +1,19 @@
 .pickerRoot {
-  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  background: #f7f8fa;
+  border-radius: 18px;
+  padding: 32px 24px;
+  margin: 0 auto 24px auto;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
 }
 .pickerTitle {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 700;
-  margin-bottom: 18px;
-  /* color: */
+  color: #222;
   letter-spacing: 0.01em;
+  margin-bottom: 8px;
 }
 .row {
   margin-bottom: 32px;

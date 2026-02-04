@@ -1,0 +1,110 @@
+/* Root container */
+.inputsRoot {
+	display: flex;
+	flex-direction: column;
+	gap: 36px;
+	background: #f7f8fa;
+	border-radius: 18px;
+	padding: 32px 24px;
+	box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+
+.inputsTitle {
+	font-size: 1.3rem;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.01em;
+  margin-bottom: 8px;
+}
+
+.styleEditorSection {
+	margin-bottom: 18px;
+}
+.styleEditorTitle {
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin-bottom: 10px;
+	color: #6883a1;
+}
+.styleEditorRow {
+	display: flex;
+	gap: 18px;
+}
+.styleEditorField {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+.styleEditorInput {
+	padding: 6px 10px;
+	border-radius: 8px;
+	border: 1px solid #bbb;
+	font-size: 15px;
+	background: #fff;
+	margin-top: 2px;
+}
+
+.inputsRow {
+	display: flex;
+	gap: 32px;
+	align-items: flex-end;
+}
+.inputField {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+.inputLabel {
+	color: #6883a1;
+	font-size: 15px;
+	font-weight: 600;
+	margin-bottom: 6px;
+}
+.inputElement {
+	min-width: 30%;
+	padding: 10px 14px;
+	font-size: 16px;
+	border-radius: 8px;
+	border: 1.5px solid #6883a1;
+	outline: none;
+	background: #fff;
+	color: #222;
+	font-family: inherit;
+	box-sizing: border-box;
+	transition: border 0.2s;
+}
+
+.checkboxRow {
+	display: flex;
+	gap: 32px;
+	align-items: center;
+}
+.checkboxLabel {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 15px;
+	font-family: inherit;
+}
+.checkboxElement {
+	width: 18px;
+	height: 18px;
+	border-radius: 6px;
+	margin-right: 4px;
+}
+
+.textareaElement {
+	width: 100%;
+	padding: 10px 14px;
+	font-size: 16px;
+	border-radius: 8px;
+	border: 1.5px solid #6883a1;
+	outline: none;
+	background: #fff;
+	color: #222;
+	font-family: inherit;
+	box-sizing: border-box;
+	min-height: 60px;
+	resize: vertical;
+	transition: border 0.2s;
+}

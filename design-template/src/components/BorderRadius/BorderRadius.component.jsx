@@ -20,16 +20,7 @@ const BorderRadius = ({ radius, setRadius }) => {
             />
             <span
               className={styles.radiusSwatch}
-              style={{
-                borderRadius: radi,
-                border: "1.5px solid #bbb",
-                width: 36,
-                height: 24,
-                display: "inline-block",
-                background: "#fafbfc",
-                marginRight: 6,
-                verticalAlign: "middle",
-              }}
+              style={{ borderRadius: radi }}
             />
             <span className={styles.radiusValue}>
               {radi === 0 ? "None" : radi === 50 ? "Pill" : radi + "px"}

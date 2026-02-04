@@ -1,6 +1,7 @@
 import React from "react";
+import styles from "./Inputs.module.css";
 
-const Inputs = ({ font, colors, borderRadius }) => {
+const Inputs = ({ font, colors, borderRadius, styleConfig, onStyleChange }) => {
   // Palette
   const colorRows = Array.isArray(colors) ? colors : colors?.rows || [];
   const grey = colorRows.find((r) => r.label === "Grey")?.colors || [
@@ -13,8 +14,8 @@ const Inputs = ({ font, colors, borderRadius }) => {
     colorRows.find((r) => r.label !== "Grey")?.colors?.[2] || "#6883a1";
   const mainFont = font || "inherit";
 
-  // Input style
-  const inputStyle = {
+  // Use styleConfig for styles, fallback to defaults
+  const inputStyle = styleConfig?.input || {
     width: "100%",
     padding: "10px 14px",
     fontSize: 16,
@@ -28,179 +29,123 @@ const Inputs = ({ font, colors, borderRadius }) => {
     boxSizing: "border-box",
     transition: "border 0.2s",
   };
-  const inputActiveStyle = {
-    ...inputStyle,
-    border: `2.5px solid ${accent}`,
-    background: "#fff",
-    color: grey[3],
-  };
-  const textareaStyle = {
+  const textareaStyle = styleConfig?.textarea || {
     ...inputStyle,
     minHeight: 60,
     resize: "vertical",
   };
-  const textareaActiveStyle = {
-    ...textareaStyle,
-    border: `2.5px solid ${accent}`,
-    background: "#fff",
-    color: grey[3],
+  const checkboxStyle = styleConfig?.checkbox || {
+    accentColor: accent,
+    width: 18,
+    height: 18,
+    borderRadius: borderRadius,
+    marginRight: 4,
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 36,
-        // fontFamily: mainFont,
-        padding: "32px 10px",
-      }}
-    >
-      <h3
-        style={{
-          fontWeight: "600",
-          fontSize: "1.35rem",
-          marginBottom: "18px",
-          color: "#222",
-          letterSpacing: "0.01em",
-        }}
-      >
-        Inputs
-      </h3>
-      {/* Email input row */}
-      <div style={{ display: "flex", gap: 32, alignItems: "flex-end" }}>
-        {/* Email label above, empty input */}
-        <div style={{ flex: 1 }}>
-          <div
-            style={{
-              color: grey[5],
-              fontSize: 15,
-              fontWeight: 500,
-              marginBottom: 6,
-            }}
-          >
-            Email
+    <div className={styles.inputsRoot}>
+      <h3 className={styles.inputsTitle}>Inputs</h3>
+      <div className={styles.styleEditorSection}>
+        <h4 className={styles.styleEditorTitle}>Edit Input Styles</h4>
+        <div className={styles.styleEditorRow}>
+          <div className={styles.styleEditorField}>
+            <label>Border Radius:</label>
+            <input
+              type="number"
+              value={inputStyle.borderRadius}
+              min={0}
+              max={32}
+              onChange={e => {
+                const val = parseInt(e.target.value, 10);
+                onStyleChange && onStyleChange({
+                  ...styleConfig,
+                  input: { ...inputStyle, borderRadius: val },
+                  textarea: { ...textareaStyle, borderRadius: val },
+                  checkbox: { ...checkboxStyle, borderRadius: val },
+                });
+              }}
+              className={styles.styleEditorInput}
+            />
           </div>
+          <div className={styles.styleEditorField}>
+            <label>Border Color:</label>
+            <input
+              type="color"
+              value={inputStyle.border.split(" ").pop()}
+              onChange={e => {
+                const color = e.target.value;
+                onStyleChange && onStyleChange({
+                  ...styleConfig,
+                  input: { ...inputStyle, border: `1.5px solid ${color}` },
+                  textarea: { ...textareaStyle, border: `1.5px solid ${color}` },
+                  checkbox: { ...checkboxStyle, accentColor: color },
+                });
+              }}
+              className={styles.styleEditorInput}
+            />
+          </div>
+          <div className={styles.styleEditorField}>
+            <label>Font Size:</label>
+            <input
+              type="number"
+              value={inputStyle.fontSize}
+              min={10}
+              max={32}
+              onChange={e => {
+                const val = parseInt(e.target.value, 10);
+                onStyleChange && onStyleChange({
+                  ...styleConfig,
+                  input: { ...inputStyle, fontSize: val },
+                  textarea: { ...textareaStyle, fontSize: val },
+                });
+              }}
+              className={styles.styleEditorInput}
+            />
+          </div>
+        </div>
+      </div>
+      <div className={styles.inputsRow}>
+        <div className={styles.inputField}>
+          <div className={styles.inputLabel}>Email</div>
           <input
             type="email"
             style={inputStyle}
-            placeholder=""
+            placeholder="Enter your email"
             disabled={false}
-          />
-        </div>
-        {/* Email label above, active input with example */}
-        <div style={{ flex: 1 }}>
-          <div
-            style={{
-              color: grey[5],
-              fontSize: 15,
-              fontWeight: 500,
-              marginBottom: 6,
-            }}
-          >
-            Email
-          </div>
-          <input
-            type="email"
-            style={inputActiveStyle}
-            value="jane.doe@email.com"
-            readOnly
+            className={styles.inputElement}
           />
         </div>
       </div>
-
-      {/* Checkbox Yes/No */}
-      <div style={{ display: "flex", gap: 32, alignItems: "center" }}>
-        <div
-          style={{
-            color: grey[5],
-            fontSize: 15,
-            fontWeight: 500,
-            marginBottom: 6,
-          }}
-        >
-          Checkmark Example
-        </div>
-        <label
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            fontSize: 15,
-            fontFamily: mainFont,
-          }}
-        >
+      <div className={styles.checkboxRow}>
+        <div className={styles.inputLabel}>Checkmark Example</div>
+        <label className={styles.checkboxLabel}>
           <input
             type="checkbox"
             checked={true}
             readOnly
-            style={{
-              accentColor: accent,
-              width: 18,
-              height: 18,
-              borderRadius: borderRadius,
-              marginRight: 4,
-            }}
+            style={checkboxStyle}
+            className={styles.checkboxElement}
           />
           <span style={{ color: accent, fontWeight: 600 }}>Yes</span>
         </label>
-        <label
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            fontSize: 15,
-            fontFamily: mainFont,
-          }}
-        >
+        <label className={styles.checkboxLabel}>
           <input
             type="checkbox"
             checked={false}
             readOnly
-            style={{
-              accentColor: grey[5],
-              width: 18,
-              height: 18,
-              borderRadius: borderRadius,
-              marginRight: 4,
-            }}
+            style={{ ...checkboxStyle, accentColor: grey[5] }}
+            className={styles.checkboxElement}
           />
           <span style={{ color: grey[5] }}>No</span>
         </label>
       </div>
-
-      {/* Textarea row */}
-      <div style={{ display: "flex", gap: 32, alignItems: "flex-end" }}>
-        {/* Textarea label above, empty */}
-        <div style={{ flex: 1 }}>
-          <div
-            style={{
-              color: grey[5],
-              fontSize: 15,
-              fontWeight: 500,
-              marginBottom: 6,
-            }}
-          >
-            Message
-          </div>
-          <textarea style={textareaStyle} placeholder="" disabled={false} />
-        </div>
-        {/* Textarea label above, active with example */}
-        <div style={{ flex: 1 }}>
-          <div
-            style={{
-              color: grey[5],
-              fontSize: 15,
-              fontWeight: 500,
-              marginBottom: 6,
-            }}
-          >
-            Message
-          </div>
+      <div className={styles.inputsRow}>
+        <div className={styles.inputField}>
+          <div className={styles.inputLabel}>Message</div>
           <textarea
-            style={textareaActiveStyle}
-            value="This is an example message."
-            readOnly
+            style={textareaStyle}
+            placeholder="Enter your message"
+            className={styles.textareaElement}
           />
         </div>
       </div>

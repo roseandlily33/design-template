@@ -39,6 +39,46 @@ import useContactState from "@/components/Hooks/Contact.state";
 import TertiaryButtonMain from "./buttons/TertiaryButton/TertiaryButton.component";
 
 export default function Home() {
+  // State for editable input styles
+  const [inputStyles, setInputStyles] = useState({
+    input: {
+      width: "100%",
+      padding: "10px 14px",
+      fontSize: 16,
+      borderRadius: 0,
+      border: "1.5px solid #6883a1",
+      outline: "none",
+      marginBottom: 0,
+      background: "#f7f8fa",
+      color: "#222",
+      fontFamily: "inherit",
+      boxSizing: "border-box",
+      transition: "border 0.2s",
+    },
+    textarea: {
+      width: "100%",
+      padding: "10px 14px",
+      fontSize: 16,
+      borderRadius: 0,
+      border: "1.5px solid #6883a1",
+      outline: "none",
+      marginBottom: 0,
+      background: "#f7f8fa",
+      color: "#222",
+      fontFamily: "inherit",
+      boxSizing: "border-box",
+      minHeight: 60,
+      resize: "vertical",
+      transition: "border 0.2s",
+    },
+    checkbox: {
+      accentColor: "#6883a1",
+      width: 18,
+      height: 18,
+      borderRadius: 0,
+      marginRight: 4,
+    },
+  });
   const { heroTitle, setHeroTitle, heroSubtitle, setHeroSubtitle } =
     useHeroImgState();
   const {
@@ -693,12 +733,13 @@ export default function Home() {
                 setLogoHeight={setLogoHeight}
               />
               <BorderRadius radius={radius} setRadius={setRadius} />
-              {/* Inputs go here */}
               <Inputs
                 font={selectedFontSet.main}
                 fontMap={fontMap}
                 colors={selected}
                 borderRadius={radius}
+                styleConfig={inputStyles}
+                onStyleChange={setInputStyles}
               />
               {/* Box Shadow component goes here */}
               <BoxShadow
@@ -758,6 +799,7 @@ export default function Home() {
             unit={unit}
             heroImgUrl={heroImgUrl}
             threeIcons={threeIcons}
+            inputStyles={inputStyles}
           />
         </div>
       </main>

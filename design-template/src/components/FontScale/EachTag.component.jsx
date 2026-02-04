@@ -41,10 +41,10 @@ const EachTag = ({
           {tag === "blockquote"
             ? "“Sample blockquote”"
             : tag === "small"
-            ? "Small text"
-            : tag === "a"
-            ? "Sample link"
-            : `Sample ${tag}`}
+              ? "Small text"
+              : tag === "a"
+                ? "Sample link"
+                : `Sample ${tag}`}
         </span>
 
         <div style={{ display: "flex", alignItems: "center", marginLeft: 10 }}>

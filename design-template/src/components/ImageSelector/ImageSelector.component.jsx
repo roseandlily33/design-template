@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import Image from "next/image";
-import styles from "../FontPicker/FontPicker.module.css";
+import styles from "./ImageSelector.module.css";
 
 const staticImages = [
   "Picture.jpg",
@@ -35,22 +35,17 @@ export default function ImageSelector({ value, onChange }) {
   };
 
   return (
-    <div style={{ marginBottom: 18 }}>
-      <div className={styles.pickerTitle}>Hero Image</div>
-      <div
-        style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}
-      >
+    <div className={styles.selectorRoot}>
+      <div className={styles.selectorTitle}>Hero Image</div>
+      <div className={styles.imageGrid}>
         {staticImages.map((img) => (
           <button
             key={img}
-            style={{
-              border:
-                value === "/" + img ? "2px solid #6883a1" : "1px solid #ccc",
-              borderRadius: 6,
-              padding: 0,
-              background: "none",
-              cursor: "pointer",
-            }}
+            className={
+              value === "/" + img
+                ? styles.imageBtn + " " + styles.selected
+                : styles.imageBtn
+            }
             onClick={() => handleStaticSelect(img)}
             type="button"
           >
@@ -59,31 +54,20 @@ export default function ImageSelector({ value, onChange }) {
               alt={img}
               width={48}
               height={48}
-              style={{ objectFit: "cover", borderRadius: 6 }}
+              className={styles.imageThumb}
             />
           </button>
         ))}
         <button
-          style={{
-            border:
-              value && value.startsWith("blob:")
-                ? "2px solid #6883a1"
-                : "1px solid #ccc",
-            borderRadius: 6,
-            padding: 0,
-            background: "none",
-            cursor: "pointer",
-            width: 48,
-            height: 48,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 24,
-          }}
+          className={
+            value && value.startsWith("blob:")
+              ? styles.imageBtn + " " + styles.selected
+              : styles.imageBtn
+          }
           onClick={() => fileInputRef.current && fileInputRef.current.click()}
           type="button"
         >
-          +
+          <span className={styles.uploadIcon}>+</span>
           <input
             ref={fileInputRef}
             type="file"
@@ -94,17 +78,13 @@ export default function ImageSelector({ value, onChange }) {
         </button>
       </div>
       {value && (
-        <div style={{ marginTop: 8 }}>
+        <div className={styles.selectedImagePreview}>
           <Image
             src={value}
             alt="Selected Hero"
             width={120}
             height={80}
-            style={{
-              objectFit: "cover",
-              borderRadius: 8,
-              border: "1px solid #ccc",
-            }}
+            className={styles.selectedImage}
           />
         </div>
       )}

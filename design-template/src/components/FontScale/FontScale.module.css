@@ -1,5 +1,12 @@
 .scaleRoot {
-  padding: 32px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  background: #f7f8fa;
+  border-radius: 18px;
+  padding: 32px 24px;
+  margin: 0 auto 24px auto;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.07);
 }
 .scaleHeader {
   display: flex;
@@ -8,17 +15,18 @@
   margin-bottom: 18px;
 }
 .scaleTitle {
-  font-size: 1.35rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: #222;
   letter-spacing: 0.01em;
+  margin-bottom: 8px;
 }
 .scaleExportBtn {
   margin-left: 18px;
   padding: 8px 18px;
   font-size: 16px;
   border-radius: 6px;
-  background: #6883a1;;
+  background: #6883a1;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -37,7 +45,10 @@
   color: #222;
   font-weight: 400;
   cursor: pointer;
-  transition: border 0.2s, background 0.2s, color 0.2s;
+  transition:
+    border 0.2s,
+    background 0.2s,
+    color 0.2s;
 }
 .scaleTypeBtn.selected {
   border: 2px solid #6883a1;
@@ -52,18 +63,11 @@
   padding-bottom: 4px;
 }
 .breakpointCard {
-  /* background: #f7faff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  padding: 20px;
-  min-width: 320px;
-  flex: 0 0 320px;
-  margin-bottom: 0; */
   background: #fafbfc;
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  border: 1px solid #eee;
-  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #e3e7ee;
+  padding: 24px 16px;
   min-width: 360px;
   max-width: 500px;
   flex: 0 0 320px;
