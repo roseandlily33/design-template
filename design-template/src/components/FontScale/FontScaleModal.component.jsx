@@ -1,6 +1,7 @@
 import React from "react";
 import { createPortal } from "react-dom";
 import { ColorSelect } from "../Buttons/ColourSelect.component";
+import Input from "@/app/extraComponents/Input.component";
 
 /*
   FontScaleModal now receives all required props from the parent.
@@ -51,11 +52,11 @@ const FontScaleModal = ({
           <label style={{ fontWeight: "bold", marginRight: 8 }}>
             Font Size (rem):
           </label>
-          <input
+          <Input
             type="number"
-            step="0.01"
-            min="0.5"
-            max="5"
+            step={0.01}
+            min={0.5}
+            max={5}
             value={fontScaleStyles?.[modal.tag]?.[modal.bp]?.fontSize ?? 1}
             onChange={(e) =>
               handleStyleChange(
@@ -135,11 +136,11 @@ const FontScaleModal = ({
           <label style={{ fontWeight: "bold", marginRight: 8 }}>
             Line Height:
           </label>
-          <input
+          <Input
             type="number"
-            step="0.05"
-            min="1"
-            max="2"
+            step={0.05}
+            min={1}
+            max={2}
             value={fontScaleStyles?.[modal.tag]?.[modal.bp]?.lineHeight ?? 1.2}
             onChange={(e) =>
               handleStyleChange(
@@ -157,11 +158,11 @@ const FontScaleModal = ({
           <label style={{ fontWeight: "bold", marginRight: 8 }}>
             Letter Spacing:
           </label>
-          <input
+          <Input
             type="number"
-            step="0.1"
-            min="-2"
-            max="5"
+            step={0.1}
+            min={-2}
+            max={5}
             value={fontScaleStyles?.[modal.tag]?.[modal.bp]?.letterSpacing ?? 0}
             onChange={(e) =>
               handleStyleChange(

@@ -1,0 +1,36 @@
+.selectButtonRoot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+}
+
+.selectButtonRoot span {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--foreground, #222);
+}
+
+.selectButtonRoot select {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--main-5, #6883a1);
+  background: var(--background, #f7f8fa);
+  color: var(--foreground, #222);
+  font-size: 15px;
+  font-family: inherit;
+  outline: none;
+  transition: border 0.18s;
+  cursor: pointer;
+}
+
+.selectButtonRoot select:focus {
+  border-color: var(--main-4, #7c97b2);
+  box-shadow: 0 0 0 2px #6883a133;
+}
+
+.selectButtonRoot option {
+  background: var(--background, #fff);
+  color: var(--foreground, #222);
+  font-size: 15px;
+}

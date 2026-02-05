@@ -39,12 +39,16 @@
 .fontCardLabel {
   font-size: 1.08rem;
   font-weight: 600;
-  margin-bottom: 10px;
   color: #444;
   letter-spacing: 0.01em;
 }
 .fontCardControls {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
   margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 .fontCardPreview {
   background: #fff;

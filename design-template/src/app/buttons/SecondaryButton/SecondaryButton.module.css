@@ -1,7 +1,7 @@
 .secondaryButtonStyle {
-  background: var(--pink-5);
+  background: var(--pink-1);
   color: var(--grey-8);
-  border: 2px solid var(--pink-7);
+  border: 1px solid var(--pink-3);
   border-radius: var(--borderRadius);
   padding: 7px 18px;
   font-weight: 500;

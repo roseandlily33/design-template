@@ -6,28 +6,16 @@ import {
   initialRowsPalette2,
   initialRowsPalette3,
 } from "@/utils/colourPalettes";
-import { fontMap, allFonts, displayFonts, bodyFonts } from "@/utils/fonts";
+import { allFonts, displayFonts, bodyFonts, fontMap } from "@/utils/fonts";
 import { buildDefaultStyles } from "../components/FontScale/fontscale.helpers";
 import SaveAndTabs from "@/components/Header/SaveAndTabs";
-import Cards from "@/components/Cards/Cards.component";
-import Layouts from "@/components/Layouts/Layouts.component";
-import ColourPicker from "@/components/ColourPicker/ColourPicker.component";
-import FontPicker from "@/components/FontPicker/FontPicker.component";
-import FontScale from "@/components/FontScale/FontScale.component";
 import PrimaryButton from "@/components/Buttons/PrimaryButton.component";
 import SecondaryButton from "@/components/Buttons/SecondaryButton.component";
 import TertiaryButton from "@/components/Buttons/TertiaryButton.component";
-import SpacingChart from "@/components/SpacingChart/SpacingChart.component";
-import Display from "@/components/Display/Display.component";
 import Header from "@/components/Header/Header.component";
-import Buttons from "@/components/Buttons/Buttons.component";
-import Logo from "@/components/Logo/Logo.component";
-import BorderRadius from "@/components/BorderRadius/BorderRadius.component";
-import ImageSelector from "@/components/ImageSelector/ImageSelector.component";
 import { useTabOverrides } from "@/utils/tabOverrides";
 import { defaultButtonState } from "@/utils/buttonState";
-import Inputs from "@/components/Inputs/Inputs.component";
-import BoxShadow from "@/components/BoxShadows/BoxShadow.component";
+
 // All the states for the display
 import useHeroImgState from "@/components/Hooks/HeroImg.state";
 import useDescriptionState from "@/components/Hooks/Description.state";
@@ -36,7 +24,9 @@ import useTestimonialState from "@/components/Hooks/Testimonial.state";
 import useThreeIconState from "@/components/Hooks/ThreeIcon.state";
 import useFooterState from "@/components/Hooks/Footer.state";
 import useContactState from "@/components/Hooks/Contact.state";
-import TertiaryButtonMain from "./buttons/TertiaryButton/TertiaryButton.component";
+import ProjectInfo from "@/components/Header/ProjectInfo.component";
+import DisplayPane from "./displayPane.component";
+import LeftPane from "./leftPane.component";
 
 export default function Home() {
   // State for editable input styles
@@ -102,8 +92,7 @@ export default function Home() {
   // Track the current project ID for update vs create
   const [projectId, setProjectId] = useState(null);
   // Modal state for Cards and Layouts preview
-  const [cardsOpen, setCardsOpen] = useState(false);
-  const [layoutsOpen, setLayoutsOpen] = useState(false);
+
   // Hero image selection (static or uploaded)
   const [heroImgUrl, setHeroImgUrl] = useState("/Picture.jpg");
   // Per-tab color overrides using custom hook
@@ -178,64 +167,65 @@ export default function Home() {
   const [spacingUnit, setSpacingUnit] = useState("rem");
 
   // Store button state for each palette tab
-  const [buttonStates, setButtonStates] = useState([
-    {
-      ...defaultButtonState(initialRowsPalette1),
-      tab: { ...defaultButtonState(initialRowsPalette1).tab },
-    },
-    {
-      ...defaultButtonState(initialRowsPalette2),
-      tab: { ...defaultButtonState(initialRowsPalette2).tab },
-    },
-    {
-      ...defaultButtonState(initialRowsPalette3),
-      tab: { ...defaultButtonState(initialRowsPalette3).tab },
-    },
+  const [primaryButtonStates, setPrimaryButtonStates] = useState([
+    { ...defaultButtonState(initialRowsPalette1).primary },
+    { ...defaultButtonState(initialRowsPalette2).primary },
+    { ...defaultButtonState(initialRowsPalette3).primary },
+  ]);
+  const [secondaryButtonStates, setSecondaryButtonStates] = useState([
+    { ...defaultButtonState(initialRowsPalette1).secondary },
+    { ...defaultButtonState(initialRowsPalette2).secondary },
+    { ...defaultButtonState(initialRowsPalette3).secondary },
+  ]);
+  const [tertiaryButtonStates, setTertiaryButtonStates] = useState([
+    { ...defaultButtonState(initialRowsPalette1).tertiary },
+    { ...defaultButtonState(initialRowsPalette2).tertiary },
+    { ...defaultButtonState(initialRowsPalette3).tertiary },
+  ]);
+  const [tabButtonStates, setTabButtonStates] = useState([
+    { ...defaultButtonState(initialRowsPalette1).tab },
+    { ...defaultButtonState(initialRowsPalette2).tab },
+    { ...defaultButtonState(initialRowsPalette3).tab },
   ]);
 
   useEffect(() => {
-    setButtonStates((prev) =>
+    setPrimaryButtonStates((prev) =>
       prev.map((state, idx) => {
-        const palette = palettes[idx];
-        const def = defaultButtonState(palette);
+        const def = defaultButtonState(palettes[idx]).primary;
         return {
-          primary: {
-            ...state.primary,
-            color:
-              state.primary.color ===
-              defaultButtonState(palettes[idx]).primary.color
-                ? def.primary.color
-                : state.primary.color,
-          },
-          secondary: {
-            ...state.secondary,
-            color:
-              state.secondary.color ===
-              defaultButtonState(palettes[idx]).secondary.color
-                ? def.secondary.color
-                : state.secondary.color,
-          },
-          tertiary: {
-            ...state.tertiary,
-            color:
-              state.tertiary.color ===
-              defaultButtonState(palettes[idx]).tertiary.color
-                ? def.tertiary.color
-                : state.tertiary.color,
-          },
-          tab: {
-            ...state.tab,
-            color:
-              (state.tab && state.tab.color) === def.tab.color
-                ? def.tab.color
-                : (state.tab && state.tab.color) || def.tab.color,
-            padding:
-              !state.tab ||
-              state.tab.padding === undefined ||
-              state.tab.padding === ""
-                ? def.tab.padding
-                : state.tab.padding,
-          },
+          ...state,
+          color: state.color === def.color ? def.color : state.color,
+        };
+      }),
+    );
+    setSecondaryButtonStates((prev) =>
+      prev.map((state, idx) => {
+        const def = defaultButtonState(palettes[idx]).secondary;
+        return {
+          ...state,
+          color: state.color === def.color ? def.color : state.color,
+        };
+      }),
+    );
+    setTertiaryButtonStates((prev) =>
+      prev.map((state, idx) => {
+        const def = defaultButtonState(palettes[idx]).tertiary;
+        return {
+          ...state,
+          color: state.color === def.color ? def.color : state.color,
+        };
+      }),
+    );
+    setTabButtonStates((prev) =>
+      prev.map((state, idx) => {
+        const def = defaultButtonState(palettes[idx]).tab;
+        return {
+          ...state,
+          color: state.color === def.color ? def.color : state.color,
+          padding:
+            state.padding === undefined || state.padding === ""
+              ? def.padding
+              : state.padding,
         };
       }),
     );
@@ -244,14 +234,34 @@ export default function Home() {
 
   // Generic button property setter
   const setButtonProp = (type, prop, value) => {
-    setButtonStates((prev) =>
-      prev.map((s, i) =>
-        i === activeTab ? { ...s, [type]: { ...s[type], [prop]: value } } : s,
-      ),
-    );
+    if (type === "primary") {
+      setPrimaryButtonStates((prev) => {
+        const copy = [...prev];
+        copy[activeTab] = { ...copy[activeTab], [prop]: value };
+        return copy;
+      });
+    } else if (type === "secondary") {
+      setSecondaryButtonStates((prev) => {
+        const copy = [...prev];
+        copy[activeTab] = { ...copy[activeTab], [prop]: value };
+        return copy;
+      });
+    } else if (type === "tertiary") {
+      setTertiaryButtonStates((prev) => {
+        const copy = [...prev];
+        copy[activeTab] = { ...copy[activeTab], [prop]: value };
+        return copy;
+      });
+    } else if (type === "tab") {
+      setTabButtonStates((prev) => {
+        const copy = [...prev];
+        copy[activeTab] = { ...copy[activeTab], [prop]: value };
+        return copy;
+      });
+    }
   };
   const tabProps = {
-    ...buttonStates[activeTab].tab,
+    ...tabButtonStates[activeTab],
     setColor: (c) => setButtonProp("tab", "color", c),
     setTextColor: (c) => setButtonProp("tab", "textColor", c),
     setRadius: (v) => setButtonProp("tab", "radius", v),
@@ -269,7 +279,7 @@ export default function Home() {
   };
 
   const primaryProps = {
-    ...buttonStates[activeTab].primary,
+    ...primaryButtonStates[activeTab],
     setColor: (c) => setButtonProp("primary", "color", c),
     setTextColor: (c) => setButtonProp("primary", "textColor", c),
     setRadius: (v) => setButtonProp("primary", "radius", v),
@@ -286,7 +296,7 @@ export default function Home() {
     setLineHeight: (v) => setButtonProp("primary", "lineHeight", v),
   };
   const secondaryProps = {
-    ...buttonStates[activeTab].secondary,
+    ...secondaryButtonStates[activeTab],
     setColor: (c) => setButtonProp("secondary", "color", c),
     setTextColor: (c) => setButtonProp("secondary", "textColor", c),
     setRadius: (v) => setButtonProp("secondary", "radius", v),
@@ -303,7 +313,7 @@ export default function Home() {
     setLineHeight: (v) => setButtonProp("secondary", "lineHeight", v),
   };
   const tertiaryProps = {
-    ...buttonStates[activeTab].tertiary,
+    ...tertiaryButtonStates[activeTab],
     setColor: (c) => setButtonProp("tertiary", "color", c),
     setTextColor: (c) => setButtonProp("tertiary", "textColor", c),
     setRadius: (v) => setButtonProp("tertiary", "radius", v),
@@ -427,25 +437,26 @@ export default function Home() {
         },
       ],
     );
-    // Set button states for the active tab (or all tabs if you want)
-    setButtonStates((prev) => {
-      // Only update the active tab, keep others as is
-      return prev.map((state, idx) =>
-        idx === activeTab
-          ? {
-              primary: project.primaryButton
-                ? { ...state.primary, ...project.primaryButton }
-                : state.primary,
-              secondary: project.secondaryButton
-                ? { ...state.secondary, ...project.secondaryButton }
-                : state.secondary,
-              tertiary: project.tertiaryButton
-                ? { ...state.tertiary, ...project.tertiaryButton }
-                : state.tertiary,
-            }
-          : state,
-      );
-    });
+    setPrimaryButtonStates([
+      project.primaryButton1 || defaultButtonState(palette1).primary,
+      project.primaryButton2 || defaultButtonState(palette2).primary,
+      project.primaryButton3 || defaultButtonState(palette3).primary,
+    ]);
+    setSecondaryButtonStates([
+      project.secondaryButton1 || defaultButtonState(palette1).secondary,
+      project.secondaryButton2 || defaultButtonState(palette2).secondary,
+      project.secondaryButton3 || defaultButtonState(palette3).secondary,
+    ]);
+    setTertiaryButtonStates([
+      project.tertiaryButton1 || defaultButtonState(palette1).tertiary,
+      project.tertiaryButton2 || defaultButtonState(palette2).tertiary,
+      project.tertiaryButton3 || defaultButtonState(palette3).tertiary,
+    ]);
+    setTabButtonStates([
+      project.tabButton1 || defaultButtonState(palette1).tab,
+      project.tabButton2 || defaultButtonState(palette2).tab,
+      project.tabButton3 || defaultButtonState(palette3).tab,
+    ]);
   };
 
   const displayText = {
@@ -509,129 +520,21 @@ export default function Home() {
     secondaryButton: <SecondaryButton {...displayText} />,
     tertiaryButton: <TertiaryButton {...displayText} />,
   };
-  console.log(
-    "All the page props for the palettes step 1",
-    palette1,
-    palette2,
-    palette3,
-    selected,
-  );
 
   return (
     <div>
       <Header onProjectLoad={handleProjectLoad} />
-      <div
-        style={{
-          display: "flex",
-          gap: 16,
-          justifyContent: "flex-end",
-          padding: "12px 32px 0 32px",
-        }}
-      >
-        <TertiaryButtonMain
-          functionName={() => setCardsOpen(true)}
-          span="Cards"
-        />
-        <TertiaryButtonMain
-          functionName={() => setLayoutsOpen(true)}
-          span="Layouts"
-        />
-      </div>
-      {cardsOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            background: "rgba(0,0,0,0.18)",
-            zIndex: 2000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onClick={() => setCardsOpen(false)}
-        >
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: 16,
-              boxShadow: "0 8px 32px #0002",
-              padding: 32,
-              maxWidth: 1200,
-              maxHeight: "90vh",
-              overflowY: "auto",
-              position: "relative",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <TertiaryButtonMain
-              span="Close"
-              functionName={() => setCardsOpen(false)}
-            />
-            <Cards
-              colours={selected}
-              fonts={selectedFontSet}
-              borderRadius={radius}
-              heroImgUrl={heroImgUrl}
-              spacingBase={spacingBase}
-              spacingUnit={spacingUnit}
-              primaryButtonProps={primaryProps}
-              secondaryButtonProps={secondaryProps}
-              tertiaryButtonProps={tertiaryProps}
-            />
-          </div>
-        </div>
-      )}
-
-      {layoutsOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "100vw",
-            height: "100vh",
-            background: "rgba(0,0,0,0.18)",
-            zIndex: 2000,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-          onClick={() => setLayoutsOpen(false)}
-        >
-          <div
-            style={{
-              background: "#fff",
-              borderRadius: 16,
-              boxShadow: "0 8px 32px #0002",
-              padding: 32,
-              maxWidth: 1200,
-              maxHeight: "90vh",
-              overflowY: "auto",
-              position: "relative",
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <TertiaryButtonMain
-              functionName={() => setLayoutsOpen(false)}
-              span="Close"
-            />
-            <Layouts
-              colours={selected}
-              fonts={selectedFontSet}
-              borderRadius={radius}
-              heroImgUrl={heroImgUrl}
-              spacingBase={spacingBase}
-              spacingUnit={spacingUnit}
-              primaryButtonProps={primaryProps}
-              secondaryButtonProps={secondaryProps}
-              tertiaryButtonProps={tertiaryProps}
-            />
-          </div>
-        </div>
-      )}
+      <ProjectInfo
+        selected={selected}
+        selectedFontSet={selectedFontSet}
+        radius={radius}
+        heroImgUrl={heroImgUrl}
+        spacingBase={spacingBase}
+        spacingUnit={spacingUnit}
+        primaryProps={primaryProps}
+        secondaryProps={secondaryProps}
+        tertiaryProps={tertiaryProps}
+      />
       <SaveAndTabs
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -640,9 +543,10 @@ export default function Home() {
         backendUrl={backendUrl}
         logoUrl={logoUrl}
         radius={radius}
-        primaryProps={primaryProps}
-        secondaryProps={secondaryProps}
-        tertiaryProps={tertiaryProps}
+        primaryButtonStates={primaryButtonStates}
+        secondaryButtonStates={secondaryButtonStates}
+        tertiaryButtonStates={tertiaryButtonStates}
+        tabButtonStates={tabButtonStates}
         fontSets={fontSets}
         palette1={palette1}
         palette2={palette2}
@@ -677,131 +581,72 @@ export default function Home() {
         </button>
         {/* Left pane only visible when open */}
         {drawerOpen && (
-          <div
-            className={styles.leftPane + " " + styles.leftPaneOpen}
-            style={{ zIndex: 15 }}
-          >
-            <div className={styles.leftPaneContent}>
-              <ColourPicker
-                palette1={palette1}
-                setPalette1={setPalette1}
-                palette2={palette2}
-                setPalette2={setPalette2}
-                palette3={palette3}
-                setPalette3={setPalette3}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <ImageSelector value={heroImgUrl} onChange={setHeroImgUrl} />
-              <FontPicker
-                fontLists={[displayFonts, bodyFonts, allFonts]}
-                fontMap={fontMap}
-                fontSets={fontSets}
-                onFontSetChange={handleFontSetChange}
-                selectedFontSetIdx={selectedFontSetIdx}
-                onSelectFontSet={handleSelectFontSet}
-              />
-              <FontScale
-                fontSet={selectedFontSet}
-                fontMap={fontMap}
-                fontScaleStyles={fontScaleStyles}
-                setFontScaleStyles={setFontScaleStyles}
-                colours={selected}
-              />
-              <SpacingChart
-                colours={selected}
-                base={spacingBase}
-                setBase={setSpacingBase}
-                unit={spacingUnit}
-                setUnit={setSpacingUnit}
-              />
-              <Buttons
-                font={selectedFontSet.main}
-                fontMap={fontMap}
-                colors={selected}
-                primaryProps={primaryProps}
-                secondaryProps={secondaryProps}
-                tertiaryProps={tertiaryProps}
-                tabProps={tabProps}
-              />
-              <Logo
-                logoUrl={logoUrl}
-                setLogoUrl={setLogoUrl}
-                logoWidth={logoWidth}
-                setLogoWidth={setLogoWidth}
-                logoHeight={logoHeight}
-                setLogoHeight={setLogoHeight}
-              />
-              <BorderRadius radius={radius} setRadius={setRadius} />
-              <Inputs
-                font={selectedFontSet.main}
-                fontMap={fontMap}
-                colors={selected}
-                borderRadius={radius}
-                styleConfig={inputStyles}
-                onStyleChange={setInputStyles}
-              />
-              {/* Box Shadow component goes here */}
-              <BoxShadow
-                borderRadius={radius}
-                boxShadow={boxShadow}
-                setBoxShadow={setBoxShadow}
-                paletteColors={selected}
-              />
-            </div>
-          </div>
+          <LeftPane
+            projectTitle={projectTitle}
+            activeTab={activeTab}
+            palette1={palette1}
+            setPalette1={setPalette1}
+            palette2={palette2}
+            setPalette2={setPalette2}
+            palette3={palette3}
+            setPalette3={setPalette3}
+            selected={selected}
+            heroImgUrl={heroImgUrl}
+            setHeroImgUrl={setHeroImgUrl}
+            fontSets={fontSets}
+            fontMap={fontMap}
+            handleFontSetChange={handleFontSetChange}
+            selectedFontSetIdx={selectedFontSetIdx}
+            handleSelectFontSet={handleSelectFontSet}
+            selectedFontSet={selectedFontSet}
+            fontScaleStyles={fontScaleStyles}
+            setFontScaleStyles={setFontScaleStyles}
+            spacingBase={spacingBase}
+            setSpacingBase={setSpacingBase}
+            spacingUnit={spacingUnit}
+            setSpacingUnit={setSpacingUnit}
+            primaryProps={primaryProps}
+            secondaryProps={secondaryProps}
+            tertiaryProps={tertiaryProps}
+            tabProps={tabProps}
+            logoUrl={logoUrl}
+            setLogoUrl={setLogoUrl}
+            logoWidth={logoWidth}
+            setLogoWidth={setLogoWidth}
+            logoHeight={logoHeight}
+            setLogoHeight={setLogoHeight}
+            radius={radius}
+            setRadius={setRadius}
+            inputStyles={inputStyles}
+            setInputStyles={setInputStyles}
+            boxShadow={boxShadow}
+            setBoxShadow={setBoxShadow}
+            displayFonts={displayFonts}
+            bodyFonts={bodyFonts}
+            allFonts={allFonts}
+          />
         )}
         {/* Right pane always underneath, responsive */}
-        <div className={styles.rightPane}>
-          <Display
-            {...displayButtons}
-            {...displayText}
-            {...displayOverrides}
-            primaryButton={
-              <PrimaryButton
-                fontClass={fontMap[selectedFontSet.main]}
-                colors={selected}
-                edit={false}
-                primaryProps={primaryProps}
-              />
-            }
-            secondaryButton={
-              <SecondaryButton
-                fontClass={fontMap[selectedFontSet.main]}
-                colors={selected}
-                edit={false}
-                secondaryProps={secondaryProps}
-              />
-            }
-            tertiaryButton={
-              <TertiaryButton
-                fontClass={fontMap[selectedFontSet.main]}
-                colors={selected}
-                edit={false}
-                tertiaryProps={tertiaryProps}
-              />
-            }
-            logo={logoUrl}
-            logoWidth={logoWidth}
-            logoHeight={logoHeight}
-            borderRadius={radius}
-            colours={
-              Array.isArray(selected)
-                ? selected
-                : selected && typeof selected === "object" && selected.rows
-                  ? selected.rows
-                  : initialRowsPalette1
-            }
-            fonts={selectedFontSet}
-            fontMap={fontMap}
-            fontScale={fontScaleStyles}
-            base={base}
-            unit={unit}
-            heroImgUrl={heroImgUrl}
-            threeIcons={threeIcons}
-            inputStyles={inputStyles}
-          />
-        </div>
+        <DisplayPane
+          selectedFontSet={selectedFontSet}
+          selected={selected}
+          displayButtons={displayButtons}
+          displayText={displayText}
+          displayOverrides={displayOverrides}
+          primaryProps={primaryProps}
+          secondaryProps={secondaryProps}
+          tertiaryProps={tertiaryProps}
+          logoUrl={logoUrl}
+          logoWidth={logoWidth}
+          logoHeight={logoHeight}
+          radius={radius}
+          fontScaleStyles={fontScaleStyles}
+          base={base}
+          unit={unit}
+          heroImgUrl={heroImgUrl}
+          threeIcons={threeIcons}
+          inputStyles={inputStyles}
+        />
       </main>
     </div>
   );

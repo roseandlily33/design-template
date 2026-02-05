@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./SpacingChart.module.css";
 import PrimaryButton from "@/app/buttons/PrimaryButton/PrimaryButton.component";
 import FontTable from "./FontTable.component";
+import SelectButton from "@/app/buttons/SelectButton/SelectButton.component";
 
 const spacingRatios = {
   xxxs: 0.15,
@@ -71,37 +72,21 @@ const SpacingChart = ({ base, setBase, unit, setUnit }) => {
       >
         <h2 className={styles.heading}>Spacing Scale</h2>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <label style={{ fontWeight: 500, fontSize: 15, marginRight: 4 }}>
-            Base:
-          </label>
-          <select
+          <SelectButton
+            options={baseOptions.map((opt, idx) => ({ value: idx, label: opt.label }))}
             value={baseOptions.findIndex(
               (opt) => opt.value === base && opt.unit === unit,
             )}
             onChange={handleBaseChange}
-            style={{
-              padding: "6px 12px",
-              fontSize: 15,
-              borderRadius: 5,
-              border: "1px solid #ccc",
-              background: "#fff",
-              fontWeight: 500,
-              marginRight: 8,
-            }}
-          >
-            {baseOptions.map((opt, idx) => (
-              <option key={opt.label} value={idx}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
+            label="Base:"
+          />
           <PrimaryButton
             functionName={handleCopy}
             span={copied ? "Copied!" : "Copy CSS"}
           />
         </div>
       </div>
-     <FontTable spacingRatios={spacingRatios} base={base} unit={unit} />˝
+      <FontTable spacingRatios={spacingRatios} base={base} unit={unit} />˝
     </div>
   );
 };

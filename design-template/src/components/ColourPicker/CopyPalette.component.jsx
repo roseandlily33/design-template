@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import SecondaryButton from "../../app/buttons/SecondaryButton/SecondaryButton.component";
+import SelectButton from "@/app/buttons/SelectButton/SelectButton.component";
 
 const CopyPalette = ({ palettes, setPalettes }) => {
   const [sourceIdx, setSourceIdx] = useState(0);
@@ -51,9 +52,7 @@ const CopyPalette = ({ palettes, setPalettes }) => {
         marginBottom: 18,
       }}
     >
-      <div style={{ fontWeight: 600, marginBottom: 10 }}>
-        Copy Palette 
-      </div>
+      <div style={{ fontWeight: 600, marginBottom: 10 }}>Copy Palette</div>
       <div
         style={{
           display: "flex",
@@ -62,35 +61,38 @@ const CopyPalette = ({ palettes, setPalettes }) => {
           marginBottom: 10,
         }}
       >
-        <span>From:</span>
-        <select
+        <SelectButton
+          options={[
+            { value: 0, label: "Palette 1" },
+            { value: 1, label: "Palette 2" },
+            { value: 2, label: "Palette 3" },
+          ]}
           value={sourceIdx}
           onChange={(e) => setSourceIdx(Number(e.target.value))}
-        >
-          <option value={0}>Palette 1</option>
-          <option value={1}>Palette 2</option>
-          <option value={2}>Palette 3</option>
-        </select>
-        <span>To:</span>
-        <select
+          label="From:"
+        />
+        <SelectButton
+          options={[
+            { value: 0, label: "Palette 1" },
+            { value: 1, label: "Palette 2" },
+            { value: 2, label: "Palette 3" },
+          ]}
           value={targetIdx}
           onChange={(e) => setTargetIdx(Number(e.target.value))}
-        >
-          <option value={0}>Palette 1</option>
-          <option value={1}>Palette 2</option>
-          <option value={2}>Palette 3</option>
-        </select>
+          label="To:"
+        />
         <SecondaryButton span="Copy All Rows" functionName={handleCopyAll} />
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <span>Row:</span>
-        <select value={rowLabel} onChange={(e) => setRowLabel(e.target.value)}>
-          {rowLabels.map((l) => (
-            <option key={l} value={l}>
-              {l.charAt(0).toUpperCase() + l.slice(1)}
-            </option>
-          ))}
-        </select>
+        <SelectButton
+          options={rowLabels.map((l) => ({
+            value: l,
+            label: l.charAt(0).toUpperCase() + l.slice(1),
+          }))}
+          value={rowLabel}
+          onChange={(e) => setRowLabel(e.target.value)}
+          label="Row:"
+        />
         <SecondaryButton span="Copy Row" functionName={handleCopyRow} />
       </div>
     </div>

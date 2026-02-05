@@ -1,6 +1,8 @@
 import React, { useState, useRef } from "react";
 import { createPortal } from "react-dom";
 import { ColorSelect } from "../Buttons/ColourSelect.component";
+import SelectButton from "@/app/buttons/SelectButton/SelectButton.component";
+import Input from "@/app/extraComponents/Input.component";
 
 const ButtonOptionsModal = ({
   show,
@@ -100,7 +102,7 @@ const ButtonOptionsModal = ({
           </label>
           <label>
             Border Radius:
-            <input
+            <Input
               type="number"
               min={0}
               max={32}
@@ -111,7 +113,7 @@ const ButtonOptionsModal = ({
           </label>
           <label>
             Border:
-            <input
+            <Input
               type="text"
               value={border}
               onChange={(e) => setBorder(e.target.value)}
@@ -121,24 +123,24 @@ const ButtonOptionsModal = ({
           </label>
           <label>
             Font Weight:
-            <select
+            <SelectButton
+              options={[
+                { value: 100, label: "100" },
+                { value: 200, label: "200" },
+                { value: 300, label: "300" },
+                { value: 400, label: "400" },
+                { value: 500, label: "500" },
+                { value: 600, label: "600" },
+                { value: 700, label: "700" },
+                { value: 800, label: "800" },
+              ]}
               value={fontWeight}
               onChange={(e) => setFontWeight(Number(e.target.value))}
-              style={{ marginLeft: 8 }}
-            >
-              <option value={100}>100</option>
-              <option value={200}>200</option>
-              <option value={300}>300</option>
-              <option value={400}>400</option>
-              <option value={500}>500</option>
-              <option value={600}>600</option>
-              <option value={700}>700</option>
-              <option value={800}>800</option>
-            </select>
+            />
           </label>
           <label>
             Font Size:
-            <input
+            <Input
               type="number"
               min={10}
               max={48}
@@ -149,7 +151,7 @@ const ButtonOptionsModal = ({
           </label>
           <label>
             Letter Spacing:
-            <input
+            <Input
               type="number"
               step={0.1}
               min={-2}
@@ -161,7 +163,7 @@ const ButtonOptionsModal = ({
           </label>
           <label>
             Box Shadow:
-            <input
+            <Input
               type="text"
               value={boxShadow}
               onChange={(e) => setBoxShadow(e.target.value)}
@@ -171,7 +173,7 @@ const ButtonOptionsModal = ({
           </label>
           <label>
             Padding:
-            <input
+            <Input
               type="text"
               value={padding}
               onChange={(e) => setPadding(e.target.value)}
@@ -181,16 +183,16 @@ const ButtonOptionsModal = ({
           </label>
           <label>
             Text Transform:
-            <select
+            <SelectButton
+              options={[
+                { value: "none", label: "None" },
+                { value: "uppercase", label: "Uppercase" },
+                { value: "lowercase", label: "Lowercase" },
+                { value: "capitalize", label: "Capitalize" },
+              ]}
               value={textTransform}
               onChange={(e) => setTextTransform(e.target.value)}
-              style={{ marginLeft: 8 }}
-            >
-              <option value="none">None</option>
-              <option value="uppercase">Uppercase</option>
-              <option value="lowercase">Lowercase</option>
-              <option value="capitalize">Capitalize</option>
-            </select>
+            />
           </label>
           <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
             Text Color:
@@ -245,7 +247,7 @@ const ButtonOptionsModal = ({
           </label>
           <label>
             Hover Border:
-            <input
+            <Input
               type="text"
               value={hoverBorder}
               onChange={(e) => setHoverBorder(e.target.value)}
@@ -255,7 +257,7 @@ const ButtonOptionsModal = ({
           </label>
           <label>
             Line Height:
-            <input
+            <Input
               type="number"
               step={0.01}
               min={1}
@@ -271,7 +273,7 @@ const ButtonOptionsModal = ({
               padding: "6px 14px",
               fontSize: 15,
               borderRadius: 6,
-              background: "#0070f3",
+              background: "#007003",
               color: "#fff",
               border: "none",
               cursor: "pointer",

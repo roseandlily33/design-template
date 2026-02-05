@@ -1,6 +1,8 @@
 import React, { useRef } from "react";
 import Image from "next/image";
 import styles from "./Logo.module.css";
+import Input from "@/app/extraComponents/Input.component";
+import PrimaryButton from "@/app/buttons/PrimaryButton/PrimaryButton.component";
 
 const Logo = ({
   logoUrl,
@@ -35,38 +37,35 @@ const Logo = ({
           style={{ display: "none" }}
           onChange={handleFileChange}
         />
-        <button
-          className={styles.logoUploadBtn}
-          onClick={() => fileInputRef.current && fileInputRef.current.click()}
-        >
-          Upload Logo Image
-        </button>
+        <PrimaryButton
+          span="Upload Logo Image"
+          functionName={() =>
+            fileInputRef.current && fileInputRef.current.click()
+          }
+        />
+
         <div className={styles.logoPreviewWrapper}>
           <div style={{ display: "flex", gap: 22, alignItems: "center" }}>
-            <label style={{ fontWeight: 500 }}>
-              Width:
-              <input
-                type="number"
-                min={24}
-                max={600}
-                value={width}
-                onChange={(e) => setLogoWidth(Number(e.target.value))}
-                style={{ width: 60, marginLeft: 6 }}
-              />
-              px
-            </label>
-            <label style={{ fontWeight: 500 }}>
-              Height:
-              <input
-                type="number"
-                min={24}
-                max={600}
-                value={height}
-                onChange={(e) => setLogoHeight(Number(e.target.value))}
-                style={{ width: 60, marginLeft: 6 }}
-              />
-              px
-            </label>
+            <Input
+              type="number"
+              min={24}
+              max={600}
+              value={width}
+              onChange={(e) => setLogoWidth(Number(e.target.value))}
+              label="Width:"
+              style={{ width: 80 }}
+            />
+            <span>px</span>
+            <Input
+              type="number"
+              min={24}
+              max={600}
+              value={height}
+              onChange={(e) => setLogoHeight(Number(e.target.value))}
+              label="Height:"
+              style={{ width: 80 }}
+            />
+            <span>px</span>
           </div>
           {logoUrl && (
             <Image

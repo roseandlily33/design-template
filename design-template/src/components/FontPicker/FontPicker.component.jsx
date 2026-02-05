@@ -1,5 +1,7 @@
 import React from "react";
 import styles from "./FontPicker.module.css";
+import SelectButton from "@/app/buttons/SelectButton/SelectButton.component";
+import SecondaryButton from "@/app/buttons/SecondaryButton/SecondaryButton.component";
 const FontPicker = ({
   fontLists,
   fontMap,
@@ -23,61 +25,37 @@ const FontPicker = ({
             }
           >
             <div className={styles.fontCardControls}>
-              <span className={styles.fontCardLabel}>Head:</span>
-              <select
+              <SelectButton
+                options={fontLists[0].map((font) => ({
+                  value: font,
+                  label: font,
+                }))}
                 value={set.head}
                 onChange={(e) => onFontSetChange(idx, "head", e.target.value)}
-                style={{ fontFamily: set.head, marginRight: 8 }}
-              >
-                {fontLists[0].map((font) => (
-                  <option key={font} value={font}>
-                    {font}
-                  </option>
-                ))}
-              </select>
-              <span className={styles.fontCardLabel}>Main:</span>
-              <select
+                label="Head:"
+              />
+              <SelectButton
+                options={fontLists[1].map((font) => ({
+                  value: font,
+                  label: font,
+                }))}
                 value={set.main}
                 onChange={(e) => onFontSetChange(idx, "main", e.target.value)}
-                style={{ fontFamily: set.main, marginRight: 8 }}
-              >
-                {fontLists[1].map((font) => (
-                  <option key={font} value={font}>
-                    {font}
-                  </option>
-                ))}
-              </select>
-              <span className={styles.fontCardLabel}>Extra:</span>
-              <select
+                label="Main:"
+              />
+              <SelectButton
+                options={fontLists[2].map((font) => ({
+                  value: font,
+                  label: font,
+                }))}
                 value={set.extra}
                 onChange={(e) => onFontSetChange(idx, "extra", e.target.value)}
-                style={{ fontFamily: set.extra }}
-              >
-                {fontLists[2].map((font) => (
-                  <option key={font} value={font}>
-                    {font}
-                  </option>
-                ))}
-              </select>
-              <button
-                style={{
-                  position: "absolute",
-                  top: 16,
-                  right: 16,
-                  background: selectedFontSetIdx === idx ? "#6883a1" : "#eee",
-                  color: selectedFontSetIdx === idx ? "#fff" : "#222",
-                  border: "none",
-                  borderRadius: 6,
-                  padding: "4px 12px",
-                  cursor: "pointer",
-                  fontWeight: 500,
-                  boxShadow:
-                    selectedFontSetIdx === idx ? "0 2px 8px #6883a1" : "none",
-                }}
-                onClick={() => onSelectFontSet(idx)}
-              >
-                {selectedFontSetIdx === idx ? "Selected" : "Select"}
-              </button>
+                label="Extra:"
+              />
+              <SecondaryButton
+                span={selectedFontSetIdx === idx ? "Selected" : "Select"}
+                functionName={() => onSelectFontSet(idx)}
+              />
             </div>
             <div className={styles.fontCardPreview}>
               <div
