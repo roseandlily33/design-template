@@ -1,9 +1,12 @@
 import React from "react";
 import styles from "./Inputs.module.css";
+import { ColorSelect } from "../Buttons/ColourSelect.component";
 
-const Inputs = ({ font, colors, borderRadius, styleConfig, onStyleChange }) => {
+const Inputs = ({ font, colors, borderRadius, inputStyles, setInputStyles }) => {
   // Palette
   const colorRows = Array.isArray(colors) ? colors : colors?.rows || [];
+  // Gather all unique colors from all rows
+  const allColors = colorRows.flatMap(r => r.colors || []).filter(Boolean);
   const grey = colorRows.find((r) => r.label === "Grey")?.colors || [
     "#eee",
     "#ccc",
@@ -14,8 +17,8 @@ const Inputs = ({ font, colors, borderRadius, styleConfig, onStyleChange }) => {
     colorRows.find((r) => r.label !== "Grey")?.colors?.[2] || "#6883a1";
   const mainFont = font || "inherit";
 
-  // Use styleConfig for styles, fallback to defaults
-  const inputStyle = styleConfig?.input || {
+  // Use inputStyles for styles, fallback to defaults
+  const inputStyle = inputStyles?.input || {
     width: "100%",
     padding: "10px 14px",
     fontSize: 16,
@@ -29,12 +32,16 @@ const Inputs = ({ font, colors, borderRadius, styleConfig, onStyleChange }) => {
     boxSizing: "border-box",
     transition: "border 0.2s",
   };
-  const textareaStyle = styleConfig?.textarea || {
+  // Parse border thickness and color from border string
+  const borderParts = inputStyle.border?.split(" ") || [];
+  const borderThickness = borderParts[0]?.replace("px", "") || "1.5";
+  const borderColor = borderParts[borderParts.length - 1] || accent;
+  const textareaStyle = inputStyles?.textarea || {
     ...inputStyle,
     minHeight: 60,
     resize: "vertical",
   };
-  const checkboxStyle = styleConfig?.checkbox || {
+  const checkboxStyle = inputStyles?.checkbox || {
     accentColor: accent,
     width: 18,
     height: 18,
@@ -42,9 +49,32 @@ const Inputs = ({ font, colors, borderRadius, styleConfig, onStyleChange }) => {
     marginRight: 4,
   };
 
+  // Helper to convert JS style object to CSS string
+  const styleObjToCss = (selector, styleObj) => {
+    if (!styleObj) return '';
+    const entries = Object.entries(styleObj)
+      .map(([k, v]) => `${k.replace(/([A-Z])/g, "-$1").toLowerCase()}: ${v};`)
+      .join(' ');
+    return `${selector} { ${entries} }`;
+  };
+
+  const handleCopyCss = () => {
+    const css = [
+      styleObjToCss('.inputElement', inputStyle),
+      styleObjToCss('.textareaElement', textareaStyle),
+      styleObjToCss('.checkboxElement', checkboxStyle),
+    ].join('\n\n');
+    navigator.clipboard.writeText(css);
+  };
+
   return (
     <div className={styles.inputsRoot}>
-      <h3 className={styles.inputsTitle}>Inputs</h3>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <h3 className={styles.inputsTitle}>Inputs</h3>
+        <button type="button" className={styles.copyCssButton} onClick={handleCopyCss} title="Copy CSS">
+          Copy CSS
+        </button>
+      </div>
       <div className={styles.styleEditorSection}>
         <h4 className={styles.styleEditorTitle}>Edit Input Styles</h4>
         <div className={styles.styleEditorRow}>
@@ -57,8 +87,8 @@ const Inputs = ({ font, colors, borderRadius, styleConfig, onStyleChange }) => {
               max={32}
               onChange={e => {
                 const val = parseInt(e.target.value, 10);
-                onStyleChange && onStyleChange({
-                  ...styleConfig,
+                setInputStyles && setInputStyles({
+                  ...inputStyles,
                   input: { ...inputStyle, borderRadius: val },
                   textarea: { ...textareaStyle, borderRadius: val },
                   checkbox: { ...checkboxStyle, borderRadius: val },
@@ -69,16 +99,35 @@ const Inputs = ({ font, colors, borderRadius, styleConfig, onStyleChange }) => {
           </div>
           <div className={styles.styleEditorField}>
             <label>Border Color:</label>
-            <input
-              type="color"
-              value={inputStyle.border.split(" ").pop()}
-              onChange={e => {
-                const color = e.target.value;
-                onStyleChange && onStyleChange({
-                  ...styleConfig,
-                  input: { ...inputStyle, border: `1.5px solid ${color}` },
-                  textarea: { ...textareaStyle, border: `1.5px solid ${color}` },
+            <ColorSelect
+              value={borderColor}
+              onChange={color => {
+                setInputStyles && setInputStyles({
+                  ...inputStyles,
+                  input: { ...inputStyle, border: `${borderThickness}px solid ${color}` },
+                  textarea: { ...textareaStyle, border: `${borderThickness}px solid ${color}` },
                   checkbox: { ...checkboxStyle, accentColor: color },
+                });
+              }}
+              options={allColors}
+              customValue={borderColor}
+            />
+          </div>
+          <div className={styles.styleEditorField}>
+            <label>Border Thickness:</label>
+            <input
+              type="number"
+              min={0.5}
+              max={8}
+              step={0.1}
+              value={borderThickness}
+              onChange={e => {
+                const thickness = e.target.value;
+                setInputStyles && setInputStyles({
+                  ...inputStyles,
+                  input: { ...inputStyle, border: `${thickness}px solid ${borderColor}` },
+                  textarea: { ...textareaStyle, border: `${thickness}px solid ${borderColor}` },
+                  checkbox: { ...checkboxStyle, accentColor: borderColor },
                 });
               }}
               className={styles.styleEditorInput}
@@ -93,8 +142,8 @@ const Inputs = ({ font, colors, borderRadius, styleConfig, onStyleChange }) => {
               max={32}
               onChange={e => {
                 const val = parseInt(e.target.value, 10);
-                onStyleChange && onStyleChange({
-                  ...styleConfig,
+                setInputStyles && setInputStyles({
+                  ...inputStyles,
                   input: { ...inputStyle, fontSize: val },
                   textarea: { ...textareaStyle, fontSize: val },
                 });

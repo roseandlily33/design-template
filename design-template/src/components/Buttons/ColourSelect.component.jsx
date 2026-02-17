@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from "react";
 export const ColorSelect = ({ value, onChange, options, customValue, ...props }) => {
   const [open, setOpen] = useState(false);
   const ref = useRef();
-  React.useEffect(() => {
+  useEffect(() => {
     if (!open) return;
     const handler = (e) => {
       if (ref.current && !ref.current.contains(e.target)) setOpen(false);

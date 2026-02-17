@@ -36,6 +36,7 @@ const Display = ({
   footerOverrides = {},
   onFooterColorChange,
   heroImgUrl,
+  inputStyles,
   testimonialQuote,
   setTestimonialQuote,
   testimonialAuthor,
@@ -202,6 +203,7 @@ const Display = ({
         setContact,
         onColorChange: onCompaniesColorChange,
         background: backgrounds.contact,
+        inputStyles,
       },
     },
     {

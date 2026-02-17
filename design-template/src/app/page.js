@@ -128,7 +128,9 @@ export default function Home() {
   const setPalettes = [setPalette1, setPalette2, setPalette3];
   const selected = palettes[activeTab];
   const setSelected = setPalettes[activeTab];
-
+const handlePastePalette = (rows) => {
+    setPalettes[activeTab](rows);
+  };
   // Per-palette box shadow state
   const defaultBoxShadow = {
     x: 0,
@@ -624,6 +626,7 @@ export default function Home() {
             displayFonts={displayFonts}
             bodyFonts={bodyFonts}
             allFonts={allFonts}
+            onApply={handlePastePalette} 
           />
         )}
         {/* Right pane always underneath, responsive */}

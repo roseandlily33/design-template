@@ -54,8 +54,8 @@ const LeftPane = ({
   displayFonts,
   bodyFonts,
   allFonts,
+  onApply,
 }) => {
-  console.log('Colours', selected);
   return (
     <div
       className={styles.leftPane + " " + styles.leftPaneOpen}
@@ -72,6 +72,7 @@ const LeftPane = ({
           setPalette2={setPalette2}
           palette3={palette3}
           setPalette3={setPalette3}
+          onApply={onApply}
         />
         <ImageSelector value={heroImgUrl} onChange={setHeroImgUrl} />
         <FontPicker
@@ -117,8 +118,8 @@ const LeftPane = ({
           font={selectedFontSet.main}
           colors={selected}
           borderRadius={radius}
-          styleConfig={inputStyles}
-          onStyleChange={setInputStyles}
+          inputStyles={inputStyles}
+          setInputStyles={setInputStyles}
         />
         {/* Box Shadow component goes here */}
         <BoxShadow

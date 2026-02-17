@@ -6,6 +6,7 @@ import RenderPalette from "./RenderPalette.component";
 import TertiaryButton from "../../app/buttons/TertiaryButton/TertiaryButton.component";
 import SecondaryButton from "../../app/buttons/SecondaryButton/SecondaryButton.component";
 import CopyPalette from "./CopyPalette.component";
+import PasteInColourPalette from "./PasteInColourPalette.component";
 
 const ColourPicker = ({
   palette1,
@@ -14,16 +15,10 @@ const ColourPicker = ({
   setPalette1,
   setPalette2,
   setPalette3,
+  onApply,
   // selected,
   // setSelected,
 }) => {
-  console.log(
-    "Colour picket step 2 props",
-    palette1,
-    palette2,
-    palette3,
-    // selected,
-  );
   const [showModal, setShowModal] = useState(false);
   const [selected1, setSelected1] = useState(null);
   const [hexInput1, setHexInput1] = useState("");
@@ -53,6 +48,7 @@ const ColourPicker = ({
 
   return (
     <div className={styles.pickerRoot}>
+      <PasteInColourPalette onApply={onApply} />
       <div
         style={{
           display: "flex",

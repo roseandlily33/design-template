@@ -12,15 +12,6 @@ const RenderPalette = ({
   setHexInput,
   label,
 }) => {
-  console.log(
-    "RenderPalette props step 3 ",
-    palette,
-    'selected',
-    selected,
-    'hextInput',
-    hexInput,
-    label,
-  );
   const MAX_COLORS = 8;
   const [copied, setCopied] = useState(null);
 
