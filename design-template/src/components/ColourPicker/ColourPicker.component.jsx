@@ -48,7 +48,6 @@ const ColourPicker = ({
 
   return (
     <div className={styles.pickerRoot}>
-      <PasteInColourPalette onApply={onApply} />
       <div
         style={{
           display: "flex",
@@ -77,6 +76,7 @@ const ColourPicker = ({
           }}
         />
       </div>
+      <PasteInColourPalette onApply={onApply} />
       <CopyPalette
         palettes={[palette1, palette2, palette3]}
         setPalettes={[setPalette1, setPalette2, setPalette3]}

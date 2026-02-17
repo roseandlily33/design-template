@@ -62,9 +62,19 @@ const LeftPane = ({
       style={{ zIndex: 15 }}
     >
       <div className={styles.leftPaneContent}>
-        <h3>
+        <h2
+          // className={styles.leftPaneTitle}
+          style={{
+            fontWeight: "800",
+            fontSize: "2rem",
+            textAlign: "center",
+            paddingBottom: "1rem",
+            color: "#203143",
+            borderBottom: "2px solid #203143",
+          }}
+        >
           {projectTitle} Project - Template {activeTab + 1}
-        </h3>
+        </h2>
         <ColourPicker
           palette1={palette1}
           setPalette1={setPalette1}

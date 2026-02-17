@@ -1,13 +1,8 @@
-import React, { useState } from "react";
-import chroma from "chroma-js";
-import SecondaryButton from "../../app/buttons/SecondaryButton/SecondaryButton.component";
-import PrimaryButton from "../../app/buttons/PrimaryButton/PrimaryButton.component";
-
+import React, {useState} from "react";
 const GenerateColours = ({ rows, setRows, label }) => {
-  console.log("GenerateColours props", rows);
-  // Collapsible state
-  const [showRowGen, setShowRowGen] = useState(false);
-  const [showSingleGen, setShowSingleGen] = useState(false);
+  // Collapsible state for both sections
+  const [openRowGen, setOpenRowGen] = useState(false);
+  const [openSingleGen, setOpenSingleGen] = useState(false);
   // Row generator state
   const [rowBase, setRowBase] = useState("#f17496");
   const [rowPreview, setRowPreview] = useState([]);
@@ -23,17 +18,15 @@ const GenerateColours = ({ rows, setRows, label }) => {
   // Generate row preview (base color always included, range from very light to very dark)
   const handleRowGen = () => {
     try {
-      // Create a scale from a very light version, the base color, and a very dark version
       const scale = chroma
         .scale([
-          chroma(rowBase).brighten(4).saturate(0.5), // very light
-          rowBase, // base color
-          chroma(rowBase).darken(4).saturate(1.2), // very dark
+          chroma(rowBase).brighten(4).saturate(0.5),
+          rowBase,
+          chroma(rowBase).darken(4).saturate(1.2),
         ])
         .mode("lab")
-        .domain([0, 0.5, 1]) // ensure base color is always included
+        .domain([0, 0.5, 1])
         .colors(8);
-      // Guarantee base color is present (replace middle color with base if not)
       if (!scale.includes(rowBase)) {
         scale[4] = rowBase;
       }
@@ -53,13 +46,9 @@ const GenerateColours = ({ rows, setRows, label }) => {
       } else {
         const amt = Math.abs(singleAmount) / 100;
         if (singleMode === "lighter") {
-          c = chroma(singleBase1)
-            .brighten(amt * 2)
-            .hex();
+          c = chroma(singleBase1).brighten(amt * 2).hex();
         } else {
-          c = chroma(singleBase1)
-            .darken(amt * 2)
-            .hex();
+          c = chroma(singleBase1).darken(amt * 2).hex();
         }
       }
       setSinglePreview(c);
@@ -74,8 +63,8 @@ const GenerateColours = ({ rows, setRows, label }) => {
       prevRows?.map((row) =>
         row.label.toLowerCase() === replaceRow
           ? { ...row, colors: rowPreview }
-          : row,
-      ),
+          : row
+      )
     );
   };
 
@@ -89,7 +78,7 @@ const GenerateColours = ({ rows, setRows, label }) => {
           return { ...row, colors };
         }
         return row;
-      }),
+      })
     );
   };
 
@@ -97,24 +86,36 @@ const GenerateColours = ({ rows, setRows, label }) => {
   const rowLabels = rows?.map((row) => row.label.toLowerCase());
 
   return (
-    <div style={{ marginBottom: 18 }}>
+    <div>
       {/* Generate Colour Row Section */}
-      <div style={{ marginBottom: 10 }}>
-        <SecondaryButton
-          span={showRowGen ? "Hide" : "View" + " Generate Colour Row"}
-          functionName={() => setShowRowGen((v) => !v)}
-        />
-        {showRowGen && (
-          <div
-            style={{
-              background: "#fafbfc",
-              border: "1px solid #eee",
-              borderRadius: 8,
-              padding: 14,
-              marginTop: 4,
-              marginBottom: 8,
-            }}
-          >
+      <div
+        style={{
+          border: "1px solid #eee",
+          borderRadius: 8,
+          padding: 0,
+          marginBottom: 18,
+          background: "#fafbfc",
+        }}
+      >
+        <div
+          style={{
+            fontWeight: 600,
+            marginBottom: 0,
+            padding: "14px 18px",
+            borderBottom: "1px solid #eee",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            cursor: "pointer",
+            userSelect: "none",
+          }}
+          onClick={() => setOpenRowGen((v) => !v)}
+        >
+          Generate Colour Row
+          <span style={{ fontSize: 18, marginLeft: 8 }}>{openRowGen ? "▲" : "▼"}</span>
+        </div>
+        {openRowGen && (
+          <div style={{ padding: 18 }}>
             <div style={{ fontWeight: 500, marginBottom: 6 }}>
               Generate a palette row from a base color for {label}
             </div>
@@ -140,7 +141,21 @@ const GenerateColours = ({ rows, setRows, label }) => {
                 onChange={(e) => setRowBase(e.target.value)}
                 style={{ width: 90, fontSize: 15, padding: "4px 8px" }}
               />
-              <SecondaryButton span="Preview" functionName={handleRowGen} />
+              <button
+                type="button"
+                onClick={handleRowGen}
+                style={{
+                  padding: "7px 18px",
+                  borderRadius: 6,
+                  border: "1.5px solid #6883a1",
+                  background: "#f7f8fa",
+                  color: "#222",
+                  fontWeight: 500,
+                  cursor: "pointer",
+                }}
+              >
+                Preview
+              </button>
             </div>
             {rowPreview?.length === 8 && (
               <div style={{ display: "flex", gap: 10, marginBottom: 8 }}>
@@ -175,29 +190,55 @@ const GenerateColours = ({ rows, setRows, label }) => {
                     </option>
                   ))}
                 </select>
-                <SecondaryButton span="Replace" functionName={doReplaceRow} />
+                <button
+                  type="button"
+                  onClick={doReplaceRow}
+                  style={{
+                    padding: "7px 18px",
+                    borderRadius: 6,
+                    border: "1.5px solid #6883a1",
+                    background: "#e3fbe3",
+                    color: "#222",
+                    fontWeight: 500,
+                    cursor: "pointer",
+                  }}
+                >
+                  Replace
+                </button>
               </div>
             )}
           </div>
         )}
       </div>
       {/* Generate Single Colour Section */}
-      <div style={{ marginBottom: 18 }}>
-        <SecondaryButton
-          span={showSingleGen ? "Hide" : "View" + " Generate Single Colour"}
-          functionName={() => setShowSingleGen((v) => !v)}
-        />
-        {showSingleGen && (
-          <div
-            style={{
-              background: "#fafbfc",
-              border: "1px solid #eee",
-              borderRadius: 8,
-              padding: 14,
-              marginTop: 4,
-              marginBottom: 8,
-            }}
-          >
+      <div
+        style={{
+          border: "1px solid #eee",
+          borderRadius: 8,
+          padding: 0,
+          marginBottom: 18,
+          background: "#fafbfc",
+        }}
+      >
+        <div
+          style={{
+            fontWeight: 600,
+            marginBottom: 0,
+            padding: "14px 18px",
+            borderBottom: "1px solid #eee",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            cursor: "pointer",
+            userSelect: "none",
+          }}
+          onClick={() => setOpenSingleGen((v) => !v)}
+        >
+          Generate Single Colour
+          <span style={{ fontSize: 18, marginLeft: 8 }}>{openSingleGen ? "▲" : "▼"}</span>
+        </div>
+        {openSingleGen && (
+          <div style={{ padding: 18 }}>
             <div style={{ fontWeight: 500, marginBottom: 6 }}>
               Generate a single color from 1 or 2 colors
             </div>
@@ -253,7 +294,21 @@ const GenerateColours = ({ rows, setRows, label }) => {
                 max={100}
               />
               <span>%</span>
-              <SecondaryButton functionName={handleSingleGen} span="Preview" />
+              <button
+                type="button"
+                onClick={handleSingleGen}
+                style={{
+                  padding: "7px 18px",
+                  borderRadius: 6,
+                  border: "1.5px solid #6883a1",
+                  background: "#f7f8fa",
+                  color: "#222",
+                  fontWeight: 500,
+                  cursor: "pointer",
+                }}
+              >
+                Preview
+              </button>
             </div>
             {singlePreview && (
               <div
@@ -302,10 +357,21 @@ const GenerateColours = ({ rows, setRows, label }) => {
                   onChange={(e) => setReplaceIdx(Number(e.target.value))}
                   style={{ width: 40, fontSize: 15, padding: "4px 8px" }}
                 />
-                <PrimaryButton
-                  functionName={doInsertSingle}
-                  span="Insert/Replace"
-                />
+                <button
+                  type="button"
+                  onClick={doInsertSingle}
+                  style={{
+                    padding: "7px 18px",
+                    borderRadius: 6,
+                    border: "1.5px solid #6883a1",
+                    background: "#e3fbe3",
+                    color: "#222",
+                    fontWeight: 500,
+                    cursor: "pointer",
+                  }}
+                >
+                  Insert/Replace
+                </button>
               </div>
             )}
           </div>

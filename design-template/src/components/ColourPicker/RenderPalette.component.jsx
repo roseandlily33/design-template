@@ -17,45 +17,49 @@ const RenderPalette = ({
 
   return (
     <div className={styles.paletteSection}>
-      <div className={styles.pickerTitle}>{label}</div>
       <GenerateColours rows={palette} setRows={setPalette} label={label} />
+      <div className={styles.paletteHeaderWrapper}>
+        <div className={styles.paletteHeader}>{label}</div>
+      </div>
       {palette?.map((row, rowIdx) => (
         <div key={row.label} className={styles.row}>
           <div className={styles.rowLabel}>{row.label}</div>
-          <div className={styles.colorGroup}>
-            {row?.colors?.map((color, idx) => (
-              <ButtonsForColours
-                color={color}
-                idx={idx}
-                rowIdx={rowIdx}
-                key={idx}
-                setRows={setPalette}
-                rows={palette}
-                selected={selected}
-                setSelected={setSelected}
-                setHexInput={setHexInput}
-                hexInput={hexInput}
-                copied={copied}
-                setCopied={setCopied}
-              />
-            ))}
-            {palette?.colors?.length < MAX_COLORS && (
-              <span
-                className={styles.plus}
-                onClick={() => {
-                  setPalette((prevPalette) =>
-                    prevPalette?.map((row, idx) =>
-                      idx === rowIdx && row.colors.length < MAX_COLORS
-                        ? { ...row, colors: [...row.colors, null] }
-                        : row,
-                    ),
-                  );
-                }}
-                title="Add color"
-              >
-                +
-              </span>
-            )}
+          <div className={styles.colorGroupScroll}>
+            <div className={styles.colorGroup}>
+              {row?.colors?.map((color, idx) => (
+                <ButtonsForColours
+                  color={color}
+                  idx={idx}
+                  rowIdx={rowIdx}
+                  key={idx}
+                  setRows={setPalette}
+                  rows={palette}
+                  selected={selected}
+                  setSelected={setSelected}
+                  setHexInput={setHexInput}
+                  hexInput={hexInput}
+                  copied={copied}
+                  setCopied={setCopied}
+                />
+              ))}
+              {palette?.colors?.length < MAX_COLORS && (
+                <span
+                  className={styles.plus}
+                  onClick={() => {
+                    setPalette((prevPalette) =>
+                      prevPalette?.map((row, idx) =>
+                        idx === rowIdx && row.colors.length < MAX_COLORS
+                          ? { ...row, colors: [...row.colors, null] }
+                          : row,
+                      ),
+                    );
+                  }}
+                  title="Add color"
+                >
+                  +
+                </span>
+              )}
+            </div>
           </div>
           {/* Show color picker and hex input if a circle in this row is selected */}
           {selected && selected.rowIdx === rowIdx && (
