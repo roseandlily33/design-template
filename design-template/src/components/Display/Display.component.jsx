@@ -60,6 +60,8 @@ const Display = ({
   footerLinks,
   setFooterLinks,
   breakpoint = "Desktop",
+  backgrounds,
+  handleBgChange,
 }) => {
   const spacingVars = buildSpacingVars(base, unit);
   const spacingChart = buildSpacingChart(base, unit);
@@ -102,23 +104,8 @@ const Display = ({
   };
 
   // Background selection state for each section
-  const sectionKeys = [
-    "navbar",
-    "hero",
-    "description",
-    "threeicons",
-    "companies",
-    "testimonial",
-    "contact",
-    "footer",
-  ];
+
   const [bgSelectorVisible, setBgSelectorVisible] = useState(false);
-  const [backgrounds, setBackgrounds] = useState(() =>
-    Object.fromEntries(sectionKeys.map(k => [k, "#fff"]))
-  );
-  const handleBgChange = (key, color) => {
-    setBackgrounds(prev => ({ ...prev, [key]: color }));
-  };
 
   // Section registry for dynamic layout
   const sections = [

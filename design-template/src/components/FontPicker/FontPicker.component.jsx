@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./FontPicker.module.css";
-import SelectButton from "@/app/buttons/SelectButton/SelectButton.component";
 import SecondaryButton from "@/app/buttons/SecondaryButton/SecondaryButton.component";
+import FontDropdown from "./FontDropdown.jsx";
 const FontPicker = ({
   fontLists,
   fontMap,
@@ -25,31 +25,25 @@ const FontPicker = ({
             }
           >
             <div className={styles.fontCardControls}>
-              <SelectButton
-                options={fontLists[0].map((font) => ({
-                  value: font,
-                  label: font,
-                }))}
+              <FontDropdown
                 value={set.head}
-                onChange={(e) => onFontSetChange(idx, "head", e.target.value)}
+                options={fontLists[0]}
+                onChange={font => onFontSetChange(idx, "head", font)}
+                fontMap={fontMap}
                 label="Head:"
               />
-              <SelectButton
-                options={fontLists[1].map((font) => ({
-                  value: font,
-                  label: font,
-                }))}
+              <FontDropdown
                 value={set.main}
-                onChange={(e) => onFontSetChange(idx, "main", e.target.value)}
+                options={fontLists[1]}
+                onChange={font => onFontSetChange(idx, "main", font)}
+                fontMap={fontMap}
                 label="Main:"
               />
-              <SelectButton
-                options={fontLists[2].map((font) => ({
-                  value: font,
-                  label: font,
-                }))}
+              <FontDropdown
                 value={set.extra}
-                onChange={(e) => onFontSetChange(idx, "extra", e.target.value)}
+                options={fontLists[2]}
+                onChange={font => onFontSetChange(idx, "extra", font)}
+                fontMap={fontMap}
                 label="Extra:"
               />
               <SecondaryButton

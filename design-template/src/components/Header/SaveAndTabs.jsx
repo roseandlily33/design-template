@@ -38,6 +38,7 @@ const SaveAndTabs = ({
   contact,
   isReadOnly = false,
   shared = false,
+  backgrounds
 }) => {
   const [shareMessage, setShareMessage] = useState("");
   const [shareUrl, setShareUrl] = useState("");
@@ -137,6 +138,7 @@ const SaveAndTabs = ({
         contact,
         threeIcons,
         boxShadows,
+        backgrounds,
       };
 
       const res = await fetch(`${backendUrl}/api/project`, {

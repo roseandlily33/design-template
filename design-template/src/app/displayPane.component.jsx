@@ -26,6 +26,8 @@ const DisplayPane = ({
   heroImgUrl,
   threeIcons,
   inputStyles,
+  backgrounds,
+  handleBackgroundChange,
 }) => {
   console.log("Primary Props in DisplayPane:", primaryProps);
   return (
@@ -77,6 +79,8 @@ const DisplayPane = ({
         heroImgUrl={heroImgUrl}
         threeIcons={threeIcons}
         inputStyles={inputStyles}
+        backgrounds={backgrounds}
+        handleBackgroundChange={handleBackgroundChange}
       />
     </div>
   );

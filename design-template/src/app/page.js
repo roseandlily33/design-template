@@ -128,7 +128,7 @@ export default function Home() {
   const setPalettes = [setPalette1, setPalette2, setPalette3];
   const selected = palettes[activeTab];
   const setSelected = setPalettes[activeTab];
-const handlePastePalette = (rows) => {
+  const handlePastePalette = (rows) => {
     setPalettes[activeTab](rows);
   };
   // Per-palette box shadow state
@@ -522,6 +522,23 @@ const handlePastePalette = (rows) => {
     secondaryButton: <SecondaryButton {...displayText} />,
     tertiaryButton: <TertiaryButton {...displayText} />,
   };
+  // For the backgrounds of the components on the display
+  const sectionKeys = [
+    "navbar",
+    "hero",
+    "description",
+    "threeicons",
+    "companies",
+    "testimonial",
+    "contact",
+    "footer",
+  ];
+  const [backgrounds, setBackgrounds] = useState(() =>
+    Object.fromEntries(sectionKeys.map((k) => [k, "#fff"])),
+  );
+  const handleBgChange = (key, color) => {
+    setBackgrounds((prev) => ({ ...prev, [key]: color }));
+  };
 
   return (
     <div>
@@ -571,6 +588,7 @@ const handlePastePalette = (rows) => {
         footerLinks={footerLinks}
         threeIcons={threeIcons}
         boxShadows={boxShadows}
+        backgrounds={backgrounds}
       />
 
       <main className={styles.displayRoot}>
@@ -626,7 +644,7 @@ const handlePastePalette = (rows) => {
             displayFonts={displayFonts}
             bodyFonts={bodyFonts}
             allFonts={allFonts}
-            onApply={handlePastePalette} 
+            onApply={handlePastePalette}
           />
         )}
         {/* Right pane always underneath, responsive */}
@@ -649,6 +667,8 @@ const handlePastePalette = (rows) => {
           heroImgUrl={heroImgUrl}
           threeIcons={threeIcons}
           inputStyles={inputStyles}
+          backgrounds={backgrounds}
+          handleBgChange={handleBgChange}
         />
       </main>
     </div>
