@@ -7,6 +7,7 @@ import TertiaryButton from "../../app/buttons/TertiaryButton/TertiaryButton.comp
 import SecondaryButton from "../../app/buttons/SecondaryButton/SecondaryButton.component";
 import CopyPalette from "./CopyPalette.component";
 import PasteInColourPalette from "./PasteInColourPalette.component";
+import RefinePalette from "./RefinePalette.component";
 
 const ColourPicker = ({
   palette1,
@@ -80,6 +81,22 @@ const ColourPicker = ({
       <CopyPalette
         palettes={[palette1, palette2, palette3]}
         setPalettes={[setPalette1, setPalette2, setPalette3]}
+      />
+      <RefinePalette
+        palette={
+          activeTab === 0
+            ? palette1
+            : activeTab === 1
+              ? palette2
+              : palette3
+        }
+        setPalette={
+          activeTab === 0
+            ? setPalette1
+            : activeTab === 1
+              ? setPalette2
+              : setPalette3
+        }
       />
       {activeTab === 0 && (
         <RenderPalette

@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import chroma from "chroma-js";
 const GenerateColours = ({ rows, setRows, label }) => {
   // Collapsible state for both sections
   const [openRowGen, setOpenRowGen] = useState(false);
@@ -382,3 +383,4 @@ const GenerateColours = ({ rows, setRows, label }) => {
 };
 
 export default GenerateColours;
+
