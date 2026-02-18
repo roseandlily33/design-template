@@ -59,6 +59,8 @@ const ProjectSchema = new mongoose.Schema({
   colourPicker1: ColourPickerSchema,
   colourPicker2: ColourPickerSchema,
   colourPicker3: ColourPickerSchema,
+  inputs: { type: Object, default: {} },
+  backgrounds: { type: Object, default: {} },
   boxShadows: { type: [Object], default: [] },
   spacingScale: {
     base: { type: Number, default: 1 },

@@ -27,9 +27,9 @@ const DisplayPane = ({
   threeIcons,
   inputStyles,
   backgrounds,
-  handleBackgroundChange,
+  handleBgChange,
 }) => {
-  console.log("Primary Props in DisplayPane:", primaryProps);
+  // console.log("Primary Props in DisplayPane:", primaryProps);
   return (
     <div className={styles.rightPane}>
       <Display
@@ -80,7 +80,7 @@ const DisplayPane = ({
         threeIcons={threeIcons}
         inputStyles={inputStyles}
         backgrounds={backgrounds}
-        handleBackgroundChange={handleBackgroundChange}
+        handleBgChange={handleBgChange}
       />
     </div>
   );
